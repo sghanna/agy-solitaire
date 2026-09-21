@@ -8,8 +8,8 @@
     :root {
       --card-red: #c62828;
       --card-black: #111111;
-      --felt-bg: #0b1710;
-      --ui-bg: #121814;
+      --felt-bg: #0c2317;
+      --ui-bg: #101713;
       --panel-bg: #1e293b;
       --border-color: #334155;
     }
@@ -71,7 +71,7 @@
       position: sticky;
       top: 10px;
       z-index: 100;
-      background: rgba(18, 24, 20, 0.95);
+      background: rgba(16, 23, 19, 0.95);
       backdrop-filter: blur(10px);
       padding: 8px 12px;
       border-radius: 30px;
@@ -143,6 +143,7 @@
       line-height: 1.5;
     }
 
+    /* Isolated Full Card Display */
     .showcase-row {
       display: flex;
       flex-wrap: wrap;
@@ -157,7 +158,7 @@
       flex-wrap: wrap;
     }
 
-    /* Isolated Full-Size Card (88px x 128px) */
+    /* Full-size isolated card (92px x 132px) */
     .card {
       width: 92px;
       height: 132px;
@@ -180,25 +181,39 @@
       color: var(--card-black);
     }
 
-    /* iPhone 16e Simulation */
+    /* ================================================================= */
+    /* IPHONE 16e SIMULATION (Exact 390px Viewport)                      */
+    /* ================================================================= */
     .iphone-sim-container {
       background: var(--felt-bg);
       border: 3px solid #334155;
       border-radius: 20px;
-      padding: 16px 12px;
+      padding: 14px 10px;
       width: 100%;
       max-width: 390px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.6);
+      margin: 10px 0 16px 0;
     }
 
     .iphone-sim-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
       color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+    }
+
+    .iphone-sim-title .badge-tag {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #0284c7;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-size: 10px;
     }
 
     .iphone-sim-tableau {
@@ -206,172 +221,127 @@
       grid-template-columns: repeat(7, 1fr);
       gap: 5px;
       width: 100%;
-      min-height: 190px;
+      min-height: 220px;
     }
 
     .tableau-col {
-      display: flex;
-      flex-direction: column;
       position: relative;
+      width: 100%;
+      height: 215px;
     }
 
-    .iphone-card {
+    /* Mobile Cascade Card */
+    .mini-card {
+      position: absolute;
+      left: 0;
       width: 100%;
-      aspect-ratio: 1 / 1.4;
+      height: 64px;
       background: #ffffff;
       border-radius: 5px;
       border: 1.5px solid #111111;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    .iphone-card.facedown {
-      background: linear-gradient(135deg, #1e3a8a 25%, #2563eb 25%, #2563eb 50%, #1e3a8a 50%, #1e3a8a 75%, #2563eb 75%);
-      background-size: 10px 10px;
-      border: 1.5px solid #172554;
+    .mini-card.facedown {
+      background: repeating-linear-gradient(
+        45deg,
+        #1e3a8a,
+        #1e3a8a 5px,
+        #2563eb 5px,
+        #2563eb 10px
+      );
+      border: 1.5px solid #0f172a;
+    }
+
+    /* Explicit colors to guarantee high contrast */
+    .mini-card.red {
+      color: #c62828 !important;
+    }
+    .mini-card.black {
+      color: #111111 !important;
+    }
+
+    .mini-card-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
     }
 
     /* ================================================================= */
-    /* OPTION 1A: 34% PROPORTIONAL FILL (Flush to Cascade Overlap)        */
+    /* 1A: PROPORTIONAL MAX-FILL (34% Height Fill = 22px Mini Header)    */
     /* ================================================================= */
     .c1a-header {
       width: 100%;
-      height: 45px; /* 34% of 132px */
+      height: 45px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 6px;
       border-bottom: 2.5px solid;
     }
-    .card.red .c1a-header {
-      background: #fee2e2;
-      border-color: #f87171;
-    }
-    .card.black .c1a-header {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
-    .c1a-rank {
-      font-size: 34px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      line-height: 1;
-    }
-    .c1a-suit {
-      font-size: 28px;
-      line-height: 1;
-    }
-    .c1a-center {
-      margin: auto;
-      font-size: 46px;
-      font-weight: 900;
-      line-height: 1;
-    }
+    .card.red .c1a-header { background: #fee2e2; border-color: #f87171; }
+    .card.black .c1a-header { background: #f1f5f9; border-color: #94a3b8; }
+    .c1a-rank { font-size: 34px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; }
+    .c1a-suit { font-size: 28px; line-height: 1; }
+    .c1a-center { margin: auto; font-size: 46px; font-weight: 900; line-height: 1; }
 
-    /* iPhone mini scale 1A */
-    .iphone-card.c1a {
-      margin-bottom: -66%; /* exposes top 34% */
-    }
-    .iphone-card.c1a:last-child { margin-bottom: 0; }
-    .iphone-card.c1a .mini-c1a-header {
-      height: 23px;
+    /* 1A Mini */
+    .mini-c1a-header {
+      width: 100%;
+      height: 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 3px;
       border-bottom: 1.5px solid;
     }
-    .iphone-card.c1a.red .mini-c1a-header {
-      background: #fee2e2;
-      border-color: #f87171;
-    }
-    .iphone-card.c1a.black .mini-c1a-header {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
-    .iphone-card.c1a .mini-rank {
-      font-size: 17px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      line-height: 1;
-    }
-    .iphone-card.c1a .mini-suit {
-      font-size: 14px;
-      line-height: 1;
-    }
+    .mini-card.red .mini-c1a-header { background: #fee2e2; border-color: #f87171; }
+    .mini-card.black .mini-c1a-header { background: #f1f5f9; border-color: #94a3b8; }
+    .mini-card .c1a-mini-rank { font-size: 16px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; }
+    .mini-card .c1a-mini-suit { font-size: 13px; line-height: 1; }
 
     /* ================================================================= */
-    /* OPTION 1B: 40% DEEP JUMBO BANNER (Maximum Height Expansion)       */
+    /* 1B: ULTRA-DEEP JUMBO (40% Height Fill = 26px Mini Header)         */
     /* ================================================================= */
     .c1b-header {
       width: 100%;
-      height: 53px; /* 40% of 132px */
+      height: 53px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 5px;
       border-bottom: 3px solid;
     }
-    .card.red .c1b-header {
-      background: #fee2e2;
-      border-color: #ef4444;
-    }
-    .card.black .c1b-header {
-      background: #f1f5f9;
-      border-color: #64748b;
-    }
-    .c1b-rank {
-      font-size: 40px;
-      font-weight: 900;
-      letter-spacing: -2px;
-      line-height: 1;
-    }
-    .c1b-suit {
-      font-size: 34px;
-      line-height: 1;
-    }
-    .c1b-center {
-      margin: auto;
-      font-size: 44px;
-      font-weight: 900;
-      line-height: 1;
-    }
+    .card.red .c1b-header { background: #fee2e2; border-color: #ef4444; }
+    .card.black .c1b-header { background: #f1f5f9; border-color: #64748b; }
+    .c1b-rank { font-size: 40px; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+    .c1b-suit { font-size: 34px; line-height: 1; }
+    .c1b-center { margin: auto; font-size: 44px; font-weight: 900; line-height: 1; }
 
-    /* iPhone mini scale 1B */
-    .iphone-card.c1b {
-      margin-bottom: -60%; /* exposes top 40% */
-    }
-    .iphone-card.c1b:last-child { margin-bottom: 0; }
-    .iphone-card.c1b .mini-c1b-header {
-      height: 27px;
+    /* 1B Mini */
+    .mini-c1b-header {
+      width: 100%;
+      height: 26px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 2.5px;
       border-bottom: 2px solid;
     }
-    .iphone-card.c1b.red .mini-c1b-header {
-      background: #fee2e2;
-      border-color: #ef4444;
-    }
-    .iphone-card.c1b.black .mini-c1b-header {
-      background: #f1f5f9;
-      border-color: #64748b;
-    }
-    .iphone-card.c1b .mini-rank {
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .iphone-card.c1b .mini-suit {
-      font-size: 16px;
-      line-height: 1;
-    }
+    .mini-card.red .mini-c1b-header { background: #fee2e2; border-color: #ef4444; }
+    .mini-card.black .mini-c1b-header { background: #f1f5f9; border-color: #64748b; }
+    .mini-card .c1b-mini-rank { font-size: 19px; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+    .mini-card .c1b-mini-suit { font-size: 15px; line-height: 1; }
 
     /* ================================================================= */
-    /* OPTION 1C: ZERO-MARGIN FLUSH (Font Touching All 4 Edges)          */
+    /* 1C: ZERO-MARGIN EDGE-FLUSH (36% Height Fill = 24px Mini Header)   */
     /* ================================================================= */
     .c1c-header {
       width: 100%;
@@ -382,73 +352,29 @@
       padding: 0 3px;
       border-bottom: 2.5px solid;
     }
-    .card.red .c1c-header {
-      background: #fee2e2;
-      border-color: #f87171;
-    }
-    .card.black .c1c-header {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
-    .c1c-rank {
-      font-size: 42px;
-      font-weight: 900;
-      letter-spacing: -2.5px;
-      line-height: 1.1;
-      display: flex;
-      align-items: center;
-    }
-    .c1c-suit {
-      font-size: 32px;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-    }
-    .c1c-center {
-      margin: auto;
-      font-size: 46px;
-      font-weight: 900;
-      line-height: 1;
-    }
+    .card.red .c1c-header { background: #fee2e2; border-color: #f87171; }
+    .card.black .c1c-header { background: #f1f5f9; border-color: #94a3b8; }
+    .c1c-rank { font-size: 42px; font-weight: 900; letter-spacing: -2.5px; line-height: 1.1; display: flex; align-items: center; }
+    .c1c-suit { font-size: 32px; line-height: 1; display: flex; align-items: center; }
+    .c1c-center { margin: auto; font-size: 46px; font-weight: 900; line-height: 1; }
 
-    /* iPhone mini scale 1C */
-    .iphone-card.c1c {
-      margin-bottom: -64%;
-    }
-    .iphone-card.c1c:last-child { margin-bottom: 0; }
-    .iphone-card.c1c .mini-c1c-header {
-      height: 25px;
+    /* 1C Mini */
+    .mini-c1c-header {
+      width: 100%;
+      height: 24px;
       display: flex;
       justify-content: space-between;
       align-items: stretch;
       padding: 0 1.5px;
       border-bottom: 1.5px solid;
     }
-    .iphone-card.c1c.red .mini-c1c-header {
-      background: #fee2e2;
-      border-color: #f87171;
-    }
-    .iphone-card.c1c.black .mini-c1c-header {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
-    .iphone-card.c1c .mini-rank {
-      font-size: 21px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      display: flex;
-      align-items: center;
-    }
-    .iphone-card.c1c .mini-suit {
-      font-size: 15px;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-    }
+    .mini-card.red .mini-c1c-header { background: #fee2e2; border-color: #f87171; }
+    .mini-card.black .mini-c1c-header { background: #f1f5f9; border-color: #94a3b8; }
+    .mini-card .c1c-mini-rank { font-size: 20px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; display: flex; align-items: center; }
+    .mini-card .c1c-mini-suit { font-size: 14px; line-height: 1; display: flex; align-items: center; }
 
     /* ================================================================= */
-    /* OPTION 1D: CONTRAST-SEAM BANNER (Solid 3.5px Dark Divider)        */
+    /* 1D: CONTRAST-SEAM DIVIDER (35% Height Fill = 23px Mini Header)    */
     /* ================================================================= */
     .c1d-header {
       width: 100%;
@@ -457,63 +383,31 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 6px;
-      border-bottom: 4px solid #0f172a; /* ultra high contrast seam */
+      border-bottom: 4px solid #0f172a;
     }
-    .card.red .c1d-header {
-      background: #fed7d7;
-    }
-    .card.black .c1d-header {
-      background: #e2e8f0;
-    }
-    .c1d-rank {
-      font-size: 36px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      line-height: 1;
-    }
-    .c1d-suit {
-      font-size: 30px;
-      line-height: 1;
-    }
-    .c1d-center {
-      margin: auto;
-      font-size: 46px;
-      font-weight: 900;
-      line-height: 1;
-    }
+    .card.red .c1d-header { background: #fed7d7; }
+    .card.black .c1d-header { background: #e2e8f0; }
+    .c1d-rank { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; }
+    .c1d-suit { font-size: 30px; line-height: 1; }
+    .c1d-center { margin: auto; font-size: 46px; font-weight: 900; line-height: 1; }
 
-    /* iPhone mini scale 1D */
-    .iphone-card.c1d {
-      margin-bottom: -65%;
-    }
-    .iphone-card.c1d:last-child { margin-bottom: 0; }
-    .iphone-card.c1d .mini-c1d-header {
-      height: 24px;
+    /* 1D Mini */
+    .mini-c1d-header {
+      width: 100%;
+      height: 23px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 3px;
       border-bottom: 2.5px solid #0f172a;
     }
-    .iphone-card.c1d.red .mini-c1d-header {
-      background: #fed7d7;
-    }
-    .iphone-card.c1d.black .mini-c1d-header {
-      background: #e2e8f0;
-    }
-    .iphone-card.c1d .mini-rank {
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      line-height: 1;
-    }
-    .iphone-card.c1d .mini-suit {
-      font-size: 14px;
-      line-height: 1;
-    }
+    .mini-card.red .mini-c1d-header { background: #fed7d7; }
+    .mini-card.black .mini-c1d-header { background: #e2e8f0; }
+    .mini-card .c1d-mini-rank { font-size: 17px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; }
+    .mini-card .c1d-mini-suit { font-size: 13px; line-height: 1; }
 
     /* ================================================================= */
-    /* OPTION 1E: FULL-WIDTH SOLID COLOR BLOCK (Inverted Max-Fill)       */
+    /* 1E: SOLID INVERTED COLOR BLOCK (36% Height Fill = 24px Mini Header) */
     /* ================================================================= */
     .c1e-header {
       width: 100%;
@@ -524,59 +418,26 @@
       padding: 0 6px;
       color: #ffffff;
     }
-    .card.red .c1e-header {
-      background: var(--card-red);
-    }
-    .card.black .c1e-header {
-      background: var(--card-black);
-    }
-    .c1e-rank {
-      font-size: 36px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      line-height: 1;
-    }
-    .c1e-suit {
-      font-size: 30px;
-      line-height: 1;
-    }
-    .c1e-center {
-      margin: auto;
-      font-size: 46px;
-      font-weight: 900;
-      line-height: 1;
-    }
+    .card.red .c1e-header { background: var(--card-red); }
+    .card.black .c1e-header { background: var(--card-black); }
+    .c1e-rank { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; }
+    .c1e-suit { font-size: 30px; line-height: 1; }
+    .c1e-center { margin: auto; font-size: 46px; font-weight: 900; line-height: 1; }
 
-    /* iPhone mini scale 1E */
-    .iphone-card.c1e {
-      margin-bottom: -64%;
-      color: #ffffff;
-    }
-    .iphone-card.c1e:last-child { margin-bottom: 0; }
-    .iphone-card.c1e .mini-c1e-header {
-      height: 25px;
+    /* 1E Mini */
+    .mini-c1e-header {
+      width: 100%;
+      height: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 3px;
       color: #ffffff;
     }
-    .iphone-card.c1e.red .mini-c1e-header {
-      background: var(--card-red);
-    }
-    .iphone-card.c1e.black .mini-c1e-header {
-      background: var(--card-black);
-    }
-    .iphone-card.c1e .mini-rank {
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      line-height: 1;
-    }
-    .iphone-card.c1e .mini-suit {
-      font-size: 14px;
-      line-height: 1;
-    }
+    .mini-card.red .mini-c1e-header { background: var(--card-red); }
+    .mini-card.black .mini-c1e-header { background: var(--card-black); }
+    .mini-card .c1e-mini-rank { font-size: 17px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; color: #ffffff; }
+    .mini-card .c1e-mini-suit { font-size: 13px; line-height: 1; color: #ffffff; }
 
     .key-features {
       margin-top: 14px;
@@ -584,12 +445,8 @@
       font-size: 13px;
       color: #94a3b8;
     }
-    .key-features li {
-      margin-bottom: 4px;
-    }
-    .key-features strong {
-      color: #e2e8f0;
-    }
+    .key-features li { margin-bottom: 4px; }
+    .key-features strong { color: #e2e8f0; }
 
     .tag {
       display: inline-block;
@@ -613,12 +470,12 @@
 <body>
 
   <header>
-    <h1>Max-Fill Banner Designs (Option 1 Expanded)</h1>
+    <h1>Max-Fill Banner Designs (iPhone 16e Portrait)</h1>
     <p class="subtitle">
-      Expanding the top header so that <strong>every single pixel of exposed space</strong> in the portrait cascade is filled with gigantic rank & suit typography before the next card overlaps it.
+      Header expands to fill <strong>100% of the visible cascade area</strong>. Every card's header meets the next card seamlessly with zero wasted gap.
     </p>
     <div class="callout">
-      <strong>Your Observation:</strong> In portrait Klondike, overlapping cards cover the bottom portion of the card above. By expanding the banner's height and font size to fill the exact visible vertical exposure, we eliminate wasted white space and give your mom the largest possible numbers!
+      <strong>Revised Cascade Simulation:</strong> The iPhone 16e tableau preview below has been completely revised with pixel-perfect layered cards, realistic Solitaire dealing columns, high-contrast ruby red and obsidian black typography, and seamless overlap alignment.
     </div>
   </header>
 
@@ -639,37 +496,25 @@
       <div class="option-badge star">Balanced Recommendation</div>
     </div>
     <p class="option-desc">
-      Expands the banner to occupy 34% of the card height (45px on full card, 23px in cascade). The divider line sits exactly at the seam where the next card begins. Numbers are boosted to 34px (17px on phone) with balanced, comfortable padding.
+      The header occupies 34% of the card height. In the portrait cascade, each card steps down by exactly 22px, so the banner fills 100% of the visible space before the next card begins.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="c1a-header">
-            <span class="c1a-rank">10</span>
-            <span class="c1a-suit">♥</span>
-          </div>
+          <div class="c1a-header"><span class="c1a-rank">10</span><span class="c1a-suit">♥</span></div>
           <div class="c1a-center">♥</div>
         </div>
         <div class="card black">
-          <div class="c1a-header">
-            <span class="c1a-rank">A</span>
-            <span class="c1a-suit">♠</span>
-          </div>
+          <div class="c1a-header"><span class="c1a-rank">A</span><span class="c1a-suit">♠</span></div>
           <div class="c1a-center">♠</div>
         </div>
         <div class="card black">
-          <div class="c1a-header">
-            <span class="c1a-rank">K</span>
-            <span class="c1a-suit">♠</span>
-          </div>
+          <div class="c1a-header"><span class="c1a-rank">K</span><span class="c1a-suit">♠</span></div>
           <div class="c1a-center">K</div>
         </div>
         <div class="card red">
-          <div class="c1a-header">
-            <span class="c1a-rank">Q</span>
-            <span class="c1a-suit">♥</span>
-          </div>
+          <div class="c1a-header"><span class="c1a-rank">Q</span><span class="c1a-suit">♥</span></div>
           <div class="c1a-center">Q</div>
         </div>
       </div>
@@ -679,37 +524,83 @@
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
         <span>iPhone 16e (390px) Cascade View</span>
-        <span>Every Visible Pixel Filled</span>
+        <span class="badge-tag">Seamless 22px Stacking</span>
       </div>
       <div class="iphone-sim-tableau">
+        <!-- Col 1 -->
         <div class="tableau-col">
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card c1a black">
-            <div class="mini-c1a-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
-          </div>
-          <div class="iphone-card c1a red">
-            <div class="mini-c1a-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
-          </div>
-          <div class="iphone-card c1a black">
-            <div class="mini-c1a-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
-          </div>
-          <div class="iphone-card c1a red">
-            <div class="mini-c1a-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="mini-card red" style="top: 0px; z-index: 1;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">A</span><span class="c1a-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1a red"><div class="mini-c1a-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1a black"><div class="mini-c1a-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1a red"><div class="mini-c1a-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1a black"><div class="mini-c1a-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1a red"><div class="mini-c1a-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1a black"><div class="mini-c1a-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <!-- Col 2 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card red" style="top: 10px; z-index: 2;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">9</span><span class="c1a-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
+        <!-- Col 3 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card black" style="top: 20px; z-index: 3;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">8</span><span class="c1a-mini-suit">♠</span></div>
+            <div class="mini-card-center">♠</div>
+          </div>
+        </div>
+        <!-- Col 4 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card facedown" style="top: 20px; z-index: 3;"></div>
+          <div class="mini-card red" style="top: 30px; z-index: 4;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">7</span><span class="c1a-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <!-- Col 5: 4-Card Cascade Run -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">K</span><span class="c1a-mini-suit">♠</span></div>
+          </div>
+          <div class="mini-card red" style="top: 32px; z-index: 3;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">Q</span><span class="c1a-mini-suit">♥</span></div>
+          </div>
+          <div class="mini-card black" style="top: 54px; z-index: 4;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">J</span><span class="c1a-mini-suit">♣</span></div>
+          </div>
+          <div class="mini-card red" style="top: 76px; z-index: 5;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">10</span><span class="c1a-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <!-- Col 6 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">6</span><span class="c1a-mini-suit">♣</span></div>
+            <div class="mini-card-center">♣</div>
+          </div>
+        </div>
+        <!-- Col 7 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card red" style="top: 20px; z-index: 3;">
+            <div class="mini-c1a-header"><span class="c1a-mini-rank">5</span><span class="c1a-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <ul class="key-features">
       <li><span class="tag highlight">Fit</span> The colored banner ends precisely where the overlapping card starts.</li>
-      <li><span class="tag note">Legibility</span> Rank size increased by +25% over the original Hybrid 1.</li>
+      <li><span class="tag note">Legibility</span> Rank size increased to 34px (16px on phone), crisp and bold.</li>
     </ul>
   </section>
 
@@ -722,37 +613,25 @@
       <div class="option-badge">Maximum Font Size</div>
     </div>
     <p class="option-desc">
-      Pushes the banner to a deep 40% of the card height (53px full / 27px mini). The cascade overlap is slightly relaxed to expose this entire deep header, enabling massive 40px numbers (20px on the phone screen).
+      Expands the header to a deep 40% of the card height (26px on phone). Number reaches 19px on the phone screen with an imposing suit pip.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="c1b-header">
-            <span class="c1b-rank">10</span>
-            <span class="c1b-suit">♥</span>
-          </div>
+          <div class="c1b-header"><span class="c1b-rank">10</span><span class="c1b-suit">♥</span></div>
           <div class="c1b-center">♥</div>
         </div>
         <div class="card black">
-          <div class="c1b-header">
-            <span class="c1b-rank">A</span>
-            <span class="c1b-suit">♠</span>
-          </div>
+          <div class="c1b-header"><span class="c1b-rank">A</span><span class="c1b-suit">♠</span></div>
           <div class="c1b-center">♠</div>
         </div>
         <div class="card black">
-          <div class="c1b-header">
-            <span class="c1b-rank">K</span>
-            <span class="c1b-suit">♠</span>
-          </div>
+          <div class="c1b-header"><span class="c1b-rank">K</span><span class="c1b-suit">♠</span></div>
           <div class="c1b-center">K</div>
         </div>
         <div class="card red">
-          <div class="c1b-header">
-            <span class="c1b-rank">Q</span>
-            <span class="c1b-suit">♥</span>
-          </div>
+          <div class="c1b-header"><span class="c1b-rank">Q</span><span class="c1b-suit">♥</span></div>
           <div class="c1b-center">Q</div>
         </div>
       </div>
@@ -762,37 +641,77 @@
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
         <span>iPhone 16e (390px) Cascade View</span>
-        <span>Deep 40% Exposure</span>
+        <span class="badge-tag">Seamless 26px Stacking</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card c1b black">
-            <div class="mini-c1b-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
-          </div>
-          <div class="iphone-card c1b red">
-            <div class="mini-c1b-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
-          </div>
-          <div class="iphone-card c1b black">
-            <div class="mini-c1b-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
-          </div>
-          <div class="iphone-card c1b red">
-            <div class="mini-c1b-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="mini-card red" style="top: 0px; z-index: 1;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">A</span><span class="c1b-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1b red"><div class="mini-c1b-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1b black"><div class="mini-c1b-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1b red"><div class="mini-c1b-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1b black"><div class="mini-c1b-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1b red"><div class="mini-c1b-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1b black"><div class="mini-c1b-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card red" style="top: 10px; z-index: 2;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">9</span><span class="c1b-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card black" style="top: 20px; z-index: 3;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">8</span><span class="c1b-mini-suit">♠</span></div>
+            <div class="mini-card-center">♠</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card facedown" style="top: 20px; z-index: 3;"></div>
+          <div class="mini-card red" style="top: 30px; z-index: 4;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">7</span><span class="c1b-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <!-- Cascade Col 5 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">K</span><span class="c1b-mini-suit">♠</span></div>
+          </div>
+          <div class="mini-card red" style="top: 36px; z-index: 3;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">Q</span><span class="c1b-mini-suit">♥</span></div>
+          </div>
+          <div class="mini-card black" style="top: 62px; z-index: 4;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">J</span><span class="c1b-mini-suit">♣</span></div>
+          </div>
+          <div class="mini-card red" style="top: 88px; z-index: 5;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">10</span><span class="c1b-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">6</span><span class="c1b-mini-suit">♣</span></div>
+            <div class="mini-card-center">♣</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card red" style="top: 20px; z-index: 3;">
+            <div class="mini-c1b-header"><span class="c1b-mini-rank">5</span><span class="c1b-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <ul class="key-features">
-      <li><span class="tag highlight">Giant Numbers</span> The absolute largest numbers achievable without altering card aspect ratio.</li>
-      <li><span class="tag note">Suit Pip</span> Suit symbol is huge (34px), making Hearts vs Diamonds distinct from across the room.</li>
+      <li><span class="tag highlight">Giant Numbers</span> Massive 19px numerals in cascade view.</li>
+      <li><span class="tag note">Suit Pip</span> Suit symbol is huge, unmistakable between Hearts and Diamonds.</li>
     </ul>
   </section>
 
@@ -805,37 +724,25 @@
       <div class="option-badge">Edge-to-Edge Typography</div>
     </div>
     <p class="option-desc">
-      Removes top and side padding completely, letting the gigantic 42px digits stretch from the very top border directly down to the separator line. Zero wasted whitespace.
+      Eliminates top and side padding completely, letting the gigantic 20px digits stretch to the physical boundaries of the card.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="c1c-header">
-            <span class="c1c-rank">10</span>
-            <span class="c1c-suit">♥</span>
-          </div>
+          <div class="c1c-header"><span class="c1c-rank">10</span><span class="c1c-suit">♥</span></div>
           <div class="c1c-center">♥</div>
         </div>
         <div class="card black">
-          <div class="c1c-header">
-            <span class="c1c-rank">A</span>
-            <span class="c1c-suit">♠</span>
-          </div>
+          <div class="c1c-header"><span class="c1c-rank">A</span><span class="c1c-suit">♠</span></div>
           <div class="c1c-center">♠</div>
         </div>
         <div class="card black">
-          <div class="c1c-header">
-            <span class="c1c-rank">K</span>
-            <span class="c1c-suit">♠</span>
-          </div>
+          <div class="c1c-header"><span class="c1c-rank">K</span><span class="c1c-suit">♠</span></div>
           <div class="c1c-center">K</div>
         </div>
         <div class="card red">
-          <div class="c1c-header">
-            <span class="c1c-rank">Q</span>
-            <span class="c1c-suit">♥</span>
-          </div>
+          <div class="c1c-header"><span class="c1c-rank">Q</span><span class="c1c-suit">♥</span></div>
           <div class="c1c-center">Q</div>
         </div>
       </div>
@@ -845,31 +752,71 @@
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
         <span>iPhone 16e (390px) Cascade View</span>
-        <span>Zero-Margin Stacking</span>
+        <span class="badge-tag">Seamless 24px Stacking</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card c1c black">
-            <div class="mini-c1c-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
-          </div>
-          <div class="iphone-card c1c red">
-            <div class="mini-c1c-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
-          </div>
-          <div class="iphone-card c1c black">
-            <div class="mini-c1c-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
-          </div>
-          <div class="iphone-card c1c red">
-            <div class="mini-c1c-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="mini-card red" style="top: 0px; z-index: 1;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">A</span><span class="c1c-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1c red"><div class="mini-c1c-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1c black"><div class="mini-c1c-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1c red"><div class="mini-c1c-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1c black"><div class="mini-c1c-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1c red"><div class="mini-c1c-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1c black"><div class="mini-c1c-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card red" style="top: 10px; z-index: 2;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">9</span><span class="c1c-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card black" style="top: 20px; z-index: 3;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">8</span><span class="c1c-mini-suit">♠</span></div>
+            <div class="mini-card-center">♠</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card facedown" style="top: 20px; z-index: 3;"></div>
+          <div class="mini-card red" style="top: 30px; z-index: 4;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">7</span><span class="c1c-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <!-- Cascade Col 5 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">K</span><span class="c1c-mini-suit">♠</span></div>
+          </div>
+          <div class="mini-card red" style="top: 34px; z-index: 3;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">Q</span><span class="c1c-mini-suit">♥</span></div>
+          </div>
+          <div class="mini-card black" style="top: 58px; z-index: 4;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">J</span><span class="c1c-mini-suit">♣</span></div>
+          </div>
+          <div class="mini-card red" style="top: 82px; z-index: 5;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">10</span><span class="c1c-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">6</span><span class="c1c-mini-suit">♣</span></div>
+            <div class="mini-card-center">♣</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card red" style="top: 20px; z-index: 3;">
+            <div class="mini-c1c-header"><span class="c1c-mini-rank">5</span><span class="c1c-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -888,37 +835,25 @@
       <div class="option-badge">Maximum Card Separation</div>
     </div>
     <p class="option-desc">
-      Features a 35% height banner paired with a heavy 4px dark boundary seam (`#0F172A`) along the bottom edge. This ensures that the bottom of the visible banner never blurs or bleeds into the white card below it in the stack.
+      Features a distinct 2.5px dark seam (`#0F172A`) along the bottom of the header. Every layer boundary stands out like a physical shelf.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="c1d-header">
-            <span class="c1d-rank">10</span>
-            <span class="c1d-suit">♥</span>
-          </div>
+          <div class="c1d-header"><span class="c1d-rank">10</span><span class="c1d-suit">♥</span></div>
           <div class="c1d-center">♥</div>
         </div>
         <div class="card black">
-          <div class="c1d-header">
-            <span class="c1d-rank">A</span>
-            <span class="c1d-suit">♠</span>
-          </div>
+          <div class="c1d-header"><span class="c1d-rank">A</span><span class="c1d-suit">♠</span></div>
           <div class="c1d-center">♠</div>
         </div>
         <div class="card black">
-          <div class="c1d-header">
-            <span class="c1d-rank">K</span>
-            <span class="c1d-suit">♠</span>
-          </div>
+          <div class="c1d-header"><span class="c1d-rank">K</span><span class="c1d-suit">♠</span></div>
           <div class="c1d-center">K</div>
         </div>
         <div class="card red">
-          <div class="c1d-header">
-            <span class="c1d-rank">Q</span>
-            <span class="c1d-suit">♥</span>
-          </div>
+          <div class="c1d-header"><span class="c1d-rank">Q</span><span class="c1d-suit">♥</span></div>
           <div class="c1d-center">Q</div>
         </div>
       </div>
@@ -928,37 +863,77 @@
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
         <span>iPhone 16e (390px) Cascade View</span>
-        <span>High-Contrast Seam</span>
+        <span class="badge-tag">Seamless 23px Stacking</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card c1d black">
-            <div class="mini-c1d-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
-          </div>
-          <div class="iphone-card c1d red">
-            <div class="mini-c1d-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
-          </div>
-          <div class="iphone-card c1d black">
-            <div class="mini-c1d-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
-          </div>
-          <div class="iphone-card c1d red">
-            <div class="mini-c1d-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="mini-card red" style="top: 0px; z-index: 1;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">A</span><span class="c1d-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1d red"><div class="mini-c1d-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1d black"><div class="mini-c1d-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1d red"><div class="mini-c1d-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1d black"><div class="mini-c1d-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1d red"><div class="mini-c1d-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1d black"><div class="mini-c1d-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card red" style="top: 10px; z-index: 2;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">9</span><span class="c1d-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card black" style="top: 20px; z-index: 3;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">8</span><span class="c1d-mini-suit">♠</span></div>
+            <div class="mini-card-center">♠</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card facedown" style="top: 20px; z-index: 3;"></div>
+          <div class="mini-card red" style="top: 30px; z-index: 4;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">7</span><span class="c1d-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <!-- Cascade Col 5 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">K</span><span class="c1d-mini-suit">♠</span></div>
+          </div>
+          <div class="mini-card red" style="top: 33px; z-index: 3;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">Q</span><span class="c1d-mini-suit">♥</span></div>
+          </div>
+          <div class="mini-card black" style="top: 56px; z-index: 4;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">J</span><span class="c1d-mini-suit">♣</span></div>
+          </div>
+          <div class="mini-card red" style="top: 79px; z-index: 5;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">10</span><span class="c1d-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">6</span><span class="c1d-mini-suit">♣</span></div>
+            <div class="mini-card-center">♣</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card red" style="top: 20px; z-index: 3;">
+            <div class="mini-c1d-header"><span class="c1d-mini-rank">5</span><span class="c1d-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <ul class="key-features">
       <li><span class="tag highlight">Boundary Clarity</span> Solid dark seam creates an unmistakable physical shelf between layered cards.</li>
-      <li><span class="tag note">Protection</span> Prevents cards from blending together under lower phone brightness.</li>
+      <li><span class="tag note">Protection</span> Prevents cards from blending together in low ambient light.</li>
     </ul>
   </section>
 
@@ -971,37 +946,25 @@
       <div class="option-badge">Solid Fill Contrast</div>
     </div>
     <p class="option-desc">
-      Combines the expanded 36% height banner with solid dark crimson red or solid black fill and pure white typography. The entire visible top strip is a bold color block that is impossible to mistake.
+      Combines the expanded banner with solid dark crimson red or solid black fill and pure white typography. Every visible top strip is a bold color block.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="c1e-header">
-            <span class="c1e-rank">10</span>
-            <span class="c1e-suit">♥</span>
-          </div>
+          <div class="c1e-header"><span class="c1e-rank">10</span><span class="c1e-suit">♥</span></div>
           <div class="c1e-center">♥</div>
         </div>
         <div class="card black">
-          <div class="c1e-header">
-            <span class="c1e-rank">A</span>
-            <span class="c1e-suit">♠</span>
-          </div>
+          <div class="c1e-header"><span class="c1e-rank">A</span><span class="c1e-suit">♠</span></div>
           <div class="c1e-center">♠</div>
         </div>
         <div class="card black">
-          <div class="c1e-header">
-            <span class="c1e-rank">K</span>
-            <span class="c1e-suit">♠</span>
-          </div>
+          <div class="c1e-header"><span class="c1e-rank">K</span><span class="c1e-suit">♠</span></div>
           <div class="c1e-center">K</div>
         </div>
         <div class="card red">
-          <div class="c1e-header">
-            <span class="c1e-rank">Q</span>
-            <span class="c1e-suit">♥</span>
-          </div>
+          <div class="c1e-header"><span class="c1e-rank">Q</span><span class="c1e-suit">♥</span></div>
           <div class="c1e-center">Q</div>
         </div>
       </div>
@@ -1011,31 +974,71 @@
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
         <span>iPhone 16e (390px) Cascade View</span>
-        <span>Solid Inverted Blocks</span>
+        <span class="badge-tag">Seamless 24px Stacking</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card facedown"></div>
-          <div class="iphone-card c1e black">
-            <div class="mini-c1e-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
-          </div>
-          <div class="iphone-card c1e red">
-            <div class="mini-c1e-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
-          </div>
-          <div class="iphone-card c1e black">
-            <div class="mini-c1e-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
-          </div>
-          <div class="iphone-card c1e red">
-            <div class="mini-c1e-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="mini-card red" style="top: 0px; z-index: 1;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">A</span><span class="c1e-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1e red"><div class="mini-c1e-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1e black"><div class="mini-c1e-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1e red"><div class="mini-c1e-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1e black"><div class="mini-c1e-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1e red"><div class="mini-c1e-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card c1e black"><div class="mini-c1e-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card red" style="top: 10px; z-index: 2;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">9</span><span class="c1e-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card black" style="top: 20px; z-index: 3;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">8</span><span class="c1e-mini-suit">♠</span></div>
+            <div class="mini-card-center">♠</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card facedown" style="top: 20px; z-index: 3;"></div>
+          <div class="mini-card red" style="top: 30px; z-index: 4;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">7</span><span class="c1e-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <!-- Cascade Col 5 -->
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">K</span><span class="c1e-mini-suit">♠</span></div>
+          </div>
+          <div class="mini-card red" style="top: 34px; z-index: 3;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">Q</span><span class="c1e-mini-suit">♥</span></div>
+          </div>
+          <div class="mini-card black" style="top: 58px; z-index: 4;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">J</span><span class="c1e-mini-suit">♣</span></div>
+          </div>
+          <div class="mini-card red" style="top: 82px; z-index: 5;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">10</span><span class="c1e-mini-suit">♦</span></div>
+            <div class="mini-card-center">♦</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card black" style="top: 10px; z-index: 2;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">6</span><span class="c1e-mini-suit">♣</span></div>
+            <div class="mini-card-center">♣</div>
+          </div>
+        </div>
+        <div class="tableau-col">
+          <div class="mini-card facedown" style="top: 0px; z-index: 1;"></div>
+          <div class="mini-card facedown" style="top: 10px; z-index: 2;"></div>
+          <div class="mini-card red" style="top: 20px; z-index: 3;">
+            <div class="mini-c1e-header"><span class="c1e-mini-rank">5</span><span class="c1e-mini-suit">♥</span></div>
+            <div class="mini-card-center">♥</div>
+          </div>
+        </div>
       </div>
     </div>
 
