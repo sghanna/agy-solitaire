@@ -229,14 +229,20 @@ html, body {
 }
 
 .solitaire-card.hint-active {
-  animation: hintPulse 1.2s infinite ease-in-out;
+  animation: hintPulse 2.4s infinite ease-in-out;
   border-color: #fbbf24 !important;
   z-index: 25 !important;
 }
 
 @keyframes hintPulse {
-  0%, 100% { box-shadow: 0 0 10px #fbbf24, 0 0 20px rgba(251, 191, 36, 0.6); }
-  50% { box-shadow: 0 0 18px #fef08a, 0 0 32px rgba(254, 240, 138, 0.9); }
+  0%, 100% {
+    box-shadow: 0 0 10px #fbbf24, 0 0 20px rgba(251, 191, 36, 0.55);
+    border-color: #fbbf24;
+  }
+  50% {
+    box-shadow: 0 0 18px #fef08a, 0 0 32px rgba(254, 240, 138, 0.85);
+    border-color: #fef08a;
+  }
 }
 
 .solitaire-card.no-move-shake {
@@ -249,13 +255,24 @@ html, body {
   75% { transform: translateX(4px); }
 }
 
-/* Selected Card Glow: Golden pulse matching hint, elevated tactile lift */
+/* Cards inside a selected stack: lift together without individual dividing halos */
+.solitaire-card.selected-stack-card,
 .solitaire-card.selected-card {
-  animation: hintPulse 1.2s infinite ease-in-out !important;
-  border-color: #fbbf24 !important;
-  box-shadow: 0 0 14px #fbbf24, 0 0 28px rgba(251, 191, 36, 0.75) !important;
   transform: translateY(-4px) !important;
   z-index: 45 !important;
+}
+
+/* Unified perimeter golden aura wrapping the entire selected stack */
+.stack-selection-halo {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 8px;
+  border: 2.5px solid #fbbf24;
+  box-shadow: 0 0 14px #fbbf24, 0 0 28px rgba(251, 191, 36, 0.65);
+  animation: hintPulse 2.4s infinite ease-in-out;
+  z-index: 48;
+  box-sizing: border-box;
+  will-change: box-shadow;
 }
 
 /* Flying Card: Fluid FLIP animation across the felt */
