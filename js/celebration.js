@@ -284,10 +284,10 @@ class SolitaireCelebration {
     };
     render();
 
-    // Show grand jubilee banner immediately or after 1.5s
+    // Show victory modal after 10 full seconds of lanterns and fireworks
     this.modalTimeout = setTimeout(() => {
       this.showModal(stats, onPlayAgain, 'Win 2: Imperial Gold Jubilee');
-    }, 2000);
+    }, 10000);
   }
 
   showModal(stats, onPlayAgain, celebrationTitle) {

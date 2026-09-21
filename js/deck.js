@@ -36,13 +36,6 @@ const SUIT_SVGS = {
   D: `<svg viewBox="0 0 100 100" fill="currentColor"><path d="M 50,5 Q 55,48 90,50 Q 55,52 50,95 Q 45,52 10,50 Q 45,48 50,5 Z"/></svg>`
 };
 
-// Simplified Crown & Monogram icons for court cards (no floater-triggering decorative clutter)
-const COURT_ICONS = {
-  J: `<svg viewBox="0 0 100 100" fill="currentColor"><path d="M 20,75 L 80,75 L 75,85 L 25,85 Z M 20,70 L 28,35 L 42,55 L 50,25 L 58,55 L 72,35 L 80,70 Z"/><circle cx="28" cy="28" r="4"/><circle cx="50" cy="18" r="4"/><circle cx="72" cy="28" r="4"/></svg>`,
-  Q: `<svg viewBox="0 0 100 100" fill="currentColor"><path d="M 22,75 L 78,75 L 74,84 L 26,84 Z M 22,70 L 30,42 L 40,58 L 50,30 L 60,58 L 70,42 L 78,70 Z"/><circle cx="30" cy="35" r="3.5"/><circle cx="50" cy="22" r="4.5"/><circle cx="70" cy="35" r="3.5"/></svg>`,
-  K: `<svg viewBox="0 0 100 100" fill="currentColor"><path d="M 18,74 L 82,74 L 78,85 L 22,85 Z M 18,68 L 26,30 L 40,52 L 50,20 L 60,52 L 74,30 L 82,68 Z"/><circle cx="26" cy="22" r="4"/><circle cx="50" cy="12" r="5"/><circle cx="74" cy="22" r="4"/></svg>`
-};
-
 /**
  * Creates full 52-card standard deck
  */
@@ -66,13 +59,11 @@ function createStandardDeck() {
 
 /**
  * Renders HTML for a face-up card (Option 1 Max-Fill Banner)
+ * Uncluttered design: Top banner with jumbo rank/suit, pure high-contrast suit in body
  */
 function renderFaceUpCard(card) {
-  const isRed = card.color === 'red';
   const suitSvg = SUIT_SVGS[card.suit];
   const rank = card.rank;
-  const isCourt = rank >= 11;
-  const courtIcon = isCourt ? COURT_ICONS[card.rankLabel] : '';
 
   return `
     <div class="card-face card-${card.color}">
@@ -82,25 +73,11 @@ function renderFaceUpCard(card) {
         <div class="card-banner-suit">${suitSvg}</div>
       </div>
 
-      <!-- Clean, Floater-Safe Center Area -->
+      <!-- Clean, Floater-Safe Center Area: Bold suit emblem for all cards -->
       <div class="card-center">
-        ${isCourt ? `
-          <div class="court-graphic">
-            <div class="court-icon">${courtIcon}</div>
-            <div class="court-letter">${card.rankLabel}</div>
-            <div class="court-suit-small">${suitSvg}</div>
-          </div>
-        ` : `
-          <div class="card-main-suit ${rank === 1 ? 'ace-emblem' : ''}">
-            ${suitSvg}
-          </div>
-        `}
-      </div>
-
-      <!-- Bottom Mini Index (Subtle) -->
-      <div class="card-footer">
-        <span class="card-rank-sub">${card.rankLabel}</span>
-        <div class="card-footer-suit">${suitSvg}</div>
+        <div class="card-main-suit ${rank === 1 ? 'ace-emblem' : ''}">
+          ${suitSvg}
+        </div>
       </div>
     </div>
   `;

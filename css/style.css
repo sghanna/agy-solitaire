@@ -361,58 +361,15 @@ html, body {
 }
 
 .card-main-suit {
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
 }
 .card-main-suit svg { width: 100%; height: 100%; }
 
 .card-main-suit.ace-emblem {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
 }
-
-/* Court card (J, Q, K) simplified graphic */
-.court-graphic {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1px;
-}
-
-.court-icon {
-  width: 18px;
-  height: 18px;
-  opacity: 0.9;
-}
-.court-icon svg { width: 100%; height: 100%; }
-
-.court-letter {
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.court-suit-small {
-  width: 9px;
-  height: 9px;
-}
-.court-suit-small svg { width: 100%; height: 100%; }
-
-/* Card Footer (Mini rank/suit) */
-.card-footer {
-  width: 100%;
-  height: 12px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 3px 2px 0;
-  opacity: 0.45;
-  transform: rotate(180deg);
-}
-.card-rank-sub { font-size: 8px; font-weight: 800; line-height: 1; margin-right: 2px; }
-.card-footer-suit { width: 7px; height: 7px; }
-.card-footer-suit svg { width: 100%; height: 100%; }
 
 /* Card Back (Option 4A Double Happiness Back) */
 .card-back.double-happiness-back {
