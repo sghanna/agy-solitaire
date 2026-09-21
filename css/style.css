@@ -196,6 +196,13 @@ html, body {
   color: rgba(251, 191, 36, 0.25);
   font-size: 16px;
   font-weight: 900;
+  transition: all 0.2s ease;
+}
+
+.tableau-col.valid-king-target:empty::after {
+  border-color: rgba(251, 191, 36, 0.75);
+  color: #fbbf24;
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.45);
 }
 
 /* =========================================================================
@@ -240,6 +247,44 @@ html, body {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-4px); }
   75% { transform: translateX(4px); }
+}
+
+/* Selected Card Glow: Golden pulse matching hint, elevated tactile lift */
+.solitaire-card.selected-card {
+  animation: hintPulse 1.2s infinite ease-in-out !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 14px #fbbf24, 0 0 28px rgba(251, 191, 36, 0.75) !important;
+  transform: translateY(-4px) !important;
+  z-index: 45 !important;
+}
+
+/* Flying Card: Fluid FLIP animation across the felt */
+.solitaire-card.flying-card {
+  z-index: 1000 !important;
+  pointer-events: none !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(251, 191, 36, 0.5) !important;
+}
+
+/* In-place card flip rotation */
+.solitaire-card.flipping {
+  animation: cardFlipInPlace 0.22s ease-in-out !important;
+}
+
+@keyframes cardFlipInPlace {
+  0% { transform: scaleX(1); }
+  50% { transform: scaleX(0.05); }
+  100% { transform: scaleX(1); }
+}
+
+/* Slot & Column gentle shake for invalid destinations */
+.slot-shake {
+  animation: slotShake 0.25s ease-in-out !important;
+}
+
+@keyframes slotShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
 /* Face-up Card Structure */

@@ -1,7 +1,8 @@
 /**
- * agy-solitaire: Klondike Solitaire Engine
- * Accessible, zero-frustration single-tap auto-move
- * Built for low-vision / eye-floater comfort
+ * agy-solitaire: Accessible Klondike Solitaire Engine
+ * Two-Tap Targeted Move (Tap-to-Select, Tap-to-Place)
+ * Fluid FLIP Card Flight Animations & Golden Glow Selection
+ * Built for Low-Vision, Monocular Vision, & Eye-Floater Comfort
  */
 
 class SolitaireGame {
@@ -21,8 +22,12 @@ class SolitaireGame {
     this.isWon = false;
     this.autoCompleting = false;
 
-    // Drag-and-drop state
-    this.dragData = null;
+    // Two-Tap Targeted Selection State
+    // Format: { pile: 'tableau'|'waste'|'foundation', colIndex, cardIndex, suit, card, cards: [] }
+    this.selected = null;
+
+    // Animation lock to prevent race conditions during card flight
+    this.isAnimating = false;
 
     // DOM Elements
     this.boardEl = null;
@@ -52,6 +57,7 @@ class SolitaireGame {
 
     this.timerEl = document.getElementById('hud-timer');
     this.scoreEl = document.getElementById('hud-score');
+    this.movesEl = document.getElementById('hud-moves');
     this.undoBtn = document.getElementById('btn-undo');
     this.hintBtn = document.getElementById('btn-hint');
 
@@ -60,25 +66,28 @@ class SolitaireGame {
   }
 
   setupEventListeners() {
-    // Stock click
-    if (this.stockEl) {
-      this.stockEl.addEventListener('click', () => this.handleStockClick());
-    }
-
     // Undo button
     if (this.undoBtn) {
-      this.undoBtn.addEventListener('click', () => this.undo());
+      this.undoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.clearSelection();
+        this.undo();
+      });
     }
 
     // Hint button
     if (this.hintBtn) {
-      this.hintBtn.addEventListener('click', () => this.provideHint());
+      this.hintBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.provideHint();
+      });
     }
 
     // New Game button
     const newGameBtn = document.getElementById('btn-new-game');
     if (newGameBtn) {
-      newGameBtn.addEventListener('click', () => {
+      newGameBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (confirm('Start a new deal?')) {
           this.startNewGame();
         }
@@ -88,13 +97,23 @@ class SolitaireGame {
     // Audio toggle button
     const audioBtn = document.getElementById('btn-audio-toggle');
     if (audioBtn) {
-      audioBtn.addEventListener('click', () => {
+      audioBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const isMuted = window.solitaireAudio.toggleMute();
-        audioBtn.textContent = isMuted ? '🔇 Sound' : '🔊 Sound';
+        audioBtn.textContent = isMuted ? '🔇' : '🔊';
       });
     }
 
-    // Developer & Testing shortcut: Press 'W' to test alternating victory celebration, 'A' to auto-finish
+    // Auto-finish button
+    const autoFinishBtn = document.getElementById('btn-auto-finish');
+    if (autoFinishBtn) {
+      autoFinishBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.autoComplete();
+      });
+    }
+
+    // Developer & Testing shortcut: Press 'W' for victory celebration, 'A' for auto-finish
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       if (e.key === 'w' || e.key === 'W') {
@@ -111,13 +130,8 @@ class SolitaireGame {
       }
     });
 
-    // Global touch/click delegation for cards
-    document.addEventListener('click', (e) => {
-      const cardEl = e.target.closest('.solitaire-card');
-      if (cardEl && !this.isWon && !this.autoCompleting) {
-        this.handleCardClick(cardEl);
-      }
-    });
+    // Unified Board Interaction Delegation
+    document.addEventListener('click', (e) => this.handleBoardClick(e));
 
     // Window resize handler for celebration canvas
     window.addEventListener('resize', () => {
@@ -130,6 +144,8 @@ class SolitaireGame {
   startNewGame() {
     this.isWon = false;
     this.autoCompleting = false;
+    this.isAnimating = false;
+    this.clearSelection();
     this.undoStack = [];
     this.moves = 0;
     this.score = 0;
@@ -190,16 +206,124 @@ class SolitaireGame {
   }
 
   // =========================================================================
-  // USER ACTIONS
+  // TWO-TAP TARGETED SELECTION ENGINE
   // =========================================================================
 
+  clearSelection() {
+    if (this.selected) {
+      for (const card of this.selected.cards) {
+        const el = document.getElementById(card.id);
+        if (el) el.classList.remove('selected-card');
+      }
+      this.selected = null;
+    }
+
+    // Clear empty column King guides
+    document.querySelectorAll('.tableau-col.valid-king-target').forEach(col => {
+      col.classList.remove('valid-king-target');
+    });
+  }
+
+  setSelection(location) {
+    this.clearSelection();
+
+    let movingCards = [];
+    if (location.pile === 'waste') {
+      movingCards = [location.card];
+    } else if (location.pile === 'foundation') {
+      movingCards = [location.card];
+    } else if (location.pile === 'tableau') {
+      // In tableau, selecting a card selects the entire stack from cardIndex down
+      movingCards = this.tableau[location.colIndex].slice(location.cardIndex);
+    }
+
+    this.selected = {
+      pile: location.pile,
+      colIndex: location.colIndex,
+      cardIndex: location.cardIndex,
+      suit: location.suit,
+      card: location.card,
+      cards: movingCards
+    };
+
+    // Apply glowing golden aura and lift to all selected cards
+    for (const card of movingCards) {
+      const el = document.getElementById(card.id);
+      if (el) el.classList.add('selected-card');
+    }
+
+    // If King is selected, highlight empty tableau columns as valid targets
+    if (location.card.rank === 13) {
+      for (let c = 0; c < 7; c++) {
+        if (this.tableau[c].length === 0 && this.tableauEls[c]) {
+          this.tableauEls[c].classList.add('valid-king-target');
+        }
+      }
+    }
+
+    if (window.solitaireAudio) {
+      window.solitaireAudio.playCardSelect();
+    }
+  }
+
+  // =========================================================================
+  // UNIFIED BOARD CLICK HANDLER
+  // =========================================================================
+
+  handleBoardClick(e) {
+    if (this.isWon || this.autoCompleting || this.isAnimating) return;
+
+    // Ignore clicks on HUD header
+    if (e.target.closest('.top-hud') || e.target.closest('#auto-finish-banner')) return;
+
+    // 1. Stock Pile Click
+    const stockEl = e.target.closest('#slot-stock');
+    if (stockEl) {
+      this.handleStockClick();
+      return;
+    }
+
+    // 2. Foundation Slot Click
+    const foundEl = e.target.closest('.slot-foundation');
+    if (foundEl) {
+      const suit = foundEl.id.replace('foundation-', '');
+      this.handleFoundationSlotClick(suit, foundEl);
+      return;
+    }
+
+    // 3. Tableau Column Click
+    const colEl = e.target.closest('.tableau-col');
+    if (colEl) {
+      const colIndex = parseInt(colEl.dataset.col, 10);
+      const cardEl = e.target.closest('.solitaire-card');
+      this.handleTableauClick(colIndex, colEl, cardEl);
+      return;
+    }
+
+    // 4. Waste Slot Click
+    const wasteEl = e.target.closest('#slot-waste');
+    if (wasteEl) {
+      this.handleWasteClick();
+      return;
+    }
+
+    // 5. Tapped outside / empty felt: clear selection
+    this.clearSelection();
+  }
+
   handleStockClick() {
-    if (this.isWon || this.autoCompleting) return;
+    this.clearSelection();
 
     if (this.stock.length > 0) {
-      // Draw 1 card from Stock to Waste
-      const card = this.stock.pop();
+      // Draw 1 card from Stock to Waste with fluid flight animation
+      const card = this.stock[this.stock.length - 1];
+
+      // Measure starting position on top of stock
+      const stockCardEl = this.stockEl.querySelector('.solitaire-card');
+      const startRect = stockCardEl ? stockCardEl.getBoundingClientRect() : this.stockEl.getBoundingClientRect();
+
       card.faceUp = true;
+      this.stock.pop();
       this.waste.push(card);
 
       this.recordMove({
@@ -211,12 +335,34 @@ class SolitaireGame {
       this.moves++;
       this.render();
       this.updateHUD();
+
+      // Fluid flight from Stock into Waste
+      const wasteCardEl = this.wasteEl.querySelector('.solitaire-card');
+      if (wasteCardEl && startRect) {
+        const endRect = wasteCardEl.getBoundingClientRect();
+        const dx = startRect.left - endRect.left;
+        const dy = startRect.top - endRect.top;
+
+        wasteCardEl.style.transition = 'none';
+        wasteCardEl.style.transform = `translate(${dx}px, ${dy}px)`;
+        wasteCardEl.classList.add('flying-card');
+        wasteCardEl.offsetHeight; // force reflow
+
+        requestAnimationFrame(() => {
+          wasteCardEl.style.transition = 'transform 240ms cubic-bezier(0.2, 0.85, 0.35, 1.0), box-shadow 240ms ease';
+          wasteCardEl.style.transform = 'translate(0, 0)';
+          setTimeout(() => {
+            wasteCardEl.style.transition = '';
+            wasteCardEl.style.transform = '';
+            wasteCardEl.classList.remove('flying-card');
+          }, 250);
+        });
+      }
     } else if (this.waste.length > 0) {
       // Recycle Waste back to Stock
       const recycledCards = [...this.waste];
       this.waste = [];
 
-      // When recycling, reverse waste back into stock so order is maintained
       while (recycledCards.length > 0) {
         const card = recycledCards.pop();
         card.faceUp = false;
@@ -235,183 +381,379 @@ class SolitaireGame {
     }
   }
 
-  /**
-   * PRIMARY LOW-VISION INTERACTION: Single-Tap Auto-Move
-   */
-  handleCardClick(cardEl) {
-    const cardId = cardEl.dataset.id;
-    const location = this.findCardLocation(cardId);
-    if (!location) return;
+  handleWasteClick() {
+    if (this.waste.length === 0) return;
+    const topWasteCard = this.waste[this.waste.length - 1];
 
-    const { pile, colIndex, cardIndex, card } = location;
-
-    // 1. If face-down card in tableau is at the top of its column, flip it!
-    if (pile === 'tableau' && !card.faceUp && cardIndex === this.tableau[colIndex].length - 1) {
-      card.faceUp = true;
-      this.score += 5;
-      this.moves++;
-      this.recordMove({
-        type: 'flip',
-        colIndex: colIndex,
-        cardIndex: cardIndex
-      });
-      if (window.solitaireAudio) window.solitaireAudio.playCardFlip();
-      this.render();
-      this.updateHUD();
-      this.checkAutoCompletionReadiness();
+    // If waste card is already selected: toggle off
+    if (this.selected && this.selected.pile === 'waste') {
+      this.clearSelection();
       return;
     }
 
-    // Ignore face-down cards not at the top
-    if (!card.faceUp) return;
-
-    // 2. Try moving single card to Foundation first (highest priority)
-    if (pile === 'waste' || (pile === 'tableau' && cardIndex === this.tableau[colIndex].length - 1)) {
-      if (this.tryMoveToFoundation(card, location)) {
-        return;
-      }
-    }
-
-    // 3. Try moving card or stack to Tableau
-    if (pile === 'waste' || pile === 'tableau' || pile === 'foundation') {
-      if (this.tryMoveToTableau(card, location)) {
-        return;
-      }
-    }
-
-    // If no move found, trigger soft visual shake to communicate no legal move
-    cardEl.classList.add('no-move-shake');
-    setTimeout(() => cardEl.classList.remove('no-move-shake'), 300);
+    // Otherwise, select it (switches selection to waste card)
+    this.setSelection({
+      pile: 'waste',
+      card: topWasteCard,
+      cardIndex: this.waste.length - 1
+    });
   }
 
-  /**
-   * Attempts to move a card to its corresponding Foundation
-   */
-  tryMoveToFoundation(card, location) {
-    const suit = card.suit;
+  handleFoundationSlotClick(suit, foundEl) {
     const fStack = this.foundations[suit];
     const topRank = fStack.length === 0 ? 0 : fStack[fStack.length - 1].rank;
 
-    // Can only move if card is Ace (rank 1) or next ascending rank (e.g. 5 on 4)
-    if (card.rank === topRank + 1) {
-      let previousCardFlipped = false;
+    if (this.selected) {
+      // Tap 2: Placing onto Foundation
+      const card = this.selected.card;
+      const isSingleCard = (this.selected.cards.length === 1);
 
-      // Execute move
-      if (location.pile === 'waste') {
-        this.waste.pop();
-      } else if (location.pile === 'tableau') {
-        this.tableau[location.colIndex].pop();
-        // Check if previously hidden card is now exposed
-        const col = this.tableau[location.colIndex];
-        if (col.length > 0 && !col[col.length - 1].faceUp) {
-          col[col.length - 1].faceUp = true;
-          previousCardFlipped = true;
+      // Legal if single card, matching suit, and rank is exactly topRank + 1
+      if (isSingleCard && card.suit === suit && card.rank === topRank + 1) {
+        const selectedMove = { ...this.selected };
+        this.clearSelection();
+        this.executeMoveToFoundation(selectedMove, suit);
+      } else {
+        // Illegal foundation destination: gentle shake & auditory feedback
+        foundEl.classList.add('slot-shake');
+        setTimeout(() => foundEl.classList.remove('slot-shake'), 260);
+        if (window.solitaireAudio) window.solitaireAudio.playInvalidMove();
+      }
+    } else {
+      // Tap 1: No card selected. If foundation has cards, select top card
+      if (fStack.length > 0) {
+        const topCard = fStack[fStack.length - 1];
+        this.setSelection({
+          pile: 'foundation',
+          card: topCard,
+          suit: suit,
+          cardIndex: fStack.length - 1
+        });
+      }
+    }
+  }
+
+  handleTableauClick(colIndex, colEl, cardEl) {
+    const col = this.tableau[colIndex];
+
+    // -----------------------------------------------------------------------
+    // A. Card element inside tableau column was clicked
+    // -----------------------------------------------------------------------
+    if (cardEl) {
+      const cardId = cardEl.dataset.id;
+      const cardIndex = col.findIndex(c => c.id === cardId);
+      if (cardIndex === -1) return;
+      const card = col[cardIndex];
+
+      // A1: Face-down card
+      if (!card.faceUp) {
+        this.clearSelection();
+        // If it's the top unrevealed card at the column head: flip it in place!
+        if (cardIndex === col.length - 1) {
+          card.faceUp = true;
           this.score += 5;
+          this.moves++;
+          this.recordMove({
+            type: 'flip',
+            colIndex: colIndex,
+            cardIndex: cardIndex
+          });
+          if (window.solitaireAudio) window.solitaireAudio.playCardFlip();
+          this.render();
+
+          // Smooth in-place card turn animation
+          const newEl = document.getElementById(card.id);
+          if (newEl) {
+            newEl.classList.add('flipping');
+            setTimeout(() => newEl.classList.remove('flipping'), 230);
+          }
+
+          this.updateHUD();
+          this.checkAutoCompletionReadiness();
+        }
+        return;
+      }
+
+      // A2: Face-up card
+      if (this.selected) {
+        // Tapped the EXACT same card: toggle selection off
+        if (this.selected.pile === 'tableau' && this.selected.colIndex === colIndex && this.selected.card.id === card.id) {
+          this.clearSelection();
+          return;
+        }
+
+        // Tapped within the SAME column: switch selection to this card
+        if (this.selected.pile === 'tableau' && this.selected.colIndex === colIndex) {
+          this.setSelection({
+            pile: 'tableau',
+            colIndex: colIndex,
+            cardIndex: cardIndex,
+            card: card
+          });
+          return;
+        }
+
+        // Tapped in a DIFFERENT column: check if this column can receive the selected card/stack!
+        if (this.canMoveToTableauColumn(this.selected.card, colIndex)) {
+          // Tap 2: Legal move to tableau!
+          const selectedMove = { ...this.selected };
+          this.clearSelection();
+          this.executeMoveToTableau(selectedMove, colIndex);
+        } else {
+          // Column cannot receive selected card.
+          // Since player clicked on a face-up card, switch selection to this clicked card!
+          this.setSelection({
+            pile: 'tableau',
+            colIndex: colIndex,
+            cardIndex: cardIndex,
+            card: card
+          });
+        }
+      } else {
+        // Tap 1: No card selected: select this card & stack!
+        this.setSelection({
+          pile: 'tableau',
+          colIndex: colIndex,
+          cardIndex: cardIndex,
+          card: card
+        });
+      }
+      return;
+    }
+
+    // -----------------------------------------------------------------------
+    // B. Empty space or empty column was clicked (cardEl is null)
+    // -----------------------------------------------------------------------
+    if (this.selected) {
+      // If clicking inside the source column's empty space: deselect
+      if (this.selected.pile === 'tableau' && this.selected.colIndex === colIndex) {
+        this.clearSelection();
+        return;
+      }
+
+      // Check if column can accept selected card (e.g. King on empty column)
+      if (this.canMoveToTableauColumn(this.selected.card, colIndex)) {
+        const selectedMove = { ...this.selected };
+        this.clearSelection();
+        this.executeMoveToTableau(selectedMove, colIndex);
+      } else {
+        // Illegal target: gentle shake & invalid move audio
+        colEl.classList.add('slot-shake');
+        setTimeout(() => colEl.classList.remove('slot-shake'), 260);
+        if (window.solitaireAudio) window.solitaireAudio.playInvalidMove();
+      }
+    }
+  }
+
+  // =========================================================================
+  // LEGALITY CHECKS
+  // =========================================================================
+
+  canMoveToTableauColumn(card, targetCol) {
+    const col = this.tableau[targetCol];
+    if (col.length === 0) {
+      // Only Kings (rank 13) can go on empty columns
+      return card.rank === 13;
+    }
+    const topCard = col[col.length - 1];
+    return topCard.faceUp && topCard.color !== card.color && topCard.rank === card.rank + 1;
+  }
+
+  // =========================================================================
+  // FLUID FLIP CARD FLIGHT ANIMATION & MOVE EXECUTION
+  // =========================================================================
+
+  /**
+   * FLIP Animation: First, Last, Invert, Play
+   * Calculates exact screen translation deltas and glides cards smoothly across felt
+   */
+  animateMove(movingCardIds, stateUpdateFn, onComplete) {
+    this.isAnimating = true;
+
+    // 1. FIRST: Capture screen coordinates for all moving cards
+    const startRects = new Map();
+    for (const id of movingCardIds) {
+      const el = document.getElementById(id);
+      if (el) {
+        startRects.set(id, el.getBoundingClientRect());
+      }
+    }
+
+    // 2. Perform data model updates & DOM re-render
+    const result = stateUpdateFn();
+
+    // 3. INVERT: Calculate delta from starting position to destination position
+    const animItems = [];
+    for (const id of movingCardIds) {
+      const newEl = document.getElementById(id);
+      const startRect = startRects.get(id);
+      if (newEl && startRect) {
+        const endRect = newEl.getBoundingClientRect();
+        const dx = startRect.left - endRect.left;
+        const dy = startRect.top - endRect.top;
+
+        // Elevate parent slot/column z-index to avoid stacking clip
+        const parent = newEl.closest('.tableau-col, .slot');
+        if (parent) parent.style.zIndex = '60';
+
+        newEl.style.transition = 'none';
+        newEl.style.transform = `translate(${dx}px, ${dy}px) scale(1.02)`;
+        newEl.classList.add('flying-card');
+        animItems.push({ el: newEl, parent });
+      }
+    }
+
+    // Fallback if elements not found
+    if (animItems.length === 0) {
+      this.isAnimating = false;
+      if (onComplete) onComplete(result);
+      return;
+    }
+
+    // Force browser reflow
+    animItems[0].el.offsetHeight;
+
+    // 4. PLAY: Transition to (0, 0) using smooth physical easing
+    requestAnimationFrame(() => {
+      animItems.forEach(({ el }) => {
+        el.style.transition = 'transform 260ms cubic-bezier(0.2, 0.85, 0.35, 1.0), box-shadow 260ms ease';
+        el.style.transform = 'translate(0, 0) scale(1)';
+      });
+
+      setTimeout(() => {
+        animItems.forEach(({ el, parent }) => {
+          el.style.transition = '';
+          el.style.transform = '';
+          el.classList.remove('flying-card');
+          if (parent) parent.style.zIndex = '';
+        });
+
+        this.isAnimating = false;
+        if (onComplete) onComplete(result);
+      }, 270);
+    });
+  }
+
+  executeMoveToFoundation(selected, suit) {
+    const card = selected.card;
+    const movingCardIds = [card.id];
+
+    this.animateMove(movingCardIds, () => {
+      let previousCardToFlip = null;
+
+      // 1. Remove from source
+      if (selected.pile === 'waste') {
+        this.waste.pop();
+      } else if (selected.pile === 'tableau') {
+        this.tableau[selected.colIndex].pop();
+        const col = this.tableau[selected.colIndex];
+        // If underlying card was face-down, mark it to flip after flight completes
+        if (col.length > 0 && !col[col.length - 1].faceUp) {
+          previousCardToFlip = col[col.length - 1];
         }
       }
 
+      // 2. Add to foundation
       this.foundations[suit].push(card);
       this.score += 10;
       this.moves++;
 
       this.recordMove({
         type: 'to_foundation',
-        source: location.pile,
-        colIndex: location.colIndex,
+        source: selected.pile,
+        colIndex: selected.colIndex,
         card: card,
         suit: suit,
-        flippedColCard: previousCardFlipped
+        flippedColCard: previousCardToFlip !== null
       });
 
       if (window.solitaireAudio) window.solitaireAudio.playFoundation(card.rank);
       this.render();
       this.updateHUD();
-      this.checkWinCondition();
-      return true;
-    }
-    return false;
-  }
 
-  /**
-   * Attempts to move a card or stack to a legal Tableau column
-   */
-  tryMoveToTableau(card, location) {
-    // 1. Look for matching non-empty column (opposite color, rank + 1)
-    for (let targetCol = 0; targetCol < 7; targetCol++) {
-      if (location.pile === 'tableau' && location.colIndex === targetCol) continue;
-
-      const col = this.tableau[targetCol];
-      if (col.length > 0) {
-        const targetTop = col[col.length - 1];
-        if (targetTop.faceUp && targetTop.color !== card.color && targetTop.rank === card.rank + 1) {
-          this.executeMoveToTableau(location, targetCol);
-          return true;
-        }
-      }
-    }
-
-    // 2. If moving a King (rank 13), look for an empty column
-    if (card.rank === 13) {
-      // Don't move King if already at the bottom of an empty-bottomed column
-      if (location.pile === 'tableau' && location.cardIndex === 0) {
-        return false;
-      }
-
-      for (let targetCol = 0; targetCol < 7; targetCol++) {
-        if (this.tableau[targetCol].length === 0) {
-          this.executeMoveToTableau(location, targetCol);
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  executeMoveToTableau(location, targetCol) {
-    let movingCards = [];
-    let previousCardFlipped = false;
-
-    if (location.pile === 'waste') {
-      movingCards = [this.waste.pop()];
-    } else if (location.pile === 'foundation') {
-      movingCards = [this.foundations[location.suit].pop()];
-      this.score = Math.max(0, this.score - 10);
-    } else if (location.pile === 'tableau') {
-      const sourceCol = this.tableau[location.colIndex];
-      movingCards = sourceCol.splice(location.cardIndex);
-
-      // Auto-flip exposed card beneath
-      if (sourceCol.length > 0 && !sourceCol[sourceCol.length - 1].faceUp) {
-        sourceCol[sourceCol.length - 1].faceUp = true;
-        previousCardFlipped = true;
+      return previousCardToFlip;
+    }, (previousCardToFlip) => {
+      // After moving card lands, flip the exposed face-down card in place!
+      if (previousCardToFlip) {
+        previousCardToFlip.faceUp = true;
         this.score += 5;
+        this.render();
+        const exposedEl = document.getElementById(previousCardToFlip.id);
+        if (exposedEl) {
+          exposedEl.classList.add('flipping');
+          setTimeout(() => exposedEl.classList.remove('flipping'), 230);
+        }
+        if (window.solitaireAudio) window.solitaireAudio.playCardFlip();
+        this.updateHUD();
       }
-    }
-
-    this.tableau[targetCol].push(...movingCards);
-    this.score += 5;
-    this.moves++;
-
-    this.recordMove({
-      type: 'to_tableau',
-      source: location.pile,
-      sourceColIndex: location.colIndex,
-      sourceCardIndex: location.cardIndex,
-      sourceSuit: location.suit,
-      targetColIndex: targetCol,
-      cards: movingCards,
-      flippedColCard: previousCardFlipped
+      this.checkWinCondition();
+      this.checkAutoCompletionReadiness();
     });
+  }
 
-    if (window.solitaireAudio) window.solitaireAudio.playCardPlace();
-    this.render();
-    this.updateHUD();
-    this.checkAutoCompletionReadiness();
+  executeMoveToTableau(selected, targetCol) {
+    const movingCards = [...selected.cards];
+    const movingCardIds = movingCards.map(c => c.id);
+
+    this.animateMove(movingCardIds, () => {
+      let previousCardToFlip = null;
+
+      // 1. Remove from source
+      if (selected.pile === 'waste') {
+        this.waste.pop();
+      } else if (selected.pile === 'foundation') {
+        this.foundations[selected.suit].pop();
+        this.score = Math.max(0, this.score - 10);
+      } else if (selected.pile === 'tableau') {
+        const srcCol = this.tableau[selected.colIndex];
+        srcCol.splice(selected.cardIndex);
+        // If underlying card was face-down, mark it to flip after flight completes
+        if (srcCol.length > 0 && !srcCol[srcCol.length - 1].faceUp) {
+          previousCardToFlip = srcCol[srcCol.length - 1];
+        }
+      }
+
+      // 2. Add to target column
+      this.tableau[targetCol].push(...movingCards);
+      this.score += 5;
+      this.moves++;
+
+      this.recordMove({
+        type: 'to_tableau',
+        source: selected.pile,
+        sourceColIndex: selected.colIndex,
+        sourceCardIndex: selected.cardIndex,
+        sourceSuit: selected.suit,
+        targetColIndex: targetCol,
+        cards: movingCards,
+        flippedColCard: previousCardToFlip !== null
+      });
+
+      if (window.solitaireAudio) window.solitaireAudio.playCardPlace();
+      this.render();
+      this.updateHUD();
+
+      return previousCardToFlip;
+    }, (previousCardToFlip) => {
+      // After moving stack lands, flip the exposed face-down card in place!
+      if (previousCardToFlip) {
+        previousCardToFlip.faceUp = true;
+        this.score += 5;
+        this.render();
+        const exposedEl = document.getElementById(previousCardToFlip.id);
+        if (exposedEl) {
+          exposedEl.classList.add('flipping');
+          setTimeout(() => exposedEl.classList.remove('flipping'), 230);
+        }
+        if (window.solitaireAudio) window.solitaireAudio.playCardFlip();
+        this.updateHUD();
+      }
+      this.checkAutoCompletionReadiness();
+    });
   }
 
   // =========================================================================
-  // UNDO ENGINE (UNLIMITED, ZERO PENALTY)
+  // UNDO ENGINE (UNLIMITED, ZERO PENALTY, FLUID FLIGHT)
   // =========================================================================
 
   recordMove(action) {
@@ -420,6 +762,8 @@ class SolitaireGame {
 
   undo() {
     if (this.undoStack.length === 0 || this.isWon || this.autoCompleting) return;
+    this.clearSelection();
+    this.isAnimating = false;
 
     const action = this.undoStack.pop();
 
@@ -427,58 +771,81 @@ class SolitaireGame {
       const card = this.waste.pop();
       card.faceUp = false;
       this.stock.push(card);
+      if (window.solitaireAudio) window.solitaireAudio.playUndo();
+      this.render();
+      this.updateHUD();
     } else if (action.type === 'recycle') {
       while (this.stock.length > 0) {
         const card = this.stock.pop();
         card.faceUp = true;
         this.waste.push(card);
       }
+      if (window.solitaireAudio) window.solitaireAudio.playUndo();
+      this.render();
+      this.updateHUD();
     } else if (action.type === 'flip') {
       this.tableau[action.colIndex][action.cardIndex].faceUp = false;
       this.score = Math.max(0, this.score - 5);
+      if (window.solitaireAudio) window.solitaireAudio.playUndo();
+      this.render();
+      this.updateHUD();
     } else if (action.type === 'to_foundation') {
-      const card = this.foundations[action.suit].pop();
-      this.score = Math.max(0, this.score - 10);
+      const card = this.foundations[action.suit][this.foundations[action.suit].length - 1];
+      const movingCardIds = [card.id];
 
-      if (action.flippedColCard) {
-        const col = this.tableau[action.colIndex];
-        if (col.length > 0) {
-          col[col.length - 1].faceUp = false;
-          this.score = Math.max(0, this.score - 5);
+      this.animateMove(movingCardIds, () => {
+        this.foundations[action.suit].pop();
+        this.score = Math.max(0, this.score - 10);
+
+        if (action.flippedColCard) {
+          const col = this.tableau[action.colIndex];
+          if (col.length > 0) {
+            col[col.length - 1].faceUp = false;
+            this.score = Math.max(0, this.score - 5);
+          }
         }
-      }
 
-      if (action.source === 'waste') {
-        this.waste.push(card);
-      } else if (action.source === 'tableau') {
-        this.tableau[action.colIndex].push(card);
-      }
+        if (action.source === 'waste') {
+          this.waste.push(card);
+        } else if (action.source === 'tableau') {
+          this.tableau[action.colIndex].push(card);
+        }
+
+        if (window.solitaireAudio) window.solitaireAudio.playUndo();
+        this.render();
+        this.updateHUD();
+      });
     } else if (action.type === 'to_tableau') {
       const count = action.cards.length;
-      const returnedCards = this.tableau[action.targetColIndex].splice(-count);
-      this.score = Math.max(0, this.score - 5);
+      const movingCardIds = action.cards.map(c => c.id);
 
-      if (action.flippedColCard) {
-        const srcCol = this.tableau[action.sourceColIndex];
-        if (srcCol.length > 0) {
-          srcCol[srcCol.length - 1].faceUp = false;
-          this.score = Math.max(0, this.score - 5);
+      this.animateMove(movingCardIds, () => {
+        const returnedCards = this.tableau[action.targetColIndex].splice(-count);
+        this.score = Math.max(0, this.score - 5);
+
+        if (action.flippedColCard) {
+          const srcCol = this.tableau[action.sourceColIndex];
+          if (srcCol.length > 0) {
+            srcCol[srcCol.length - 1].faceUp = false;
+            this.score = Math.max(0, this.score - 5);
+          }
         }
-      }
 
-      if (action.source === 'waste') {
-        this.waste.push(returnedCards[0]);
-      } else if (action.source === 'foundation') {
-        this.foundations[action.sourceSuit].push(returnedCards[0]);
-        this.score += 10;
-      } else if (action.source === 'tableau') {
-        this.tableau[action.sourceColIndex].push(...returnedCards);
-      }
+        if (action.source === 'waste') {
+          this.waste.push(returnedCards[0]);
+        } else if (action.source === 'foundation') {
+          this.foundations[action.sourceSuit].push(returnedCards[0]);
+          this.score += 10;
+        } else if (action.source === 'tableau') {
+          this.tableau[action.sourceColIndex].push(...returnedCards);
+        }
+
+        if (window.solitaireAudio) window.solitaireAudio.playUndo();
+        this.render();
+        this.updateHUD();
+      });
     }
 
-    if (window.solitaireAudio) window.solitaireAudio.playUndo();
-    this.render();
-    this.updateHUD();
     this.checkAutoCompletionReadiness();
   }
 
@@ -487,7 +854,8 @@ class SolitaireGame {
   // =========================================================================
 
   provideHint() {
-    if (this.isWon || this.autoCompleting) return;
+    if (this.isWon || this.autoCompleting || this.isAnimating) return;
+    this.clearSelection();
 
     // Clear previous hints
     document.querySelectorAll('.hint-active').forEach(el => el.classList.remove('hint-active'));
@@ -526,7 +894,6 @@ class SolitaireGame {
       for (let r = 0; r < col.length; r++) {
         const card = col[r];
         if (card.faceUp) {
-          // If there's a face-down card below this one, moving it is high value!
           const revealsCard = (r > 0 && !col[r - 1].faceUp);
 
           for (let targetCol = 0; targetCol < 7; targetCol++) {
@@ -611,6 +978,7 @@ class SolitaireGame {
   autoComplete() {
     if (this.autoCompleting || this.isWon) return;
     this.autoCompleting = true;
+    this.clearSelection();
 
     const step = () => {
       let moved = false;
@@ -621,13 +989,12 @@ class SolitaireGame {
           const fStack = this.foundations[card.suit];
           const topRank = fStack.length === 0 ? 0 : fStack[fStack.length - 1].rank;
           if (card.rank === topRank + 1) {
-            col.pop();
-            fStack.push(card);
-            this.score += 10;
-            this.moves++;
-            if (window.solitaireAudio) window.solitaireAudio.playFoundation(card.rank);
-            this.render();
-            this.updateHUD();
+            this.executeMoveToFoundation({
+              pile: 'tableau',
+              colIndex: c,
+              card: card,
+              cards: [card]
+            }, card.suit);
             moved = true;
             break;
           }
@@ -635,10 +1002,7 @@ class SolitaireGame {
       }
 
       if (moved && !this.isWon) {
-        this.checkWinCondition();
-        if (!this.isWon) {
-          setTimeout(step, 80);
-        }
+        setTimeout(step, 140);
       } else {
         this.autoCompleting = false;
       }
@@ -690,6 +1054,9 @@ class SolitaireGame {
     if (this.waste.length > 0) {
       const topWaste = this.waste[this.waste.length - 1];
       const cardEl = window.SolitaireDeck.createCardElement(topWaste);
+      if (this.selected && this.selected.pile === 'waste' && this.selected.card.id === topWaste.id) {
+        cardEl.classList.add('selected-card');
+      }
       this.wasteEl.appendChild(cardEl);
     }
 
@@ -702,11 +1069,13 @@ class SolitaireGame {
       if (stack.length > 0) {
         const topCard = stack[stack.length - 1];
         const cardEl = window.SolitaireDeck.createCardElement(topCard);
+        if (this.selected && this.selected.pile === 'foundation' && this.selected.card.id === topCard.id) {
+          cardEl.classList.add('selected-card');
+        }
         fEl.appendChild(cardEl);
       } else {
-        // Empty Foundation Slot Icon
         fEl.innerHTML = `
-          <div class="foundation-empty-glyph ${SUITS[suit].color}">
+          <div class="foundation-empty-glyph ${window.SolitaireDeck.SUITS[suit].color}">
             ${window.SolitaireDeck.SUIT_SVGS[suit]}
           </div>
         `;
@@ -719,16 +1088,28 @@ class SolitaireGame {
       colEl.innerHTML = '';
       const cards = this.tableau[c];
 
+      // Mark empty column King indicator if a King is currently selected
+      if (cards.length === 0 && this.selected && this.selected.card.rank === 13) {
+        colEl.classList.add('valid-king-target');
+      } else {
+        colEl.classList.remove('valid-king-target');
+      }
+
       let currentTopOffset = 0;
       cards.forEach((card, index) => {
         const cardEl = window.SolitaireDeck.createCardElement(card);
         cardEl.style.top = `${currentTopOffset}px`;
 
-        // Generous vertical exposure: 24-26px for face-up cards, 12px for face-down
+        // Generous vertical exposure: 26px for face-up cards, 12px for face-down
         if (card.faceUp) {
           currentTopOffset += 26;
         } else {
           currentTopOffset += 12;
+        }
+
+        // Restore selected state if active
+        if (this.selected && this.selected.cards.some(sc => sc.id === card.id)) {
+          cardEl.classList.add('selected-card');
         }
 
         colEl.appendChild(cardEl);
