@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>agy-solitaire - Option 2 + 3 Hybrid Card Designs (iPhone 16e)</title>
+  <title>agy-solitaire - Max-Fill Banner Card Designs (iPhone 16e)</title>
   <style>
     :root {
       --card-red: #c62828;
@@ -143,7 +143,6 @@
       line-height: 1.5;
     }
 
-    /* Isolated Cards Display */
     .showcase-row {
       display: flex;
       flex-wrap: wrap;
@@ -158,10 +157,10 @@
       flex-wrap: wrap;
     }
 
-    /* Card Base */
+    /* Isolated Full-Size Card (88px x 128px) */
     .card {
-      width: 88px;
-      height: 126px;
+      width: 92px;
+      height: 132px;
       background: #ffffff;
       border-radius: 8px;
       border: 2px solid #111111;
@@ -207,7 +206,7 @@
       grid-template-columns: repeat(7, 1fr);
       gap: 5px;
       width: 100%;
-      min-height: 170px;
+      min-height: 190px;
     }
 
     .tableau-col {
@@ -225,11 +224,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       position: relative;
       overflow: hidden;
-      margin-bottom: -72%; /* realistic cascade overlap */
-    }
-
-    .iphone-card:last-child {
-      margin-bottom: 0;
     }
 
     .iphone-card.facedown {
@@ -239,322 +233,348 @@
     }
 
     /* ================================================================= */
-    /* HYBRID 1: TINTED JUMBO BANNER (Soft Tint + 900 Weight Ultra-Font) */
+    /* OPTION 1A: 34% PROPORTIONAL FILL (Flush to Cascade Overlap)        */
     /* ================================================================= */
-    .h1-header {
+    .c1a-header {
       width: 100%;
-      height: 38px;
+      height: 45px; /* 34% of 132px */
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 6px;
       border-bottom: 2.5px solid;
     }
-    .card.red .h1-header {
+    .card.red .c1a-header {
       background: #fee2e2;
       border-color: #f87171;
     }
-    .card.black .h1-header {
+    .card.black .c1a-header {
       background: #f1f5f9;
       border-color: #94a3b8;
     }
-    .h1-rank {
+    .c1a-rank {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+    .c1a-suit {
       font-size: 28px;
-      font-weight: 900;
-      letter-spacing: -1px;
       line-height: 1;
     }
-    .h1-suit {
-      font-size: 24px;
-      line-height: 1;
-    }
-    .h1-center {
-      margin: auto;
-      font-size: 44px;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    /* iPhone mini scale H1 */
-    .iphone-card.h1 .mini-h1-header {
-      height: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 3px;
-      border-bottom: 1.5px solid;
-    }
-    .iphone-card.h1.red .mini-h1-header {
-      background: #fee2e2;
-      border-color: #f87171;
-    }
-    .iphone-card.h1.black .mini-h1-header {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
-    .iphone-card.h1 .mini-rank {
-      font-size: 15px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      line-height: 1;
-    }
-    .iphone-card.h1 .mini-suit {
-      font-size: 12px;
-      line-height: 1;
-    }
-
-    /* ================================================================= */
-    /* HYBRID 2: SOLID INVERTED BANNER (Maximum Color Punch)             */
-    /* ================================================================= */
-    .h2-header {
-      width: 100%;
-      height: 38px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 6px;
-      color: #ffffff;
-    }
-    .card.red .h2-header {
-      background: var(--card-red);
-    }
-    .card.black .h2-header {
-      background: var(--card-black);
-    }
-    .h2-rank {
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .h2-suit {
-      font-size: 24px;
-      line-height: 1;
-    }
-    .h2-center {
-      margin: auto;
-      font-size: 44px;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    /* iPhone mini scale H2 */
-    .iphone-card.h2 .mini-h2-header {
-      height: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 3px;
-      color: #ffffff;
-    }
-    .iphone-card.h2.red .mini-h2-header {
-      background: var(--card-red);
-    }
-    .iphone-card.h2.black .mini-h2-header {
-      background: var(--card-black);
-    }
-    .iphone-card.h2 .mini-rank {
-      font-size: 15px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      line-height: 1;
-    }
-    .iphone-card.h2 .mini-suit {
-      font-size: 12px;
-      line-height: 1;
-    }
-
-    /* ================================================================= */
-    /* HYBRID 3: LEFT-ALIGNED JUMBO CLUSTER WITH DIVIDER BAR             */
-    /* ================================================================= */
-    .h3-header {
-      width: 100%;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      padding: 0 6px;
-      gap: 5px;
-      border-bottom: 2.5px solid;
-    }
-    .card.red .h3-header {
-      background: #fee2e2;
-      border-color: #f87171;
-    }
-    .card.black .h3-header {
-      background: #f1f5f9;
-      border-color: #94a3b8;
-    }
-    .h3-rank {
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .h3-suit {
-      font-size: 24px;
-      line-height: 1;
-    }
-    .h3-center {
+    .c1a-center {
       margin: auto;
       font-size: 46px;
       font-weight: 900;
+      line-height: 1;
     }
 
-    /* iPhone mini scale H3 */
-    .iphone-card.h3 .mini-h3-header {
-      height: 20px;
+    /* iPhone mini scale 1A */
+    .iphone-card.c1a {
+      margin-bottom: -66%; /* exposes top 34% */
+    }
+    .iphone-card.c1a:last-child { margin-bottom: 0; }
+    .iphone-card.c1a .mini-c1a-header {
+      height: 23px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
       padding: 0 3px;
-      gap: 2px;
       border-bottom: 1.5px solid;
     }
-    .iphone-card.h3.red .mini-h3-header {
+    .iphone-card.c1a.red .mini-c1a-header {
       background: #fee2e2;
       border-color: #f87171;
     }
-    .iphone-card.h3.black .mini-h3-header {
+    .iphone-card.c1a.black .mini-c1a-header {
       background: #f1f5f9;
       border-color: #94a3b8;
     }
-    .iphone-card.h3 .mini-rank {
-      font-size: 16px;
+    .iphone-card.c1a .mini-rank {
+      font-size: 17px;
       font-weight: 900;
+      letter-spacing: -0.5px;
       line-height: 1;
     }
-    .iphone-card.h3 .mini-suit {
-      font-size: 12px;
+    .iphone-card.c1a .mini-suit {
+      font-size: 14px;
       line-height: 1;
     }
 
     /* ================================================================= */
-    /* HYBRID 4: SHARP CRISP UNDERLINE (No Grey Tint, Pure White Card)   */
+    /* OPTION 1B: 40% DEEP JUMBO BANNER (Maximum Height Expansion)       */
     /* ================================================================= */
-    .h4-header {
+    .c1b-header {
       width: 100%;
-      height: 38px;
+      height: 53px; /* 40% of 132px */
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 6px;
-      border-bottom: 3.5px solid;
-      background: #ffffff;
+      padding: 0 5px;
+      border-bottom: 3px solid;
     }
-    .card.red .h4-header {
-      border-color: var(--card-red);
+    .card.red .c1b-header {
+      background: #fee2e2;
+      border-color: #ef4444;
     }
-    .card.black .h4-header {
-      border-color: var(--card-black);
+    .card.black .c1b-header {
+      background: #f1f5f9;
+      border-color: #64748b;
     }
-    .h4-rank {
-      font-size: 28px;
+    .c1b-rank {
+      font-size: 40px;
       font-weight: 900;
-      letter-spacing: -1px;
+      letter-spacing: -2px;
       line-height: 1;
     }
-    .h4-suit {
-      font-size: 24px;
+    .c1b-suit {
+      font-size: 34px;
       line-height: 1;
     }
-    .h4-center {
+    .c1b-center {
       margin: auto;
       font-size: 44px;
       font-weight: 900;
-    }
-
-    /* iPhone mini scale H4 */
-    .iphone-card.h4 .mini-h4-header {
-      height: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 3px;
-      border-bottom: 2px solid;
-      background: #ffffff;
-    }
-    .iphone-card.h4.red .mini-h4-header {
-      border-color: var(--card-red);
-    }
-    .iphone-card.h4.black .mini-h4-header {
-      border-color: var(--card-black);
-    }
-    .iphone-card.h4 .mini-rank {
-      font-size: 15px;
-      font-weight: 900;
-      line-height: 1;
-    }
-    .iphone-card.h4 .mini-suit {
-      font-size: 12px;
       line-height: 1;
     }
 
-    /* ================================================================= */
-    /* HYBRID 5: FULL-BLEED MONOLITHIC BADGE (Max Visual Weight)         */
-    /* ================================================================= */
-    .h5-badge-wrap {
-      padding: 3px;
-      width: 100%;
+    /* iPhone mini scale 1B */
+    .iphone-card.c1b {
+      margin-bottom: -60%; /* exposes top 40% */
     }
-    .h5-badge {
-      width: 100%;
-      height: 34px;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 6px;
-      color: #ffffff;
-    }
-    .card.red .h5-badge {
-      background: var(--card-red);
-    }
-    .card.black .h5-badge {
-      background: var(--card-black);
-    }
-    .h5-rank {
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .h5-suit {
-      font-size: 22px;
-      line-height: 1;
-    }
-    .h5-center {
-      margin: auto;
-      font-size: 44px;
-      font-weight: 900;
-    }
-
-    /* iPhone mini scale H5 */
-    .iphone-card.h5 .mini-h5-wrap {
-      padding: 1.5px;
-      width: 100%;
-    }
-    .iphone-card.h5 .mini-h5-badge {
-      width: 100%;
-      height: 18px;
-      border-radius: 3px;
+    .iphone-card.c1b:last-child { margin-bottom: 0; }
+    .iphone-card.c1b .mini-c1b-header {
+      height: 27px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 2.5px;
-      color: #ffffff;
+      border-bottom: 2px solid;
     }
-    .iphone-card.h5.red .mini-h5-badge {
-      background: var(--card-red);
+    .iphone-card.c1b.red .mini-c1b-header {
+      background: #fee2e2;
+      border-color: #ef4444;
     }
-    .iphone-card.h5.black .mini-h5-badge {
-      background: var(--card-black);
+    .iphone-card.c1b.black .mini-c1b-header {
+      background: #f1f5f9;
+      border-color: #64748b;
     }
-    .iphone-card.h5 .mini-rank {
-      font-size: 14px;
+    .iphone-card.c1b .mini-rank {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .iphone-card.c1b .mini-suit {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    /* ================================================================= */
+    /* OPTION 1C: ZERO-MARGIN FLUSH (Font Touching All 4 Edges)          */
+    /* ================================================================= */
+    .c1c-header {
+      width: 100%;
+      height: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      padding: 0 3px;
+      border-bottom: 2.5px solid;
+    }
+    .card.red .c1c-header {
+      background: #fee2e2;
+      border-color: #f87171;
+    }
+    .card.black .c1c-header {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .c1c-rank {
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -2.5px;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+    }
+    .c1c-suit {
+      font-size: 32px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+    }
+    .c1c-center {
+      margin: auto;
+      font-size: 46px;
       font-weight: 900;
       line-height: 1;
     }
-    .iphone-card.h5 .mini-suit {
-      font-size: 11px;
+
+    /* iPhone mini scale 1C */
+    .iphone-card.c1c {
+      margin-bottom: -64%;
+    }
+    .iphone-card.c1c:last-child { margin-bottom: 0; }
+    .iphone-card.c1c .mini-c1c-header {
+      height: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      padding: 0 1.5px;
+      border-bottom: 1.5px solid;
+    }
+    .iphone-card.c1c.red .mini-c1c-header {
+      background: #fee2e2;
+      border-color: #f87171;
+    }
+    .iphone-card.c1c.black .mini-c1c-header {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .iphone-card.c1c .mini-rank {
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+    }
+    .iphone-card.c1c .mini-suit {
+      font-size: 15px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ================================================================= */
+    /* OPTION 1D: CONTRAST-SEAM BANNER (Solid 3.5px Dark Divider)        */
+    /* ================================================================= */
+    .c1d-header {
+      width: 100%;
+      height: 46px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px;
+      border-bottom: 4px solid #0f172a; /* ultra high contrast seam */
+    }
+    .card.red .c1d-header {
+      background: #fed7d7;
+    }
+    .card.black .c1d-header {
+      background: #e2e8f0;
+    }
+    .c1d-rank {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+    .c1d-suit {
+      font-size: 30px;
+      line-height: 1;
+    }
+    .c1d-center {
+      margin: auto;
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    /* iPhone mini scale 1D */
+    .iphone-card.c1d {
+      margin-bottom: -65%;
+    }
+    .iphone-card.c1d:last-child { margin-bottom: 0; }
+    .iphone-card.c1d .mini-c1d-header {
+      height: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3px;
+      border-bottom: 2.5px solid #0f172a;
+    }
+    .iphone-card.c1d.red .mini-c1d-header {
+      background: #fed7d7;
+    }
+    .iphone-card.c1d.black .mini-c1d-header {
+      background: #e2e8f0;
+    }
+    .iphone-card.c1d .mini-rank {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .iphone-card.c1d .mini-suit {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* ================================================================= */
+    /* OPTION 1E: FULL-WIDTH SOLID COLOR BLOCK (Inverted Max-Fill)       */
+    /* ================================================================= */
+    .c1e-header {
+      width: 100%;
+      height: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px;
+      color: #ffffff;
+    }
+    .card.red .c1e-header {
+      background: var(--card-red);
+    }
+    .card.black .c1e-header {
+      background: var(--card-black);
+    }
+    .c1e-rank {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+    .c1e-suit {
+      font-size: 30px;
+      line-height: 1;
+    }
+    .c1e-center {
+      margin: auto;
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    /* iPhone mini scale 1E */
+    .iphone-card.c1e {
+      margin-bottom: -64%;
+      color: #ffffff;
+    }
+    .iphone-card.c1e:last-child { margin-bottom: 0; }
+    .iphone-card.c1e .mini-c1e-header {
+      height: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 3px;
+      color: #ffffff;
+    }
+    .iphone-card.c1e.red .mini-c1e-header {
+      background: var(--card-red);
+    }
+    .iphone-card.c1e.black .mini-c1e-header {
+      background: var(--card-black);
+    }
+    .iphone-card.c1e .mini-rank {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .iphone-card.c1e .mini-suit {
+      font-size: 14px;
       line-height: 1;
     }
 
@@ -593,66 +613,64 @@
 <body>
 
   <header>
-    <h1>Option 2 + Option 3 Hybrids</h1>
+    <h1>Max-Fill Banner Designs (Option 1 Expanded)</h1>
     <p class="subtitle">
-      Combining the <strong>Tableau Overlap Visibility</strong> of Option 2 with the <strong>Maximum Font Scale & Heavy Strokes</strong> of Option 3.<br>
-      Engineered for iPhone 16e Portrait Mode (monocular vision & floater comfort).
+      Expanding the top header so that <strong>every single pixel of exposed space</strong> in the portrait cascade is filled with gigantic rank & suit typography before the next card overlaps it.
     </p>
     <div class="callout">
-      <strong>Why this combination is so effective:</strong>
-      Option 2's top header ensures that as cards stack vertically in a portrait column, 100% of both the number and suit remain exposed. Infusing this with Option 3's ultra-heavy 900-weight typography makes the numbers gigantic and bold enough to resist letter "dropout" when floaters drift across the field of view.
+      <strong>Your Observation:</strong> In portrait Klondike, overlapping cards cover the bottom portion of the card above. By expanding the banner's height and font size to fill the exact visible vertical exposure, we eliminate wasted white space and give your mom the largest possible numbers!
     </div>
   </header>
 
   <nav class="nav-bar">
-    <a href="#hybrid1" class="nav-btn">1. Tinted Jumbo Banner</a>
-    <a href="#hybrid2" class="nav-btn">2. Solid Inverted Banner</a>
-    <a href="#hybrid3" class="nav-btn">3. Left-Cluster Jumbo</a>
-    <a href="#hybrid4" class="nav-btn">4. Pure White + Crisp Underline</a>
-    <a href="#hybrid5" class="nav-btn">5. Inset Rounded Pill</a>
+    <a href="#opt1a" class="nav-btn">1A. Proportional Max-Fill (34%)</a>
+    <a href="#opt1b" class="nav-btn">1B. Ultra-Deep Jumbo (40%)</a>
+    <a href="#opt1c" class="nav-btn">1C. Zero-Margin Edge-Flush</a>
+    <a href="#opt1d" class="nav-btn">1D. Contrast-Seam Divider</a>
+    <a href="#opt1e" class="nav-btn">1E. Solid Color-Block Fill</a>
   </nav>
 
   <!-- ========================================================= -->
-  <!-- HYBRID 1 -->
+  <!-- OPTION 1A -->
   <!-- ========================================================= -->
-  <section class="section-card" id="hybrid1">
+  <section class="section-card" id="opt1a">
     <div class="option-header">
-      <div class="option-title">Hybrid 1: Tinted Jumbo Banner (The Balanced Champion)</div>
-      <div class="option-badge star">Top Recommendation</div>
+      <div class="option-title">Option 1A: Proportional Max-Fill (34% Height Fill)</div>
+      <div class="option-badge star">Balanced Recommendation</div>
     </div>
     <p class="option-desc">
-      Features a soft-tinted top header bar (soft ruby for red, soft slate for black) paired with maximum 900-weight oversized typography. Rank on the left, suit on the right. Large bold letters for court cards (J, Q, K).
+      Expands the banner to occupy 34% of the card height (45px on full card, 23px in cascade). The divider line sits exactly at the seam where the next card begins. Numbers are boosted to 34px (17px on phone) with balanced, comfortable padding.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="h1-header">
-            <span class="h1-rank">10</span>
-            <span class="h1-suit">♥</span>
+          <div class="c1a-header">
+            <span class="c1a-rank">10</span>
+            <span class="c1a-suit">♥</span>
           </div>
-          <div class="h1-center">♥</div>
+          <div class="c1a-center">♥</div>
         </div>
         <div class="card black">
-          <div class="h1-header">
-            <span class="h1-rank">A</span>
-            <span class="h1-suit">♠</span>
+          <div class="c1a-header">
+            <span class="c1a-rank">A</span>
+            <span class="c1a-suit">♠</span>
           </div>
-          <div class="h1-center">♠</div>
+          <div class="c1a-center">♠</div>
         </div>
         <div class="card black">
-          <div class="h1-header">
-            <span class="h1-rank">K</span>
-            <span class="h1-suit">♠</span>
+          <div class="c1a-header">
+            <span class="c1a-rank">K</span>
+            <span class="c1a-suit">♠</span>
           </div>
-          <div class="h1-center">K</div>
+          <div class="c1a-center">K</div>
         </div>
         <div class="card red">
-          <div class="h1-header">
-            <span class="h1-rank">Q</span>
-            <span class="h1-suit">♥</span>
+          <div class="c1a-header">
+            <span class="c1a-rank">Q</span>
+            <span class="c1a-suit">♥</span>
           </div>
-          <div class="h1-center">Q</div>
+          <div class="c1a-center">Q</div>
         </div>
       </div>
     </div>
@@ -660,82 +678,82 @@
     <!-- iPhone 16e Simulation -->
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
-        <span>iPhone 16e (390px) Tableau Cascade</span>
-        <span>Portrait Scale</span>
+        <span>iPhone 16e (390px) Cascade View</span>
+        <span>Every Visible Pixel Filled</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
           <div class="iphone-card facedown"></div>
           <div class="iphone-card facedown"></div>
-          <div class="iphone-card h1 black">
-            <div class="mini-h1-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          <div class="iphone-card c1a black">
+            <div class="mini-c1a-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
           </div>
-          <div class="iphone-card h1 red">
-            <div class="mini-h1-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          <div class="iphone-card c1a red">
+            <div class="mini-c1a-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
           </div>
-          <div class="iphone-card h1 black">
-            <div class="mini-h1-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          <div class="iphone-card c1a black">
+            <div class="mini-c1a-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
           </div>
-          <div class="iphone-card h1 red">
-            <div class="mini-h1-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="iphone-card c1a red">
+            <div class="mini-c1a-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card h1 red"><div class="mini-h1-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h1 black"><div class="mini-h1-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h1 red"><div class="mini-h1-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h1 black"><div class="mini-h1-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h1 red"><div class="mini-h1-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h1 black"><div class="mini-h1-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1a red"><div class="mini-c1a-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1a black"><div class="mini-c1a-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1a red"><div class="mini-c1a-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1a black"><div class="mini-c1a-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1a red"><div class="mini-c1a-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1a black"><div class="mini-c1a-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
       </div>
     </div>
 
     <ul class="key-features">
-      <li><span class="tag highlight">Perception</span> Subtle tint cleanly separates one card from the card underneath it in the stack.</li>
-      <li><span class="tag note">Legibility</span> Huge 900-weight numbers are clearly readable across arms-length.</li>
+      <li><span class="tag highlight">Fit</span> The colored banner ends precisely where the overlapping card starts.</li>
+      <li><span class="tag note">Legibility</span> Rank size increased by +25% over the original Hybrid 1.</li>
     </ul>
   </section>
 
   <!-- ========================================================= -->
-  <!-- HYBRID 2 -->
+  <!-- OPTION 1B -->
   <!-- ========================================================= -->
-  <section class="section-card" id="hybrid2">
+  <section class="section-card" id="opt1b">
     <div class="option-header">
-      <div class="option-title">Hybrid 2: Solid Inverted Banner (Maximum Contrast Punch)</div>
-      <div class="option-badge">Highest Contrast</div>
+      <div class="option-title">Option 1B: Ultra-Deep Jumbo (40% Height Fill)</div>
+      <div class="option-badge">Maximum Font Size</div>
     </div>
     <p class="option-desc">
-      The top banner is solid filled in dark crimson red or solid black with brilliant white typography. The color difference between alternating red and black cards is instantly recognizable at a glance across the entire phone screen.
+      Pushes the banner to a deep 40% of the card height (53px full / 27px mini). The cascade overlap is slightly relaxed to expose this entire deep header, enabling massive 40px numbers (20px on the phone screen).
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="h2-header">
-            <span class="h2-rank">10</span>
-            <span class="h2-suit">♥</span>
+          <div class="c1b-header">
+            <span class="c1b-rank">10</span>
+            <span class="c1b-suit">♥</span>
           </div>
-          <div class="h2-center">♥</div>
+          <div class="c1b-center">♥</div>
         </div>
         <div class="card black">
-          <div class="h2-header">
-            <span class="h2-rank">A</span>
-            <span class="h2-suit">♠</span>
+          <div class="c1b-header">
+            <span class="c1b-rank">A</span>
+            <span class="c1b-suit">♠</span>
           </div>
-          <div class="h2-center">♠</div>
+          <div class="c1b-center">♠</div>
         </div>
         <div class="card black">
-          <div class="h2-header">
-            <span class="h2-rank">K</span>
-            <span class="h2-suit">♠</span>
+          <div class="c1b-header">
+            <span class="c1b-rank">K</span>
+            <span class="c1b-suit">♠</span>
           </div>
-          <div class="h2-center">K</div>
+          <div class="c1b-center">K</div>
         </div>
         <div class="card red">
-          <div class="h2-header">
-            <span class="h2-rank">Q</span>
-            <span class="h2-suit">♥</span>
+          <div class="c1b-header">
+            <span class="c1b-rank">Q</span>
+            <span class="c1b-suit">♥</span>
           </div>
-          <div class="h2-center">Q</div>
+          <div class="c1b-center">Q</div>
         </div>
       </div>
     </div>
@@ -743,82 +761,82 @@
     <!-- iPhone 16e Simulation -->
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
-        <span>iPhone 16e (390px) Tableau Cascade</span>
-        <span>Portrait Scale</span>
+        <span>iPhone 16e (390px) Cascade View</span>
+        <span>Deep 40% Exposure</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
           <div class="iphone-card facedown"></div>
           <div class="iphone-card facedown"></div>
-          <div class="iphone-card h2 black">
-            <div class="mini-h2-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          <div class="iphone-card c1b black">
+            <div class="mini-c1b-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
           </div>
-          <div class="iphone-card h2 red">
-            <div class="mini-h2-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          <div class="iphone-card c1b red">
+            <div class="mini-c1b-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
           </div>
-          <div class="iphone-card h2 black">
-            <div class="mini-h2-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          <div class="iphone-card c1b black">
+            <div class="mini-c1b-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
           </div>
-          <div class="iphone-card h2 red">
-            <div class="mini-h2-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="iphone-card c1b red">
+            <div class="mini-c1b-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card h2 red"><div class="mini-h2-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h2 black"><div class="mini-h2-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h2 red"><div class="mini-h2-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h2 black"><div class="mini-h2-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h2 red"><div class="mini-h2-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h2 black"><div class="mini-h2-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1b red"><div class="mini-c1b-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1b black"><div class="mini-c1b-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1b red"><div class="mini-c1b-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1b black"><div class="mini-c1b-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1b red"><div class="mini-c1b-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1b black"><div class="mini-c1b-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
       </div>
     </div>
 
     <ul class="key-features">
-      <li><span class="tag highlight">Color Alternation</span> Alternating red and black tableau stacks are 100% unmistakable.</li>
-      <li><span class="tag note">High Contrast</span> White text on dark solid blocks offers exceptional luminance contrast.</li>
+      <li><span class="tag highlight">Giant Numbers</span> The absolute largest numbers achievable without altering card aspect ratio.</li>
+      <li><span class="tag note">Suit Pip</span> Suit symbol is huge (34px), making Hearts vs Diamonds distinct from across the room.</li>
     </ul>
   </section>
 
   <!-- ========================================================= -->
-  <!-- HYBRID 3 -->
+  <!-- OPTION 1C -->
   <!-- ========================================================= -->
-  <section class="section-card" id="hybrid3">
+  <section class="section-card" id="opt1c">
     <div class="option-header">
-      <div class="option-title">Hybrid 3: Left-Cluster Jumbo (Side-by-Side Index)</div>
-      <div class="option-badge">Direct Option 3 Layout</div>
+      <div class="option-title">Option 1C: Zero-Margin Edge-Flush (Max Surface Area)</div>
+      <div class="option-badge">Edge-to-Edge Typography</div>
     </div>
     <p class="option-desc">
-      Combines Option 3's side-by-side digit & suit pairing directly inside Option 2's bounded top bar. Ideal if she prefers reading the number and suit as a single unit without scanning across the card width.
+      Removes top and side padding completely, letting the gigantic 42px digits stretch from the very top border directly down to the separator line. Zero wasted whitespace.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="h3-header">
-            <span class="h3-rank">10</span>
-            <span class="h3-suit">♥</span>
+          <div class="c1c-header">
+            <span class="c1c-rank">10</span>
+            <span class="c1c-suit">♥</span>
           </div>
-          <div class="h3-center">♥</div>
+          <div class="c1c-center">♥</div>
         </div>
         <div class="card black">
-          <div class="h3-header">
-            <span class="h3-rank">A</span>
-            <span class="h3-suit">♠</span>
+          <div class="c1c-header">
+            <span class="c1c-rank">A</span>
+            <span class="c1c-suit">♠</span>
           </div>
-          <div class="h3-center">♠</div>
+          <div class="c1c-center">♠</div>
         </div>
         <div class="card black">
-          <div class="h3-header">
-            <span class="h3-rank">K</span>
-            <span class="h3-suit">♠</span>
+          <div class="c1c-header">
+            <span class="c1c-rank">K</span>
+            <span class="c1c-suit">♠</span>
           </div>
-          <div class="h3-center">K</div>
+          <div class="c1c-center">K</div>
         </div>
         <div class="card red">
-          <div class="h3-header">
-            <span class="h3-rank">Q</span>
-            <span class="h3-suit">♥</span>
+          <div class="c1c-header">
+            <span class="c1c-rank">Q</span>
+            <span class="c1c-suit">♥</span>
           </div>
-          <div class="h3-center">Q</div>
+          <div class="c1c-center">Q</div>
         </div>
       </div>
     </div>
@@ -826,82 +844,82 @@
     <!-- iPhone 16e Simulation -->
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
-        <span>iPhone 16e (390px) Tableau Cascade</span>
-        <span>Portrait Scale</span>
+        <span>iPhone 16e (390px) Cascade View</span>
+        <span>Zero-Margin Stacking</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
           <div class="iphone-card facedown"></div>
           <div class="iphone-card facedown"></div>
-          <div class="iphone-card h3 black">
-            <div class="mini-h3-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          <div class="iphone-card c1c black">
+            <div class="mini-c1c-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
           </div>
-          <div class="iphone-card h3 red">
-            <div class="mini-h3-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          <div class="iphone-card c1c red">
+            <div class="mini-c1c-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
           </div>
-          <div class="iphone-card h3 black">
-            <div class="mini-h3-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          <div class="iphone-card c1c black">
+            <div class="mini-c1c-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
           </div>
-          <div class="iphone-card h3 red">
-            <div class="mini-h3-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="iphone-card c1c red">
+            <div class="mini-c1c-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card h3 red"><div class="mini-h3-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h3 black"><div class="mini-h3-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h3 red"><div class="mini-h3-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h3 black"><div class="mini-h3-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h3 red"><div class="mini-h3-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h3 black"><div class="mini-h3-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1c red"><div class="mini-c1c-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1c black"><div class="mini-c1c-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1c red"><div class="mini-c1c-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1c black"><div class="mini-c1c-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1c red"><div class="mini-c1c-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1c black"><div class="mini-c1c-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
       </div>
     </div>
 
     <ul class="key-features">
-      <li><span class="tag highlight">Focal Point</span> Eye only needs to look at the left edge to see both the number and suit together.</li>
-      <li><span class="tag note">Cleanliness</span> Leaves the right side open and uncluttered.</li>
+      <li><span class="tag highlight">Density</span> Highest typographic ink-density of any layout.</li>
+      <li><span class="tag note">Feel</span> Bold, poster-like presence.</li>
     </ul>
   </section>
 
   <!-- ========================================================= -->
-  <!-- HYBRID 4 -->
+  <!-- OPTION 1D -->
   <!-- ========================================================= -->
-  <section class="section-card" id="hybrid4">
+  <section class="section-card" id="opt1d">
     <div class="option-header">
-      <div class="option-title">Hybrid 4: Pure White + Crisp Underline (Zero Shading)</div>
-      <div class="option-badge">Cleanest Background</div>
+      <div class="option-title">Option 1D: Contrast-Seam Divider (Distinct Dark Border)</div>
+      <div class="option-badge">Maximum Card Separation</div>
     </div>
     <p class="option-desc">
-      Keeps the entire card surface pure white (no grey/tinted background fills). Uses a bold 3px color underline to cleanly demarcate the top index header from the body of the card.
+      Features a 35% height banner paired with a heavy 4px dark boundary seam (`#0F172A`) along the bottom edge. This ensures that the bottom of the visible banner never blurs or bleeds into the white card below it in the stack.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="h4-header">
-            <span class="h4-rank">10</span>
-            <span class="h4-suit">♥</span>
+          <div class="c1d-header">
+            <span class="c1d-rank">10</span>
+            <span class="c1d-suit">♥</span>
           </div>
-          <div class="h4-center">♥</div>
+          <div class="c1d-center">♥</div>
         </div>
         <div class="card black">
-          <div class="h4-header">
-            <span class="h4-rank">A</span>
-            <span class="h4-suit">♠</span>
+          <div class="c1d-header">
+            <span class="c1d-rank">A</span>
+            <span class="c1d-suit">♠</span>
           </div>
-          <div class="h4-center">♠</div>
+          <div class="c1d-center">♠</div>
         </div>
         <div class="card black">
-          <div class="h4-header">
-            <span class="h4-rank">K</span>
-            <span class="h4-suit">♠</span>
+          <div class="c1d-header">
+            <span class="c1d-rank">K</span>
+            <span class="c1d-suit">♠</span>
           </div>
-          <div class="h4-center">K</div>
+          <div class="c1d-center">K</div>
         </div>
         <div class="card red">
-          <div class="h4-header">
-            <span class="h4-rank">Q</span>
-            <span class="h4-suit">♥</span>
+          <div class="c1d-header">
+            <span class="c1d-rank">Q</span>
+            <span class="c1d-suit">♥</span>
           </div>
-          <div class="h4-center">Q</div>
+          <div class="c1d-center">Q</div>
         </div>
       </div>
     </div>
@@ -909,90 +927,82 @@
     <!-- iPhone 16e Simulation -->
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
-        <span>iPhone 16e (390px) Tableau Cascade</span>
-        <span>Portrait Scale</span>
+        <span>iPhone 16e (390px) Cascade View</span>
+        <span>High-Contrast Seam</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
           <div class="iphone-card facedown"></div>
           <div class="iphone-card facedown"></div>
-          <div class="iphone-card h4 black">
-            <div class="mini-h4-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          <div class="iphone-card c1d black">
+            <div class="mini-c1d-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
           </div>
-          <div class="iphone-card h4 red">
-            <div class="mini-h4-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          <div class="iphone-card c1d red">
+            <div class="mini-c1d-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
           </div>
-          <div class="iphone-card h4 black">
-            <div class="mini-h4-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          <div class="iphone-card c1d black">
+            <div class="mini-c1d-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
           </div>
-          <div class="iphone-card h4 red">
-            <div class="mini-h4-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          <div class="iphone-card c1d red">
+            <div class="mini-c1d-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card h4 red"><div class="mini-h4-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h4 black"><div class="mini-h4-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h4 red"><div class="mini-h4-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h4 black"><div class="mini-h4-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h4 red"><div class="mini-h4-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h4 black"><div class="mini-h4-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1d red"><div class="mini-c1d-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1d black"><div class="mini-c1d-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1d red"><div class="mini-c1d-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1d black"><div class="mini-c1d-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1d red"><div class="mini-c1d-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1d black"><div class="mini-c1d-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
       </div>
     </div>
 
     <ul class="key-features">
-      <li><span class="tag highlight">Floater Friendly</span> Eliminates grey tints so there are no faint shading gradients that could be mistaken for eye floaters.</li>
-      <li><span class="tag note">Simplicity</span> Clean, minimalist physical look.</li>
+      <li><span class="tag highlight">Boundary Clarity</span> Solid dark seam creates an unmistakable physical shelf between layered cards.</li>
+      <li><span class="tag note">Protection</span> Prevents cards from blending together under lower phone brightness.</li>
     </ul>
   </section>
 
   <!-- ========================================================= -->
-  <!-- HYBRID 5 -->
+  <!-- OPTION 1E -->
   <!-- ========================================================= -->
-  <section class="section-card" id="hybrid5">
+  <section class="section-card" id="opt1e">
     <div class="option-header">
-      <div class="option-title">Hybrid 5: Inset Rounded Pill (Badge Card)</div>
-      <div class="option-badge">Modern Mobile App Feel</div>
+      <div class="option-title">Option 1E: Solid Color-Block Fill (Inverted Max-Fill)</div>
+      <div class="option-badge">Solid Fill Contrast</div>
     </div>
     <p class="option-desc">
-      Features a rounded solid-color capsule inset neatly at the top of each card. Gives a tactile, modern mobile interface look with solid color blocking.
+      Combines the expanded 36% height banner with solid dark crimson red or solid black fill and pure white typography. The entire visible top strip is a bold color block that is impossible to mistake.
     </p>
 
     <div class="showcase-row">
       <div class="card-sample-group">
         <div class="card red">
-          <div class="h5-badge-wrap">
-            <div class="h5-badge">
-              <span class="h5-rank">10</span>
-              <span class="h5-suit">♥</span>
-            </div>
+          <div class="c1e-header">
+            <span class="c1e-rank">10</span>
+            <span class="c1e-suit">♥</span>
           </div>
-          <div class="h5-center">♥</div>
+          <div class="c1e-center">♥</div>
         </div>
         <div class="card black">
-          <div class="h5-badge-wrap">
-            <div class="h5-badge">
-              <span class="h5-rank">A</span>
-              <span class="h5-suit">♠</span>
-            </div>
+          <div class="c1e-header">
+            <span class="c1e-rank">A</span>
+            <span class="c1e-suit">♠</span>
           </div>
-          <div class="h5-center">♠</div>
+          <div class="c1e-center">♠</div>
         </div>
         <div class="card black">
-          <div class="h5-badge-wrap">
-            <div class="h5-badge">
-              <span class="h5-rank">K</span>
-              <span class="h5-suit">♠</span>
-            </div>
+          <div class="c1e-header">
+            <span class="c1e-rank">K</span>
+            <span class="c1e-suit">♠</span>
           </div>
-          <div class="h5-center">K</div>
+          <div class="c1e-center">K</div>
         </div>
         <div class="card red">
-          <div class="h5-badge-wrap">
-            <div class="h5-badge">
-              <span class="h5-rank">Q</span>
-              <span class="h5-suit">♥</span>
-            </div>
+          <div class="c1e-header">
+            <span class="c1e-rank">Q</span>
+            <span class="c1e-suit">♥</span>
           </div>
-          <div class="h5-center">Q</div>
+          <div class="c1e-center">Q</div>
         </div>
       </div>
     </div>
@@ -1000,43 +1010,43 @@
     <!-- iPhone 16e Simulation -->
     <div class="iphone-sim-container">
       <div class="iphone-sim-title">
-        <span>iPhone 16e (390px) Tableau Cascade</span>
-        <span>Portrait Scale</span>
+        <span>iPhone 16e (390px) Cascade View</span>
+        <span>Solid Inverted Blocks</span>
       </div>
       <div class="iphone-sim-tableau">
         <div class="tableau-col">
           <div class="iphone-card facedown"></div>
           <div class="iphone-card facedown"></div>
-          <div class="iphone-card h5 black">
-            <div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div></div>
+          <div class="iphone-card c1e black">
+            <div class="mini-c1e-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
           </div>
-          <div class="iphone-card h5 red">
-            <div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div></div>
+          <div class="iphone-card c1e red">
+            <div class="mini-c1e-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
           </div>
-          <div class="iphone-card h5 black">
-            <div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div></div>
+          <div class="iphone-card c1e black">
+            <div class="mini-c1e-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
           </div>
-          <div class="iphone-card h5 red">
-            <div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div></div>
+          <div class="iphone-card c1e red">
+            <div class="mini-c1e-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
           </div>
         </div>
-        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card h5 red"><div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h5 black"><div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h5 red"><div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h5 black"><div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h5 red"><div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div></div>
-        <div class="tableau-col"><div class="iphone-card h5 black"><div class="mini-h5-wrap"><div class="mini-h5-badge"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div></div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card c1e red"><div class="mini-c1e-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1e black"><div class="mini-c1e-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1e red"><div class="mini-c1e-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1e black"><div class="mini-c1e-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1e red"><div class="mini-c1e-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card c1e black"><div class="mini-c1e-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
       </div>
     </div>
 
     <ul class="key-features">
-      <li><span class="tag highlight">Card Nesting</span> Rounded badge creates a clear visual pocket for each card layer.</li>
-      <li><span class="tag note">Modern Feel</span> Distinct mobile gaming visual identity.</li>
+      <li><span class="tag highlight">Solid Color Power</span> Each layer in the tableau is an obvious alternating block of red and black.</li>
+      <li><span class="tag note">Luminance</span> Brilliant white text on dark solid color gives crisp edges.</li>
     </ul>
   </section>
 
   <footer>
-    <p>agy-solitaire &bull; Option 2 + 3 Hybrids &bull; Designed for low-vision & floater comfort on iPhone 16e</p>
+    <p>agy-solitaire &bull; Max-Fill Banner Designs &bull; Engineered for low-vision & floater comfort on iPhone 16e</p>
   </footer>
 
 </body>
