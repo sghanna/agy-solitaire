@@ -236,11 +236,11 @@ html, body {
 
 @keyframes hintPulse {
   0%, 100% {
-    box-shadow: 0 0 10px #fbbf24, 0 0 20px rgba(251, 191, 36, 0.55);
+    box-shadow: 0 0 6px #fbbf24, 0 0 12px rgba(251, 191, 36, 0.55);
     border-color: #fbbf24;
   }
   50% {
-    box-shadow: 0 0 18px #fef08a, 0 0 32px rgba(254, 240, 138, 0.85);
+    box-shadow: 0 0 10px #fef08a, 0 0 18px rgba(254, 240, 138, 0.85);
     border-color: #fef08a;
   }
 }
@@ -266,9 +266,9 @@ html, body {
 .stack-selection-halo {
   position: absolute;
   pointer-events: none;
-  border-radius: 8px;
-  border: 2.5px solid #fbbf24;
-  box-shadow: 0 0 14px #fbbf24, 0 0 28px rgba(251, 191, 36, 0.65);
+  border-radius: 7px;
+  border: 2px solid #fbbf24;
+  box-shadow: 0 0 6px #fbbf24, 0 0 14px rgba(251, 191, 36, 0.55);
   animation: hintPulse 2.4s infinite ease-in-out;
   z-index: 48;
   box-sizing: border-box;

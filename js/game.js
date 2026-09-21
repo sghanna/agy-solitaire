@@ -26,9 +26,10 @@ class SolitaireGame {
     // Format: { pile: 'tableau'|'waste'|'foundation', colIndex, cardIndex, suit, card, cards: [] }
     this.selected = null;
 
-    // Double-tap tracker: allows instant auto-move on double-tap
+    // Double-tap tracker: allows comfortable deliberate auto-move on double-tap
     this.lastTapTime = 0;
     this.lastTapCardId = null;
+    this.doubleTapThreshold = 650; // 650ms accessible window for comfortable deliberate tapping
 
     // Animation lock to prevent race conditions during card flight
     this.isAnimating = false;
@@ -502,7 +503,7 @@ class SolitaireGame {
 
     // Double-tap detection on Waste card
     const now = Date.now();
-    const isDoubleTap = (this.lastTapCardId === topWasteCard.id && (now - this.lastTapTime) < 350);
+    const isDoubleTap = (this.lastTapCardId === topWasteCard.id && (now - this.lastTapTime) < this.doubleTapThreshold);
 
     if (isDoubleTap) {
       this.lastTapTime = 0;
@@ -559,7 +560,7 @@ class SolitaireGame {
         const topCard = fStack[fStack.length - 1];
 
         const now = Date.now();
-        const isDoubleTap = (this.lastTapCardId === topCard.id && (now - this.lastTapTime) < 350);
+        const isDoubleTap = (this.lastTapCardId === topCard.id && (now - this.lastTapTime) < this.doubleTapThreshold);
 
         if (isDoubleTap) {
           this.lastTapTime = 0;
@@ -631,7 +632,7 @@ class SolitaireGame {
 
       // A2: Face-up card: check Double-Tap first!
       const now = Date.now();
-      const isDoubleTap = (this.lastTapCardId === card.id && (now - this.lastTapTime) < 350);
+      const isDoubleTap = (this.lastTapCardId === card.id && (now - this.lastTapTime) < this.doubleTapThreshold);
 
       if (isDoubleTap) {
         this.lastTapTime = 0;
@@ -1238,10 +1239,10 @@ class SolitaireGame {
         const halo = document.createElement('div');
         halo.className = 'stack-selection-halo';
         halo.id = 'active-selection-halo';
-        halo.style.top = '-6px';
-        halo.style.left = '-2px';
-        halo.style.width = 'calc(100% + 4px)';
-        halo.style.height = 'calc(100% + 4px)';
+        halo.style.top = '-5px';
+        halo.style.left = '-1px';
+        halo.style.width = 'calc(100% + 2px)';
+        halo.style.height = 'calc(100% + 2px)';
         this.wasteEl.appendChild(halo);
       }
       this.wasteEl.appendChild(cardEl);
@@ -1261,10 +1262,10 @@ class SolitaireGame {
           const halo = document.createElement('div');
           halo.className = 'stack-selection-halo';
           halo.id = 'active-selection-halo';
-          halo.style.top = '-6px';
-          halo.style.left = '-2px';
-          halo.style.width = 'calc(100% + 4px)';
-          halo.style.height = 'calc(100% + 4px)';
+          halo.style.top = '-5px';
+          halo.style.left = '-1px';
+          halo.style.width = 'calc(100% + 2px)';
+          halo.style.height = 'calc(100% + 2px)';
           fEl.appendChild(halo);
         }
         fEl.appendChild(cardEl);
@@ -1293,6 +1294,7 @@ class SolitaireGame {
       let currentTopOffset = 0;
       let selectedFirstTop = null;
       let selectedLastTop = null;
+      let lastSelectedCardEl = null;
 
       cards.forEach((card, index) => {
         const cardEl = window.SolitaireDeck.createCardElement(card);
@@ -1306,6 +1308,7 @@ class SolitaireGame {
           cardEl.classList.add('selected-stack-card');
           if (selectedFirstTop === null) selectedFirstTop = currentTopOffset;
           selectedLastTop = currentTopOffset;
+          lastSelectedCardEl = cardEl;
         }
 
         // Generous vertical exposure: 26px for face-up cards, 12px for face-down
@@ -1323,11 +1326,20 @@ class SolitaireGame {
         const halo = document.createElement('div');
         halo.className = 'stack-selection-halo';
         halo.id = 'active-selection-halo';
-        const stackHeight = (selectedLastTop - selectedFirstTop) + 68;
-        halo.style.top = `${selectedFirstTop - 4}px`;
-        halo.style.left = '-2px';
-        halo.style.width = 'calc(100% + 4px)';
-        halo.style.height = `${stackHeight + 4}px`;
+
+        // Accurately compute card height from DOM or column aspect ratio
+        let cardHeight = 78;
+        if (lastSelectedCardEl && lastSelectedCardEl.offsetHeight > 0) {
+          cardHeight = lastSelectedCardEl.offsetHeight;
+        } else if (colEl.clientWidth > 0) {
+          cardHeight = Math.round(colEl.clientWidth * (68 / 48));
+        }
+
+        const stackHeight = (selectedLastTop - selectedFirstTop) + cardHeight;
+        halo.style.top = `${selectedFirstTop - 5}px`;
+        halo.style.left = '-1px';
+        halo.style.width = 'calc(100% + 2px)';
+        halo.style.height = `${stackHeight + 2}px`;
         colEl.appendChild(halo);
       }
     }
