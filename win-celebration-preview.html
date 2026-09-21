@@ -469,6 +469,11 @@
     }
     .dyn-lantern {
       position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0; /* Fully hidden before animation delay elapses */
+      transform: translateY(720px); /* Parked off-screen below the bottom frame */
+      animation-fill-mode: both !important;
       border-radius: 8px;
       background: radial-gradient(circle at 40% 35%, #ef4444 0%, #991b1b 75%, #450a0a 100%);
       border: 1.5px solid #fbbf24;
@@ -480,7 +485,7 @@
       font-family: "PingFang SC", sans-serif;
       font-weight: 900;
       will-change: transform, opacity;
-      animation-iteration-count: infinite;
+      pointer-events: none;
     }
     .dyn-lantern::after {
       content: "";
@@ -500,31 +505,31 @@
 
     /* Floating Sky Lantern Animations: Slow, Serene, Authentic Ascent */
     @keyframes floatUpGentle {
-      0% { transform: translateY(680px) translateX(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.95; }
+      0% { transform: translateY(720px) translateX(0) rotate(0deg); opacity: 0; }
+      5% { opacity: 0.95; }
       25% { transform: translateY(500px) translateX(10px) rotate(1.2deg); }
       50% { transform: translateY(330px) translateX(-8px) rotate(-1deg); }
       75% { transform: translateY(160px) translateX(12px) rotate(1.2deg); }
-      90% { opacity: 0.95; }
-      100% { transform: translateY(-90px) translateX(2px) rotate(-0.5deg); opacity: 0; }
+      92% { opacity: 0.95; }
+      100% { transform: translateY(-110px) translateX(2px) rotate(-0.5deg); opacity: 0; }
     }
     @keyframes floatUpSwayLeft {
-      0% { transform: translateY(680px) translateX(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.95; }
+      0% { transform: translateY(720px) translateX(0) rotate(0deg); opacity: 0; }
+      5% { opacity: 0.95; }
       25% { transform: translateY(510px) translateX(-16px) rotate(-1.5deg); }
       50% { transform: translateY(340px) translateX(8px) rotate(1deg); }
       75% { transform: translateY(170px) translateX(-18px) rotate(-1.2deg); }
-      90% { opacity: 0.95; }
-      100% { transform: translateY(-90px) translateX(-4px) rotate(0.5deg); opacity: 0; }
+      92% { opacity: 0.95; }
+      100% { transform: translateY(-110px) translateX(-4px) rotate(0.5deg); opacity: 0; }
     }
     @keyframes floatUpSwayRight {
-      0% { transform: translateY(680px) translateX(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.95; }
+      0% { transform: translateY(720px) translateX(0) rotate(0deg); opacity: 0; }
+      5% { opacity: 0.95; }
       25% { transform: translateY(510px) translateX(18px) rotate(1.5deg); }
       50% { transform: translateY(340px) translateX(-10px) rotate(-1.2deg); }
       75% { transform: translateY(170px) translateX(14px) rotate(1deg); }
-      90% { opacity: 0.95; }
-      100% { transform: translateY(-90px) translateX(6px) rotate(-0.5deg); opacity: 0; }
+      92% { opacity: 0.95; }
+      100% { transform: translateY(-110px) translateX(6px) rotate(-0.5deg); opacity: 0; }
     }
 
     /* Subtle Flame Flicker inside paper lanterns */
@@ -746,9 +751,9 @@
 
       <!-- 3 Floating Lanterns (Slow, authentic sky ascent) -->
       <div class="lantern-container" id="lanterns-a">
-        <div class="dyn-lantern large" style="left: 50px; animation: floatUpSwayLeft 19s infinite linear, lanternFlicker 3.2s infinite ease-in-out; animation-delay: 0s;">囍</div>
-        <div class="dyn-lantern large" style="left: 280px; animation: floatUpSwayRight 22s infinite linear, lanternFlicker 2.8s infinite ease-in-out; animation-delay: 7s;">福</div>
-        <div class="dyn-lantern medium" style="left: 175px; animation: floatUpGentle 17s infinite linear, lanternFlicker 3.5s infinite ease-in-out; animation-delay: 13s;">寿</div>
+        <div class="dyn-lantern large" style="left: 50px; animation: floatUpSwayLeft 19s linear 0s infinite both, lanternFlicker 3.2s ease-in-out 0s infinite both;">囍</div>
+        <div class="dyn-lantern large" style="left: 280px; animation: floatUpSwayRight 22s linear 7s infinite both, lanternFlicker 2.8s ease-in-out 7s infinite both;">福</div>
+        <div class="dyn-lantern medium" style="left: 175px; animation: floatUpGentle 17s linear 13s infinite both, lanternFlicker 3.5s ease-in-out 13s infinite both;">寿</div>
       </div>
 
       <canvas class="celebration-canvas" id="canvas-a" width="390" height="640"></canvas>
@@ -803,12 +808,12 @@
 
       <!-- 6 Floating Lanterns (Slow, authentic sky ascent) -->
       <div class="lantern-container" id="lanterns-b">
-        <div class="dyn-lantern medium" style="left: 30px; animation: floatUpGentle 18s infinite linear, lanternFlicker 3s infinite ease-in-out; animation-delay: 0s;">囍</div>
-        <div class="dyn-lantern small" style="left: 110px; animation: floatUpSwayRight 23s infinite linear, lanternFlicker 2.5s infinite ease-in-out; animation-delay: 3.5s;">福</div>
-        <div class="dyn-lantern large" style="left: 290px; animation: floatUpSwayLeft 19s infinite linear, lanternFlicker 3.3s infinite ease-in-out; animation-delay: 7s;">囍</div>
-        <div class="dyn-lantern medium" style="left: 200px; animation: floatUpGentle 17s infinite linear, lanternFlicker 3.1s infinite ease-in-out; animation-delay: 10.5s;">禄</div>
-        <div class="dyn-lantern small" style="left: 60px; animation: floatUpSwayRight 22s infinite linear, lanternFlicker 2.7s infinite ease-in-out; animation-delay: 14s;">寿</div>
-        <div class="dyn-lantern medium" style="left: 250px; animation: floatUpSwayLeft 20s infinite linear, lanternFlicker 3.4s infinite ease-in-out; animation-delay: 17.5s;">吉</div>
+        <div class="dyn-lantern medium" style="left: 30px; animation: floatUpGentle 18s linear 0s infinite both, lanternFlicker 3s ease-in-out 0s infinite both;">囍</div>
+        <div class="dyn-lantern small" style="left: 110px; animation: floatUpSwayRight 23s linear 3.5s infinite both, lanternFlicker 2.5s ease-in-out 3.5s infinite both;">福</div>
+        <div class="dyn-lantern large" style="left: 290px; animation: floatUpSwayLeft 19s linear 7s infinite both, lanternFlicker 3.3s ease-in-out 7s infinite both;">囍</div>
+        <div class="dyn-lantern medium" style="left: 200px; animation: floatUpGentle 17s linear 10.5s infinite both, lanternFlicker 3.1s ease-in-out 10.5s infinite both;">禄</div>
+        <div class="dyn-lantern small" style="left: 60px; animation: floatUpSwayRight 22s linear 14s infinite both, lanternFlicker 2.7s ease-in-out 14s infinite both;">寿</div>
+        <div class="dyn-lantern medium" style="left: 250px; animation: floatUpSwayLeft 20s linear 17.5s infinite both, lanternFlicker 3.4s ease-in-out 17.5s infinite both;">吉</div>
       </div>
 
       <canvas class="celebration-canvas" id="canvas-b" width="390" height="640"></canvas>
@@ -863,15 +868,15 @@
 
       <!-- 9 Floating Lanterns (Slow, authentic sky ascent) -->
       <div class="lantern-container" id="lanterns-c">
-        <div class="dyn-lantern medium" style="left: 20px; animation: floatUpGentle 17s infinite linear, lanternFlicker 3s infinite ease-in-out; animation-delay: 0s;">囍</div>
-        <div class="dyn-lantern large" style="left: 80px; animation: floatUpSwayRight 20s infinite linear, lanternFlicker 3.4s infinite ease-in-out; animation-delay: 3s;">福</div>
-        <div class="dyn-lantern small" style="left: 140px; animation: floatUpSwayLeft 22s infinite linear, lanternFlicker 2.6s infinite ease-in-out; animation-delay: 6s;">禄</div>
-        <div class="dyn-lantern medium" style="left: 200px; animation: floatUpGentle 18s infinite linear, lanternFlicker 3.2s infinite ease-in-out; animation-delay: 9s;">寿</div>
-        <div class="dyn-lantern large" style="left: 270px; animation: floatUpSwayLeft 19s infinite linear, lanternFlicker 3.5s infinite ease-in-out; animation-delay: 2s;">囍</div>
-        <div class="dyn-lantern small" style="left: 320px; animation: floatUpSwayRight 23s infinite linear, lanternFlicker 2.8s infinite ease-in-out; animation-delay: 7s;">财</div>
-        <div class="dyn-lantern medium" style="left: 50px; animation: floatUpSwayLeft 18s infinite linear, lanternFlicker 3.1s infinite ease-in-out; animation-delay: 11s;">吉</div>
-        <div class="dyn-lantern small" style="left: 170px; animation: floatUpGentle 21s infinite linear, lanternFlicker 2.9s infinite ease-in-out; animation-delay: 14s;">春</div>
-        <div class="dyn-lantern medium" style="left: 240px; animation: floatUpSwayRight 19s infinite linear, lanternFlicker 3.3s infinite ease-in-out; animation-delay: 16s;">和</div>
+        <div class="dyn-lantern medium" style="left: 20px; animation: floatUpGentle 17s linear 0s infinite both, lanternFlicker 3s ease-in-out 0s infinite both;">囍</div>
+        <div class="dyn-lantern large" style="left: 80px; animation: floatUpSwayRight 20s linear 3s infinite both, lanternFlicker 3.4s ease-in-out 3s infinite both;">福</div>
+        <div class="dyn-lantern small" style="left: 140px; animation: floatUpSwayLeft 22s linear 6s infinite both, lanternFlicker 2.6s ease-in-out 6s infinite both;">禄</div>
+        <div class="dyn-lantern medium" style="left: 200px; animation: floatUpGentle 18s linear 9s infinite both, lanternFlicker 3.2s ease-in-out 9s infinite both;">寿</div>
+        <div class="dyn-lantern large" style="left: 270px; animation: floatUpSwayLeft 19s linear 2s infinite both, lanternFlicker 3.5s ease-in-out 2s infinite both;">囍</div>
+        <div class="dyn-lantern small" style="left: 320px; animation: floatUpSwayRight 23s linear 7s infinite both, lanternFlicker 2.8s ease-in-out 7s infinite both;">财</div>
+        <div class="dyn-lantern medium" style="left: 50px; animation: floatUpSwayLeft 18s linear 11s infinite both, lanternFlicker 3.1s ease-in-out 11s infinite both;">吉</div>
+        <div class="dyn-lantern small" style="left: 170px; animation: floatUpGentle 21s linear 14s infinite both, lanternFlicker 2.9s ease-in-out 14s infinite both;">春</div>
+        <div class="dyn-lantern medium" style="left: 240px; animation: floatUpSwayRight 19s linear 16s infinite both, lanternFlicker 3.3s ease-in-out 16s infinite both;">和</div>
       </div>
 
       <canvas class="celebration-canvas" id="canvas-c" width="390" height="640"></canvas>
@@ -926,11 +931,11 @@
 
       <!-- 5 Floating Lanterns in ascending arc (Slow, authentic sky ascent) -->
       <div class="lantern-container" id="lanterns-d">
-        <div class="dyn-lantern medium" style="left: 40px; animation: floatUpGentle 19s infinite linear, lanternFlicker 3.1s infinite ease-in-out; animation-delay: 0s;">囍</div>
-        <div class="dyn-lantern large" style="left: 100px; animation: floatUpSwayRight 18s infinite linear, lanternFlicker 3.4s infinite ease-in-out; animation-delay: 4s;">福</div>
-        <div class="dyn-lantern medium" style="left: 175px; animation: floatUpGentle 21s infinite linear, lanternFlicker 2.9s infinite ease-in-out; animation-delay: 8s;">寿</div>
-        <div class="dyn-lantern large" style="left: 250px; animation: floatUpSwayLeft 20s infinite linear, lanternFlicker 3.5s infinite ease-in-out; animation-delay: 3s;">囍</div>
-        <div class="dyn-lantern medium" style="left: 310px; animation: floatUpGentle 17s infinite linear, lanternFlicker 3.0s infinite ease-in-out; animation-delay: 7s;">吉</div>
+        <div class="dyn-lantern medium" style="left: 40px; animation: floatUpGentle 19s linear 0s infinite both, lanternFlicker 3.1s ease-in-out 0s infinite both;">囍</div>
+        <div class="dyn-lantern large" style="left: 100px; animation: floatUpSwayRight 18s linear 4s infinite both, lanternFlicker 3.4s ease-in-out 4s infinite both;">福</div>
+        <div class="dyn-lantern medium" style="left: 175px; animation: floatUpGentle 21s linear 8s infinite both, lanternFlicker 2.9s ease-in-out 8s infinite both;">寿</div>
+        <div class="dyn-lantern large" style="left: 250px; animation: floatUpSwayLeft 20s linear 3s infinite both, lanternFlicker 3.5s ease-in-out 3s infinite both;">囍</div>
+        <div class="dyn-lantern medium" style="left: 310px; animation: floatUpGentle 17s linear 7s infinite both, lanternFlicker 3.0s ease-in-out 7s infinite both;">吉</div>
       </div>
 
       <canvas class="celebration-canvas" id="canvas-d" width="390" height="640"></canvas>
@@ -1407,8 +1412,7 @@
 
         div.className = `dyn-lantern ${size}`;
         div.style.left = `${left}px`;
-        div.style.animation = `${anim} ${dur}s infinite linear, lanternFlicker ${flickerDur}s infinite ease-in-out`;
-        div.style.animationDelay = `${delay}s, 0s`;
+        div.style.animation = `${anim} ${dur}s linear ${delay}s infinite both, lanternFlicker ${flickerDur}s ease-in-out ${delay}s infinite both`;
         div.textContent = characters[i % characters.length];
 
         lanternContainerStudio.appendChild(div);
