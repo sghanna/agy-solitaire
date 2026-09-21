@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>agy-solitaire - Card Design Options for iPhone 16e</title>
+  <style>
+    :root {
+      --bg-color: #0d1b14;
+      --card-red: #c62828;
+      --card-black: #111111;
+      --card-bg: #ffffff;
+      --card-border: #2c3e50;
+      --felt-green: #1a4329;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #121814;
+      color: #f0f0f0;
+      padding: 24px 16px 80px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      max-width: 900px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 8px;
+      color: #4ade80;
+    }
+
+    p.subtitle {
+      font-size: 15px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .notice-box {
+      background: #1e293b;
+      border-left: 4px solid #38bdf8;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 16px 0 24px 0;
+      font-size: 14px;
+      color: #cbd5e1;
+      text-align: left;
+      max-width: 800px;
+    }
+
+    .options-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      background: rgba(18, 24, 20, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 10px 14px;
+      border-radius: 30px;
+      border: 1px solid #334155;
+    }
+
+    .nav-btn {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #475569;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: #22c55e;
+      color: #052e16;
+      border-color: #22c55e;
+    }
+
+    .section-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 900px;
+      width: 100%;
+      margin-bottom: 36px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .option-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 12px;
+    }
+
+    .option-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .option-tag {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .option-desc {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .showcase-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .card-sample-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Standard Card Box - 80px x 115px for preview */
+    .card {
+      width: 84px;
+      height: 120px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 2px solid #1e293b;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card.red {
+      color: #c62828;
+    }
+
+    .card.black {
+      color: #111111;
+    }
+
+    /* iPhone 16e Simulation View */
+    .iphone-sim-container {
+      background: #0b1710;
+      border: 3px solid #334155;
+      border-radius: 24px;
+      padding: 16px 12px;
+      width: 100%;
+      max-width: 390px;
+      margin-top: 16px;
+    }
+
+    .iphone-sim-title {
+      font-size: 12px;
+      font-weight: bold;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .iphone-sim-tableau {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      width: 100%;
+      min-height: 160px;
+    }
+
+    .tableau-col {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Micro-card for 390px iPhone simulation */
+    .iphone-card {
+      width: 100%;
+      aspect-ratio: 1 / 1.4;
+      background: #ffffff;
+      border-radius: 5px;
+      border: 1.5px solid #222;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: -72%; /* realistic cascade overlap */
+    }
+
+    .iphone-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .iphone-card.facedown {
+      background: linear-gradient(135deg, #1e3a8a 25%, #2563eb 25%, #2563eb 50%, #1e3a8a 50%, #1e3a8a 75%, #2563eb 75%);
+      background-size: 12px 12px;
+      border: 1.5px solid #172554;
+    }
+
+    /* ========================================================= */
+    /* OPTION 1: CLEAN JUMBO-INDEX (CLASSIC REFINED)              */
+    /* ========================================================= */
+    .opt1-index {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+    .opt1-rank {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+    .opt1-suit {
+      font-size: 20px;
+      margin-top: 1px;
+    }
+    .opt1-center {
+      margin: auto;
+      font-size: 38px;
+      line-height: 1;
+    }
+    .opt1-court-letter {
+      margin: auto;
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    /* iPhone mini scale opt1 */
+    .iphone-card.opt1 {
+      padding: 2px 3px;
+    }
+    .iphone-card.opt1 .mini-rank {
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1;
+      display: block;
+    }
+    .iphone-card.opt1 .mini-suit {
+      font-size: 11px;
+      line-height: 1;
+      display: block;
+    }
+
+    /* ========================================================= */
+    /* OPTION 2: BANNER HEADER (MAXIMUM TABLEAU VISIBILITY)      */
+    /* ========================================================= */
+    .opt2-header {
+      width: 100%;
+      height: 34px;
+      background: #f1f5f9;
+      border-bottom: 2px solid #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px;
+    }
+    .card.red .opt2-header {
+      background: #fee2e2;
+      border-bottom: 2px solid #f87171;
+    }
+    .card.black .opt2-header {
+      background: #f1f5f9;
+      border-bottom: 2px solid #94a3b8;
+    }
+    .opt2-rank {
+      font-size: 24px;
+      font-weight: 900;
+    }
+    .opt2-suit {
+      font-size: 22px;
+    }
+    .opt2-center {
+      margin: auto;
+      font-size: 36px;
+    }
+
+    /* iPhone mini scale opt2 */
+    .iphone-card.opt2 .mini-header {
+      height: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2px;
+      border-bottom: 1.5px solid #cbd5e1;
+    }
+    .iphone-card.opt2.red .mini-header {
+      background: #fee2e2;
+      border-color: #f87171;
+    }
+    .iphone-card.opt2.black .mini-header {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .iphone-card.opt2 .mini-rank {
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .iphone-card.opt2 .mini-suit {
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    /* ========================================================= */
+    /* OPTION 3: EDGE-TO-EDGE JUMBO (MAXIMUM DIGIT SIZE)         */
+    /* ========================================================= */
+    .opt3-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3px 6px;
+    }
+    .opt3-top {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+    }
+    .opt3-rank {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 0.9;
+    }
+    .opt3-suit {
+      font-size: 24px;
+      line-height: 1;
+    }
+    .opt3-center {
+      font-size: 48px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 0.8;
+      margin-bottom: 6px;
+    }
+
+    /* iPhone mini scale opt3 */
+    .iphone-card.opt3 {
+      padding: 2px;
+    }
+    .iphone-card.opt3 .mini-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1px;
+    }
+    .iphone-card.opt3 .mini-rank {
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .iphone-card.opt3 .mini-suit {
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    /* ========================================================= */
+    /* OPTION 4: HIGH-CONTRAST BADGE PILL (COLOR-BLOCKED TAG)    */
+    /* ========================================================= */
+    .opt4-badge {
+      margin: 4px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card.red .opt4-badge {
+      background: #c62828;
+      color: #ffffff;
+    }
+    .card.black .opt4-badge {
+      background: #111111;
+      color: #ffffff;
+    }
+    .opt4-rank {
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .opt4-suit {
+      font-size: 18px;
+    }
+    .opt4-center {
+      margin: auto;
+      font-size: 36px;
+    }
+
+    /* iPhone mini scale opt4 */
+    .iphone-card.opt4 .mini-badge {
+      margin: 1.5px;
+      padding: 1px 2px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .iphone-card.opt4.red .mini-badge {
+      background: #c62828;
+      color: #fff;
+    }
+    .iphone-card.opt4.black .mini-badge {
+      background: #111;
+      color: #fff;
+    }
+    .iphone-card.opt4 .mini-rank {
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .iphone-card.opt4 .mini-suit {
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    /* ========================================================= */
+    /* OPTION 5: CASINO LOW-VISION (DUAL-CORNER JUMBO BOLD)      */
+    /* ========================================================= */
+    .opt5-corner-tl {
+      position: absolute;
+      top: 4px;
+      left: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 0.95;
+    }
+    .opt5-corner-br {
+      position: absolute;
+      bottom: 4px;
+      right: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 0.95;
+      transform: rotate(180deg);
+    }
+    .opt5-rank {
+      font-size: 24px;
+      font-weight: 900;
+    }
+    .opt5-suit {
+      font-size: 16px;
+    }
+    .opt5-center {
+      margin: auto;
+      font-size: 32px;
+    }
+
+    /* iPhone mini scale opt5 */
+    .iphone-card.opt5 .mini-corner {
+      padding: 2px;
+      line-height: 0.9;
+    }
+    .iphone-card.opt5 .mini-rank {
+      font-size: 14px;
+      font-weight: 900;
+      display: block;
+    }
+    .iphone-card.opt5 .mini-suit {
+      font-size: 10px;
+      display: block;
+    }
+
+    .key-features {
+      margin-top: 14px;
+      padding-left: 18px;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    .key-features li {
+      margin-bottom: 4px;
+    }
+    .key-features strong {
+      color: #e2e8f0;
+    }
+
+    .pro-con-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+    .pro { background: #065f46; color: #6ee7b7; }
+    .con { background: #7f1d1d; color: #fca5a5; }
+
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>agy-solitaire: 5 Accessible Card Designs</h1>
+    <p class="subtitle">Custom-engineered for an iPhone 16e (Portrait) for a player with monocular vision & floaters.<br>
+    Classic 2-Color (High-Contrast Red & Deep Black) with zero decorative visual noise.</p>
+    <div class="notice-box">
+      <strong>Accessibility Goal:</strong> In portrait Klondike Solitaire on a 390pt screen, cards cascade vertically. The top edge of overlapping cards must remain unmistakable without requiring squinting or confusing floater shadows with small ornate details.
+    </div>
+  </header>
+
+  <nav class="options-nav">
+    <a href="#option1" class="nav-btn">1. Clean Jumbo-Index</a>
+    <a href="#option2" class="nav-btn">2. Top Banner Header</a>
+    <a href="#option3" class="nav-btn">3. Edge-to-Edge Bold</a>
+    <a href="#option4" class="nav-btn">4. High-Contrast Pill</a>
+    <a href="#option5" class="nav-btn">5. Casino Low-Vision</a>
+  </nav>
+
+  <!-- OPTION 1 -->
+  <section class="section-card" id="option1">
+    <div class="option-header">
+      <div class="option-title">Option 1: Clean Jumbo-Index (Refined Classic)</div>
+      <div class="option-tag">Recommended Balanced</div>
+    </div>
+    <p class="option-desc">
+      A direct modernization of standard cards with 250% enlarged corner index (rank + suit stacked vertically). Central area uses clean, bold iconography without tiny scattered pips. Face cards (J, Q, K) feature giant bold letters so there is no visual clutter to confuse floaters.
+    </p>
+    
+    <div class="showcase-row">
+      <!-- 4 Card Showcase -->
+      <div class="card-sample-group">
+        <!-- 10 of Hearts -->
+        <div class="card red">
+          <div class="opt1-index">
+            <span class="opt1-rank">10</span>
+            <span class="opt1-suit">♥</span>
+          </div>
+          <div class="opt1-center">♥</div>
+        </div>
+        <!-- Ace of Spades -->
+        <div class="card black">
+          <div class="opt1-index">
+            <span class="opt1-rank">A</span>
+            <span class="opt1-suit">♠</span>
+          </div>
+          <div class="opt1-center">♠</div>
+        </div>
+        <!-- King of Spades -->
+        <div class="card black">
+          <div class="opt1-index">
+            <span class="opt1-rank">K</span>
+            <span class="opt1-suit">♠</span>
+          </div>
+          <div class="opt1-court-letter">K</div>
+        </div>
+        <!-- Queen of Hearts -->
+        <div class="card red">
+          <div class="opt1-index">
+            <span class="opt1-rank">Q</span>
+            <span class="opt1-suit">♥</span>
+          </div>
+          <div class="opt1-court-letter">Q</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iPhone 16e Simulation -->
+    <div class="iphone-sim-container">
+      <div class="iphone-sim-title">
+        <span>iPhone 16e (390px) Tableau Cascade View</span>
+        <span>Portrait Scale</span>
+      </div>
+      <div class="iphone-sim-tableau">
+        <div class="tableau-col">
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card opt1 black">
+            <span class="mini-rank">K</span>
+            <span class="mini-suit">♠</span>
+          </div>
+          <div class="iphone-card opt1 red">
+            <span class="mini-rank">Q</span>
+            <span class="mini-suit">♥</span>
+          </div>
+          <div class="iphone-card opt1 black">
+            <span class="mini-rank">J</span>
+            <span class="mini-suit">♣</span>
+          </div>
+          <div class="iphone-card opt1 red">
+            <span class="mini-rank">10</span>
+            <span class="mini-suit">♦</span>
+          </div>
+        </div>
+        <!-- Empty spacers to show relative scale -->
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card opt1 red"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div>
+        <div class="tableau-col"><div class="iphone-card opt1 black"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div>
+        <div class="tableau-col"><div class="iphone-card opt1 red"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div>
+        <div class="tableau-col"><div class="iphone-card opt1 black"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div>
+        <div class="tableau-col"><div class="iphone-card opt1 red"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div>
+        <div class="tableau-col"><div class="iphone-card opt1 black"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div>
+      </div>
+    </div>
+
+    <ul class="key-features">
+      <li><span class="pro-con-tag pro">Advantage</span> Natural, familiar card aesthetics with maximum clarity.</li>
+      <li><span class="pro-con-tag pro">Floater Friendly</span> No intricate royalty illustration patterns; clean solid white background.</li>
+      <li><span class="pro-con-tag con">Tradeoff</span> When cascade is tight, rank and suit stack vertically so slightly more vertical height is required.</li>
+    </ul>
+  </section>
+
+  <!-- OPTION 2 -->
+  <section class="section-card" id="option2">
+    <div class="option-header">
+      <div class="option-title">Option 2: Top Banner Header (Maximum Overlap Clarity)</div>
+      <div class="option-tag">Best for Tableau Stacking</div>
+    </div>
+    <p class="option-desc">
+      Features a distinct horizontal header bar across the top of every card (soft red tint for Hearts/Diamonds, soft cool slate for Spades/Clubs). The rank sits on the far left and suit on the far right. In a portrait Solitaire cascade, this entire header is 100% exposed across every stacked card!
+    </p>
+    
+    <div class="showcase-row">
+      <div class="card-sample-group">
+        <div class="card red">
+          <div class="opt2-header">
+            <span class="opt2-rank">10</span>
+            <span class="opt2-suit">♥</span>
+          </div>
+          <div class="opt2-center">♥</div>
+        </div>
+        <div class="card black">
+          <div class="opt2-header">
+            <span class="opt2-rank">A</span>
+            <span class="opt2-suit">♠</span>
+          </div>
+          <div class="opt2-center">♠</div>
+        </div>
+        <div class="card black">
+          <div class="opt2-header">
+            <span class="opt2-rank">K</span>
+            <span class="opt2-suit">♠</span>
+          </div>
+          <div class="opt1-court-letter">K</div>
+        </div>
+        <div class="card red">
+          <div class="opt2-header">
+            <span class="opt2-rank">Q</span>
+            <span class="opt2-suit">♥</span>
+          </div>
+          <div class="opt1-court-letter">Q</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iPhone 16e Simulation -->
+    <div class="iphone-sim-container">
+      <div class="iphone-sim-title">
+        <span>iPhone 16e (390px) Tableau Cascade View</span>
+        <span>Portrait Scale</span>
+      </div>
+      <div class="iphone-sim-tableau">
+        <div class="tableau-col">
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card opt2 black">
+            <div class="mini-header"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          </div>
+          <div class="iphone-card opt2 red">
+            <div class="mini-header"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          </div>
+          <div class="iphone-card opt2 black">
+            <div class="mini-header"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          </div>
+          <div class="iphone-card opt2 red">
+            <div class="mini-header"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          </div>
+        </div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card opt2 red"><div class="mini-header"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt2 black"><div class="mini-header"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt2 red"><div class="mini-header"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt2 black"><div class="mini-header"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt2 red"><div class="mini-header"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt2 black"><div class="mini-header"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+      </div>
+    </div>
+
+    <ul class="key-features">
+      <li><span class="pro-con-tag pro">Advantage</span> The tinted banner gives instant visual segmentation between stacked cards.</li>
+      <li><span class="pro-con-tag pro">Ergonomics</span> Number and suit are horizontal on the top edge, taking minimal vertical space when cascading.</li>
+      <li><span class="pro-con-tag con">Tradeoff</span> Less traditional card look, but significantly higher readability on narrow screens.</li>
+    </ul>
+  </section>
+
+  <!-- OPTION 3 -->
+  <section class="section-card" id="option3">
+    <div class="option-header">
+      <div class="option-title">Option 3: Edge-to-Edge Bold (Maximum Font Scale)</div>
+      <div class="option-tag">Largest Numbers</div>
+    </div>
+    <p class="option-desc">
+      Pushes font size to the absolute physical limit. Rank and suit sit side-by-side in the top-left with ultra-heavy stroke weight. Face cards display an imposing, giant central letter (J, Q, K). Ideal if the user prefers reading by pure number scale.
+    </p>
+    
+    <div class="showcase-row">
+      <div class="card-sample-group">
+        <div class="card red">
+          <div class="opt3-container">
+            <div class="opt3-top">
+              <span class="opt3-rank">10</span>
+              <span class="opt3-suit">♥</span>
+            </div>
+            <div class="opt3-center">♥</div>
+          </div>
+        </div>
+        <div class="card black">
+          <div class="opt3-container">
+            <div class="opt3-top">
+              <span class="opt3-rank">A</span>
+              <span class="opt3-suit">♠</span>
+            </div>
+            <div class="opt3-center">♠</div>
+          </div>
+        </div>
+        <div class="card black">
+          <div class="opt3-container">
+            <div class="opt3-top">
+              <span class="opt3-rank">K</span>
+              <span class="opt3-suit">♠</span>
+            </div>
+            <div class="opt3-center">K</div>
+          </div>
+        </div>
+        <div class="card red">
+          <div class="opt3-container">
+            <div class="opt3-top">
+              <span class="opt3-rank">Q</span>
+              <span class="opt3-suit">♥</span>
+            </div>
+            <div class="opt3-center">Q</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iPhone 16e Simulation -->
+    <div class="iphone-sim-container">
+      <div class="iphone-sim-title">
+        <span>iPhone 16e (390px) Tableau Cascade View</span>
+        <span>Portrait Scale</span>
+      </div>
+      <div class="iphone-sim-tableau">
+        <div class="tableau-col">
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card opt3 black">
+            <div class="mini-row"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          </div>
+          <div class="iphone-card opt3 red">
+            <div class="mini-row"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          </div>
+          <div class="iphone-card opt3 black">
+            <div class="mini-row"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          </div>
+          <div class="iphone-card opt3 red">
+            <div class="mini-row"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          </div>
+        </div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card opt3 red"><div class="mini-row"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt3 black"><div class="mini-row"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt3 red"><div class="mini-row"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt3 black"><div class="mini-row"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt3 red"><div class="mini-row"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt3 black"><div class="mini-row"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+      </div>
+    </div>
+
+    <ul class="key-features">
+      <li><span class="pro-con-tag pro">Advantage</span> The largest absolute font size possible on a 390px mobile viewport.</li>
+      <li><span class="pro-con-tag pro">Floater Friendly</span> Very heavy strokes reduce letter fade and resist eye floaters drifting over numbers.</li>
+      <li><span class="pro-con-tag con">Tradeoff</span> Less room for margins; feels more modern and bold.</li>
+    </ul>
+  </section>
+
+  <!-- OPTION 4 -->
+  <section class="section-card" id="option4">
+    <div class="option-header">
+      <div class="option-title">Option 4: High-Contrast Pill (Solid Inverted Badge)</div>
+      <div class="option-tag">Maximum Color Contrast</div>
+    </div>
+    <p class="option-desc">
+      Inverts the index into a solid filled pill (solid red pill for red cards, solid black pill for black cards with crisp white text). This makes the color difference unmistakable from across the room, completely preventing accidental red-on-red or black-on-black tableau drops.
+    </p>
+    
+    <div class="showcase-row">
+      <div class="card-sample-group">
+        <div class="card red">
+          <div class="opt4-badge">
+            <span class="opt4-rank">10</span>
+            <span class="opt4-suit">♥</span>
+          </div>
+          <div class="opt4-center">♥</div>
+        </div>
+        <div class="card black">
+          <div class="opt4-badge">
+            <span class="opt4-rank">A</span>
+            <span class="opt4-suit">♠</span>
+          </div>
+          <div class="opt4-center">♠</div>
+        </div>
+        <div class="card black">
+          <div class="opt4-badge">
+            <span class="opt4-rank">K</span>
+            <span class="opt4-suit">♠</span>
+          </div>
+          <div class="opt1-court-letter">K</div>
+        </div>
+        <div class="card red">
+          <div class="opt4-badge">
+            <span class="opt4-rank">Q</span>
+            <span class="opt4-suit">♥</span>
+          </div>
+          <div class="opt1-court-letter">Q</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iPhone 16e Simulation -->
+    <div class="iphone-sim-container">
+      <div class="iphone-sim-title">
+        <span>iPhone 16e (390px) Tableau Cascade View</span>
+        <span>Portrait Scale</span>
+      </div>
+      <div class="iphone-sim-tableau">
+        <div class="tableau-col">
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card opt4 black">
+            <div class="mini-badge"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          </div>
+          <div class="iphone-card opt4 red">
+            <div class="mini-badge"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          </div>
+          <div class="iphone-card opt4 black">
+            <div class="mini-badge"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          </div>
+          <div class="iphone-card opt4 red">
+            <div class="mini-badge"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          </div>
+        </div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card opt4 red"><div class="mini-badge"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt4 black"><div class="mini-badge"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt4 red"><div class="mini-badge"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt4 black"><div class="mini-badge"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt4 red"><div class="mini-badge"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt4 black"><div class="mini-badge"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+      </div>
+    </div>
+
+    <ul class="key-features">
+      <li><span class="pro-con-tag pro">Advantage</span> Impossible to miss color alternation; red blocks pop vibrantly against black blocks.</li>
+      <li><span class="pro-con-tag pro">Contrast</span> White typography on dark solid shapes provides highest luminance contrast.</li>
+      <li><span class="pro-con-tag con">Tradeoff</span> Distinct graphic app feel rather than physical paper card look.</li>
+    </ul>
+  </section>
+
+  <!-- OPTION 5 -->
+  <section class="section-card" id="option5">
+    <div class="option-header">
+      <div class="option-title">Option 5: Casino Low-Vision (Dual Corner Jumbo)</div>
+      <div class="option-tag">Traditional Casino Deck</div>
+    </div>
+    <p class="option-desc">
+      Modeled directly after specialized low-vision large-print decks used in casino senior rooms. Has dual diagonal indices (top-left and bottom-right). Centered pips are enlarged and simplified (e.g. 10 has 4 bold central pips instead of 10 tiny pips to eliminate clutter).
+    </p>
+    
+    <div class="showcase-row">
+      <div class="card-sample-group">
+        <div class="card red">
+          <div class="opt5-corner-tl">
+            <span class="opt5-rank">10</span>
+            <span class="opt5-suit">♥</span>
+          </div>
+          <div class="opt5-center">♥</div>
+          <div class="opt5-corner-br">
+            <span class="opt5-rank">10</span>
+            <span class="opt5-suit">♥</span>
+          </div>
+        </div>
+        <div class="card black">
+          <div class="opt5-corner-tl">
+            <span class="opt5-rank">A</span>
+            <span class="opt5-suit">♠</span>
+          </div>
+          <div class="opt5-center">♠</div>
+          <div class="opt5-corner-br">
+            <span class="opt5-rank">A</span>
+            <span class="opt5-suit">♠</span>
+          </div>
+        </div>
+        <div class="card black">
+          <div class="opt5-corner-tl">
+            <span class="opt5-rank">K</span>
+            <span class="opt5-suit">♠</span>
+          </div>
+          <div class="opt1-court-letter">K</div>
+          <div class="opt5-corner-br">
+            <span class="opt5-rank">K</span>
+            <span class="opt5-suit">♠</span>
+          </div>
+        </div>
+        <div class="card red">
+          <div class="opt5-corner-tl">
+            <span class="opt5-rank">Q</span>
+            <span class="opt5-suit">♥</span>
+          </div>
+          <div class="opt1-court-letter">Q</div>
+          <div class="opt5-corner-br">
+            <span class="opt5-rank">Q</span>
+            <span class="opt5-suit">♥</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iPhone 16e Simulation -->
+    <div class="iphone-sim-container">
+      <div class="iphone-sim-title">
+        <span>iPhone 16e (390px) Tableau Cascade View</span>
+        <span>Portrait Scale</span>
+      </div>
+      <div class="iphone-sim-tableau">
+        <div class="tableau-col">
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card facedown"></div>
+          <div class="iphone-card opt5 black">
+            <div class="mini-corner"><span class="mini-rank">K</span><span class="mini-suit">♠</span></div>
+          </div>
+          <div class="iphone-card opt5 red">
+            <div class="mini-corner"><span class="mini-rank">Q</span><span class="mini-suit">♥</span></div>
+          </div>
+          <div class="iphone-card opt5 black">
+            <div class="mini-corner"><span class="mini-rank">J</span><span class="mini-suit">♣</span></div>
+          </div>
+          <div class="iphone-card opt5 red">
+            <div class="mini-corner"><span class="mini-rank">10</span><span class="mini-suit">♦</span></div>
+          </div>
+        </div>
+        <div class="tableau-col"><div class="iphone-card facedown"></div><div class="iphone-card opt5 red"><div class="mini-corner"><span class="mini-rank">9</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt5 black"><div class="mini-corner"><span class="mini-rank">8</span><span class="mini-suit">♠</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt5 red"><div class="mini-corner"><span class="mini-rank">7</span><span class="mini-suit">♦</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt5 black"><div class="mini-corner"><span class="mini-rank">6</span><span class="mini-suit">♣</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt5 red"><div class="mini-corner"><span class="mini-rank">5</span><span class="mini-suit">♥</span></div></div></div>
+        <div class="tableau-col"><div class="iphone-card opt5 black"><div class="mini-corner"><span class="mini-rank">4</span><span class="mini-suit">♠</span></div></div></div>
+      </div>
+    </div>
+
+    <ul class="key-features">
+      <li><span class="pro-con-tag pro">Advantage</span> Authentic real-world physical low-vision playing card layout.</li>
+      <li><span class="pro-con-tag pro">Floater Friendly</span> Symmetrical layout makes it recognizable from either orientation.</li>
+      <li><span class="pro-con-tag con">Tradeoff</span> Bottom index is hidden during cascade, so it only adds value on the bottom-most card or waste pile.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>agy-solitaire &bull; Designed specifically for low-vision & floater comfort on iPhone 16e</p>
+  </footer>
+
+</body>
+</html>
