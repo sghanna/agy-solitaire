@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>agy-solitaire: Accessible Klondike Solitaire</title>
+  
+  <!-- Apple Mobile Web App Tags for iPhone 16e PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Solitaire">
+  <meta name="theme-color" content="#0c2419">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="app-container">
+    <!-- ================================================================= -->
+    <!-- TOP HUD: OPTION 2 TOP FLOATING BRASS PILLS                        -->
+    <!-- ================================================================= -->
+    <header class="top-hud">
+      <div style="display: flex; gap: 5px;">
+        <button class="hud-btn" id="btn-undo" title="Undo previous move">&#x21BA; Undo</button>
+        <button class="hud-btn" id="btn-hint" title="Show helpful hint">&#x2728; Hint</button>
+      </div>
+
+      <div class="hud-info">
+        <div class="hud-stats">
+          <span id="hud-timer">00:00</span> &bull; <span id="hud-score">0</span> pts
+        </div>
+        <div class="hud-sub">Draw 1 &bull; iPhone 16e</div>
+      </div>
+
+      <div style="display: flex; gap: 5px;">
+        <button class="hud-btn" id="btn-audio-toggle" style="padding: 6px 10px;">🔊</button>
+        <button class="hud-btn new-game-btn" id="btn-new-game">New</button>
+      </div>
+    </header>
+
+    <!-- ================================================================= -->
+    <!-- TOP ROW: STOCK, WASTE, & 4 FOUNDATIONS                            -->
+    <!-- ================================================================= -->
+    <section class="top-row">
+      <div class="slot slot-stock" id="slot-stock" title="Stock pile"></div>
+      <div class="slot slot-waste" id="slot-waste" title="Waste pile"></div>
+      <div></div> <!-- Blank spacer between waste and foundations -->
+      <div class="slot slot-foundation" id="foundation-S" title="Spades Foundation"></div>
+      <div class="slot slot-foundation" id="foundation-H" title="Hearts Foundation"></div>
+      <div class="slot slot-foundation" id="foundation-C" title="Clubs Foundation"></div>
+      <div class="slot slot-foundation" id="foundation-D" title="Diamonds Foundation"></div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TABLEAU: 7 COLUMNS (GENEROUS TOUCH TARGETS & JUMBO RANKS)         -->
+    <!-- ================================================================= -->
+    <main class="tableau-area" id="game-board">
+      <div class="tableau-col" id="tableau-0" data-col="0"></div>
+      <div class="tableau-col" id="tableau-1" data-col="1"></div>
+      <div class="tableau-col" id="tableau-2" data-col="2"></div>
+      <div class="tableau-col" id="tableau-3" data-col="3"></div>
+      <div class="tableau-col" id="tableau-4" data-col="4"></div>
+      <div class="tableau-col" id="tableau-5" data-col="5"></div>
+      <div class="tableau-col" id="tableau-6" data-col="6"></div>
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- AUTO-FINISH BANNER (APPEARS WHEN ALL CARDS REVEALED)             -->
+    <!-- ================================================================= -->
+    <aside id="auto-finish-banner">
+      <div class="banner-text">🎉 Solitaire Solved!</div>
+      <button class="banner-btn" id="btn-auto-finish">Auto-Finish &rarr;</button>
+    </aside>
+
+    <!-- ================================================================= -->
+    <!-- VICTORY CELEBRATION LAYER (CANVAS + LANTERNS + 囍 MODAL)           -->
+    <!-- ================================================================= -->
+    <canvas id="victory-canvas"></canvas>
+    <div id="victory-lanterns"></div>
+
+    <div id="victory-modal-overlay">
+      <div class="opt2-seal">
+        <span class="opt2-glyph">囍</span>
+      </div>
+      <div class="opt2-title">VICTORY!</div>
+      <div class="opt2-sub" id="modal-sub-label">DOUBLE HAPPINESS</div>
+      
+      <div class="opt2-stats">
+        <span>TIME: <strong id="modal-stats-time">00:00</strong></span>
+        <span>&bull;</span>
+        <span>MOVES: <strong id="modal-stats-moves">0</strong></span>
+        <span>&bull;</span>
+        <span>SCORE: <strong id="modal-stats-score">0</strong></span>
+      </div>
+
+      <button class="opt2-btn" id="modal-play-again-btn">PLAY NEXT DEAL &#x27F6;</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/deck.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/celebration.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('app-container');
+      window.solitaireCelebration.init(container);
+      window.solitaireGame.init();
+
+      // Register PWA Service Worker if supported
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.log('SW registration note:', err);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
