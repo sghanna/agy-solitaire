@@ -94,11 +94,22 @@ class SolitaireGame {
       });
     }
 
-    // Auto-Complete button (if visible)
-    const autoFinishBtn = document.getElementById('btn-auto-finish');
-    if (autoFinishBtn) {
-      autoFinishBtn.addEventListener('click', () => this.autoComplete());
-    }
+    // Developer & Testing shortcut: Press 'W' to test alternating victory celebration, 'A' to auto-finish
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'w' || e.key === 'W') {
+        const stats = {
+          time: this.formatTime(this.elapsedSeconds),
+          moves: this.moves || 42,
+          score: this.score || 7450
+        };
+        if (window.solitaireCelebration) {
+          window.solitaireCelebration.celebrate(stats, () => this.startNewGame());
+        }
+      } else if (e.key === 'a' || e.key === 'A') {
+        this.autoComplete();
+      }
+    });
 
     // Global touch/click delegation for cards
     document.addEventListener('click', (e) => {
