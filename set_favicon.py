@@ -23,6 +23,8 @@ FAVICON_MAP = {
     "5": "favicon-lantern.svg",
     "6": "favicon-four-suits.svg",
     "7": "favicon-kq-stacked.svg",
+    "8": "favicon-kqj-crimson.svg",
+    "9": "favicon-kqj-felt-rim.svg",
     "double-happiness": "favicon-double-happiness.svg",
     "crowned-king": "favicon-crowned-king.svg",
     "foundation-ace": "favicon-foundation-ace.svg",
@@ -30,7 +32,10 @@ FAVICON_MAP = {
     "lantern": "favicon-lantern.svg",
     "four-suits": "favicon-four-suits.svg",
     "kq-stacked": "favicon-kq-stacked.svg",
-    "kq": "favicon-kq-stacked.svg"
+    "kqj-crimson": "favicon-kqj-crimson.svg",
+    "kqj-felt-rim": "favicon-kqj-felt-rim.svg",
+    "kq": "favicon-kq-stacked.svg",
+    "kqj": "favicon-kqj-crimson.svg"
 }
 
 def main():

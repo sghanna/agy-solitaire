@@ -26,13 +26,12 @@
           <stop offset="100%" stop-color="#450a0a"/>
         </radialGradient>
         <rect width="512" height="512" fill="url(#bgGrad)"/>
-        <!-- Double Happiness Gold Filigree Pinstripe -->
-        <rect x="14" y="14" width="484" height="484" rx="94" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-opacity="0.9"/>
-        <rect x="19" y="19" width="474" height="474" rx="89" fill="none" stroke="#fef08a" stroke-width="0.75" stroke-opacity="0.45"/>
+        <rect x="16" y="16" width="480" height="480" rx="92" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-opacity="0.85"/>
+        <rect x="21" y="21" width="470" height="470" rx="87" fill="none" stroke="#fef08a" stroke-width="0.75" stroke-opacity="0.45"/>
         
 
   <!-- 1. King of Clubs (Top / Furthest Back) -->
-  <g id="card-king" transform="translate(35.00, 6.00) scale(8.5)" filter="url(#shadowK)">
+  <g id="card-king" transform="translate(53.20, 10.00) scale(7.8)" filter="url(#shadowK)">
     
     <rect x="0.5" y="0.5" width="51" height="77" rx="3.6" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
     <rect x="1.4" y="1.4" width="49.2" height="75.2" rx="2.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>
@@ -46,7 +45,7 @@
   </g>
 
   <!-- 2. Queen of Hearts (Middle) -->
-  <g id="card-queen" transform="translate(35.00, 154.75) scale(8.5)" filter="url(#shadowQ)">
+  <g id="card-queen" transform="translate(53.20, 158.20) scale(7.8)" filter="url(#shadowQ)">
     
     <rect x="0.5" y="0.5" width="51" height="77" rx="3.6" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
     <rect x="1.4" y="1.4" width="49.2" height="75.2" rx="2.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>
@@ -60,7 +59,7 @@
   </g>
 
   <!-- 3. Jack of Spades (Bottom / In Front) -->
-  <g id="card-jack" transform="translate(35.00, 303.50) scale(8.5)" filter="url(#shadowJ)">
+  <g id="card-jack" transform="translate(53.20, 306.40) scale(7.8)" filter="url(#shadowJ)">
     
     <rect x="0.5" y="0.5" width="51" height="77" rx="3.6" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
     <rect x="1.4" y="1.4" width="49.2" height="75.2" rx="2.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>

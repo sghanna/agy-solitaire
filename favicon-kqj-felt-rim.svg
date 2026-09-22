@@ -20,19 +20,22 @@
   </defs>
 
   
-        <radialGradient id="bgGrad" cx="35%" cy="30%" r="75%">
-          <stop offset="0%" stop-color="#b91c1c"/>
-          <stop offset="65%" stop-color="#881337"/>
-          <stop offset="100%" stop-color="#450a0a"/>
+        <radialGradient id="feltGrad" cx="50%" cy="36%" r="68%">
+          <stop offset="0%" stop-color="#184832"/>
+          <stop offset="55%" stop-color="#0e2a1e"/>
+          <stop offset="100%" stop-color="#04120c"/>
         </radialGradient>
-        <rect width="512" height="512" fill="url(#bgGrad)"/>
-        <!-- Double Happiness Gold Filigree Pinstripe -->
-        <rect x="14" y="14" width="484" height="484" rx="94" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-opacity="0.9"/>
-        <rect x="19" y="19" width="474" height="474" rx="89" fill="none" stroke="#fef08a" stroke-width="0.75" stroke-opacity="0.45"/>
+        <radialGradient id="redRim" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#b91c1c"/>
+          <stop offset="100%" stop-color="#881337"/>
+        </radialGradient>
+        <rect width="512" height="512" fill="url(#feltGrad)"/>
+        <rect x="10" y="10" width="492" height="492" rx="96" fill="none" stroke="url(#redRim)" stroke-width="12"/>
+        <rect x="18" y="18" width="476" height="476" rx="88" fill="none" stroke="#fbbf24" stroke-width="2.2"/>
         
 
   <!-- 1. King of Clubs (Top / Furthest Back) -->
-  <g id="card-king" transform="translate(35.00, 6.00) scale(8.5)" filter="url(#shadowK)">
+  <g id="card-king" transform="translate(35.00, 12.00) scale(8.5)" filter="url(#shadowK)">
     
     <rect x="0.5" y="0.5" width="51" height="77" rx="3.6" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
     <rect x="1.4" y="1.4" width="49.2" height="75.2" rx="2.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>
@@ -46,7 +49,7 @@
   </g>
 
   <!-- 2. Queen of Hearts (Middle) -->
-  <g id="card-queen" transform="translate(35.00, 154.75) scale(8.5)" filter="url(#shadowQ)">
+  <g id="card-queen" transform="translate(35.00, 160.75) scale(8.5)" filter="url(#shadowQ)">
     
     <rect x="0.5" y="0.5" width="51" height="77" rx="3.6" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
     <rect x="1.4" y="1.4" width="49.2" height="75.2" rx="2.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>
@@ -60,7 +63,7 @@
   </g>
 
   <!-- 3. Jack of Spades (Bottom / In Front) -->
-  <g id="card-jack" transform="translate(35.00, 303.50) scale(8.5)" filter="url(#shadowJ)">
+  <g id="card-jack" transform="translate(35.00, 309.50) scale(8.5)" filter="url(#shadowJ)">
     
     <rect x="0.5" y="0.5" width="51" height="77" rx="3.6" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
     <rect x="1.4" y="1.4" width="49.2" height="75.2" rx="2.8" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>
