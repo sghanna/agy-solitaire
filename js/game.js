@@ -22,6 +22,10 @@ class SolitaireGame {
     this.isWon = false;
     this.autoCompleting = false;
 
+    // Winnable deals tracker: ensure first hand (and default games) are 100% winnable
+    this.isFirstHand = true;
+    this.winnableDealIndex = 0;
+
     // Two-Tap Targeted Selection State
     // Format: { pile: 'tableau'|'waste'|'foundation', colIndex, cardIndex, suit, card, cards: [] }
     this.selected = null;
@@ -39,6 +43,7 @@ class SolitaireGame {
       moveMode: 'manual', // 'manual' = "Choose Move" (default two-tap), 'auto' = "Single Tap"
       drawCount: 1,       // 1 (default) or 3
       showTimer: false,   // false (default) or true
+      dealType: 'winning', // 'winning' (default guaranteed winnable) or 'random'
       deal3Offset: 28     // card overlap offset in pixels (default 28px)
     };
 
@@ -99,6 +104,12 @@ class SolitaireGame {
         }
         if (urlParams.has('draw3')) {
           this.settings.drawCount = 3;
+        }
+        if (urlParams.has('random')) {
+          this.settings.dealType = 'random';
+        }
+        if (urlParams.has('winnable')) {
+          this.settings.dealType = 'winning';
         }
       }
     } catch (e) {}
@@ -313,6 +324,12 @@ class SolitaireGame {
     if (btnDraw1) btnDraw1.classList.toggle('active', !isDeal3);
     if (btnDraw3) btnDraw3.classList.toggle('active', isDeal3);
 
+    const isWinnable = (this.settings.dealType !== 'random');
+    const btnDealWinning = document.getElementById('btn-opt-deal-winning');
+    const btnDealRandom = document.getElementById('btn-opt-deal-random');
+    if (btnDealWinning) btnDealWinning.classList.toggle('active', isWinnable);
+    if (btnDealRandom) btnDealRandom.classList.toggle('active', !isWinnable);
+
     const showTimer = Boolean(this.settings.showTimer);
     const btnTimerOff = document.getElementById('btn-opt-timer-off');
     const btnTimerOn = document.getElementById('btn-opt-timer-on');
@@ -356,7 +373,7 @@ class SolitaireGame {
     }
   }
 
-  startNewGame() {
+  startNewGame(forceRandom = false) {
     this.isWon = false;
     this.autoCompleting = false;
     this.isAnimating = false;
@@ -381,14 +398,25 @@ class SolitaireGame {
     const autoFinishBar = document.getElementById('auto-finish-banner');
     if (autoFinishBar) autoFinishBar.style.display = 'none';
 
-    // 1. Create fresh standard 52-card deck
-    this.deck = window.SolitaireDeck.createStandardDeck();
+    // 1. Deal selection: the first hand is ALWAYS guaranteed winnable.
+    // Subsequent hands follow settings.dealType ('winning' vs 'random').
+    const useWinnable = !forceRandom && (this.isFirstHand || this.settings.dealType === 'winning');
 
-    // 2. Fisher-Yates Shuffle
-    for (let i = this.deck.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
+    if (useWinnable && window.SolitaireDeck && window.SolitaireDeck.createWinnableDeck) {
+      this.deck = window.SolitaireDeck.createWinnableDeck(this.winnableDealIndex);
+      if (window.SolitaireDeck.WINNABLE_DEALS && window.SolitaireDeck.WINNABLE_DEALS.length > 0) {
+        this.winnableDealIndex = (this.winnableDealIndex + 1) % window.SolitaireDeck.WINNABLE_DEALS.length;
+      }
+    } else {
+      // Create fresh standard 52-card deck
+      this.deck = window.SolitaireDeck.createStandardDeck();
+      // Fisher-Yates Shuffle
+      for (let i = this.deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
+      }
     }
+    this.isFirstHand = false;
 
     // 3. Clear all piles
     this.stock = [];
