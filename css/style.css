@@ -52,8 +52,8 @@ html, body {
    TOP HUD: OPTION 3 SENIOR HIGH-CONTRAST BAR (40px HEIGHT, CENTER MENU)
    ========================================================================= */
 .top-hud {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 4px 6px 10px 6px;
   z-index: 20;
@@ -64,22 +64,20 @@ html, body {
 .hud-controls-left {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
+  justify-content: flex-start;
 }
 
 .hud-controls-center {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  gap: 8px;
 }
 
 .hud-controls-right {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
+  justify-content: flex-end;
 }
 
 .hud-btn {
@@ -88,7 +86,7 @@ html, body {
   color: #ffffff;
   height: 40px;
   padding: 0 12px;
-  border-radius: 20px;
+  border-radius: 9999px; /* Stand-alone oval pill */
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
