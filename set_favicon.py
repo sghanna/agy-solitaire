@@ -8,6 +8,7 @@ Usage:
     python3 set_favicon.py 4   # Classic Ace of Spades
     python3 set_favicon.py 5   # Red Lantern
     python3 set_favicon.py 6   # Four Suits Medallion
+    python3 set_favicon.py 7   # K♣ + Q♥ Tableau Stack (PWA & Favicon)
 """
 
 import sys
@@ -21,12 +22,15 @@ FAVICON_MAP = {
     "4": "favicon-ace-spades.svg",
     "5": "favicon-lantern.svg",
     "6": "favicon-four-suits.svg",
+    "7": "favicon-kq-stacked.svg",
     "double-happiness": "favicon-double-happiness.svg",
     "crowned-king": "favicon-crowned-king.svg",
     "foundation-ace": "favicon-foundation-ace.svg",
     "ace-spades": "favicon-ace-spades.svg",
     "lantern": "favicon-lantern.svg",
-    "four-suits": "favicon-four-suits.svg"
+    "four-suits": "favicon-four-suits.svg",
+    "kq-stacked": "favicon-kq-stacked.svg",
+    "kq": "favicon-kq-stacked.svg"
 }
 
 def main():
