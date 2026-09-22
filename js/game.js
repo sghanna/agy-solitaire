@@ -715,6 +715,18 @@ class SolitaireGame {
     if (this.waste.length === 0) return;
     const topWasteCard = this.waste[this.waste.length - 1];
 
+    // Ace auto-fly: In any mode (including two-click mode), touching an Ace flies it directly to foundation!
+    if (topWasteCard.rank === 1) {
+      this.clearSelection();
+      this.lastTapTime = 0;
+      this.lastTapCardId = null;
+      this.autoMoveCardToBestLocation(topWasteCard, {
+        pile: 'waste',
+        cardIndex: this.waste.length - 1
+      });
+      return;
+    }
+
     // Single-tap auto-move mode
     if (this.settings.moveMode === 'auto') {
       this.clearSelection();
@@ -773,12 +785,17 @@ class SolitaireGame {
       const isSingleCard = (this.selected.cards.length === 1);
 
       // Legal if single card, matching suit, and rank is exactly topRank + 1
-      if (isSingleCard && card.suit === suit && card.rank === topRank + 1) {
+      // If an Ace is selected, automatically route into its matching suit foundation even if tapped on another slot
+      const targetSuit = (card.rank === 1 && isSingleCard) ? card.suit : suit;
+      const targetStack = this.foundations[targetSuit];
+      const targetTopRank = targetStack.length === 0 ? 0 : targetStack[targetStack.length - 1].rank;
+
+      if (isSingleCard && card.suit === targetSuit && card.rank === targetTopRank + 1) {
         const selectedMove = { ...this.selected };
         this.clearSelection();
         this.lastTapTime = 0;
         this.lastTapCardId = null;
-        this.executeMoveToFoundation(selectedMove, suit);
+        this.executeMoveToFoundation(selectedMove, targetSuit);
       } else {
         // Illegal foundation destination: gentle shake & auditory feedback
         foundEl.classList.add('slot-shake');
@@ -862,6 +879,19 @@ class SolitaireGame {
       }
 
       // A2: Face-up card
+      // Ace auto-fly: In any mode (including two-click mode), touching an exposed Ace flies it directly to foundation!
+      if (card.rank === 1 && cardIndex === col.length - 1) {
+        this.clearSelection();
+        this.lastTapTime = 0;
+        this.lastTapCardId = null;
+        this.autoMoveCardToBestLocation(card, {
+          pile: 'tableau',
+          colIndex: colIndex,
+          cardIndex: cardIndex
+        });
+        return;
+      }
+
       // Single-tap auto-move mode
       if (this.settings.moveMode === 'auto') {
         if (!this.selected) {
@@ -1584,15 +1614,15 @@ class SolitaireGame {
     // Render Waste
     this.wasteEl.innerHTML = '';
     if (this.waste.length > 0) {
-      const isDeal3 = (Number(this.settings.drawCount) === 3);
-      const displayCount = isDeal3 ? Math.min(3, this.waste.length) : 1;
+      // In both Single Card (Deal 1) and Deal 3 modes, display up to the last 3 flipped cards fanned out
+      const displayCount = Math.min(3, this.waste.length);
       const visibleCards = this.waste.slice(-displayCount);
 
       visibleCards.forEach((card, idx) => {
         const isTopCard = (idx === displayCount - 1);
         const cardEl = window.SolitaireDeck.createCardElement(card);
 
-        if (isDeal3 && displayCount > 1) {
+        if (displayCount > 1) {
           const offset = Number(this.settings.deal3Offset) || 28;
           const offsetPx = (idx - (displayCount - 1)) * offset;
           cardEl.style.left = `${offsetPx}px`;
