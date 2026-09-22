@@ -173,9 +173,9 @@ class SolitaireCelebration {
     };
     render();
 
-    // Show Option 2 Double Happiness modal at ~4.7s
+    // Show Win 1 Double Happiness full modal at ~4.7s
     this.modalTimeout = setTimeout(() => {
-      this.showModal(stats, onPlayAgain, 'Win 1: Classic Cascade');
+      this.showWin1Modal(stats, onPlayAgain);
     }, 4700);
   }
 
@@ -284,13 +284,16 @@ class SolitaireCelebration {
     };
     render();
 
-    // Show victory modal after 20 full seconds of lanterns and fireworks
+    // Show Win 2 compact banner modal after 20 full seconds of lanterns and fireworks
     this.modalTimeout = setTimeout(() => {
-      this.showModal(stats, onPlayAgain, 'Win 2: Imperial Gold Jubilee');
+      this.showWin2Banner(stats, onPlayAgain);
     }, 20000);
   }
 
-  showModal(stats, onPlayAgain, celebrationTitle) {
+  /**
+   * Win 1 Modal: Fullscreen Double Happiness (囍) Modal Overlay
+   */
+  showWin1Modal(stats, onPlayAgain) {
     const modal = document.getElementById('victory-modal-overlay');
     if (!modal) return;
 
@@ -298,11 +301,14 @@ class SolitaireCelebration {
     const movesStr = stats.moves || 0;
     const scoreStr = stats.score || 0;
 
-    modal.querySelector('#modal-stats-time').textContent = timeStr;
-    modal.querySelector('#modal-stats-moves').textContent = movesStr;
-    modal.querySelector('#modal-stats-score').textContent = scoreStr;
+    const timeEl = modal.querySelector('#modal-stats-time');
+    if (timeEl) timeEl.textContent = timeStr;
+    const movesEl = modal.querySelector('#modal-stats-moves');
+    if (movesEl) movesEl.textContent = movesStr;
+    const scoreEl = modal.querySelector('#modal-stats-score');
+    if (scoreEl) scoreEl.textContent = scoreStr;
     const subLabel = modal.querySelector('#modal-sub-label');
-    if (subLabel) subLabel.textContent = celebrationTitle || 'DOUBLE HAPPINESS';
+    if (subLabel) subLabel.textContent = 'DOUBLE HAPPINESS';
 
     const btn = modal.querySelector('#modal-play-again-btn');
     if (btn) {
@@ -313,6 +319,39 @@ class SolitaireCelebration {
     }
 
     modal.classList.add('visible');
+  }
+
+  /**
+   * Win 2 Modal: Compact Tableau Banner (does not cover full board/HUD)
+   */
+  showWin2Banner(stats, onPlayAgain) {
+    const banner = document.getElementById('victory-banner-overlay');
+    if (!banner) return;
+
+    const timeStr = stats.time || '00:00';
+    const movesStr = stats.moves || 0;
+    const scoreStr = stats.score || 0;
+
+    const timeEl = banner.querySelector('#banner-stats-time');
+    if (timeEl) timeEl.textContent = timeStr;
+    const movesEl = banner.querySelector('#banner-stats-moves');
+    if (movesEl) movesEl.textContent = movesStr;
+    const scoreEl = banner.querySelector('#banner-stats-score');
+    if (scoreEl) scoreEl.textContent = scoreStr;
+
+    const btn = banner.querySelector('#banner-play-again-btn');
+    if (btn) {
+      btn.onclick = () => {
+        this.stop();
+        if (onPlayAgain) onPlayAgain();
+      };
+    }
+
+    banner.classList.add('visible');
+  }
+
+  showModal(stats, onPlayAgain, celebrationTitle) {
+    this.showWin1Modal(stats, onPlayAgain);
   }
 }
 

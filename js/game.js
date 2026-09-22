@@ -118,17 +118,29 @@ class SolitaireGame {
       });
     }
 
-    // Developer & Testing shortcut: Press 'W' for victory celebration, 'A' for auto-finish
+    // Developer & Testing shortcut: Press 'W' for alternating celebration, '1' for Win 1, '2' for Win 2, 'A' for auto-finish
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      const stats = {
+        time: this.formatTime(this.elapsedSeconds),
+        moves: this.moves || 42,
+        score: this.score || 7450
+      };
       if (e.key === 'w' || e.key === 'W') {
-        const stats = {
-          time: this.formatTime(this.elapsedSeconds),
-          moves: this.moves || 42,
-          score: this.score || 7450
-        };
         if (window.solitaireCelebration) {
           window.solitaireCelebration.celebrate(stats, () => this.startNewGame());
+        }
+      } else if (e.key === '1') {
+        if (window.solitaireCelebration) {
+          window.solitaireCelebration.stop();
+          window.solitaireCelebration.resizeCanvas();
+          window.solitaireCelebration.runCascadeCelebration(stats, () => this.startNewGame());
+        }
+      } else if (e.key === '2') {
+        if (window.solitaireCelebration) {
+          window.solitaireCelebration.stop();
+          window.solitaireCelebration.resizeCanvas();
+          window.solitaireCelebration.runLanternsFireworksCelebration(stats, () => this.startNewGame());
         }
       } else if (e.key === 'a' || e.key === 'A') {
         this.autoComplete();
