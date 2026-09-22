@@ -8,12 +8,12 @@
   --pine-felt: radial-gradient(circle at 50% 30%, #163827 0%, #0c2419 70%, #05130d 100%);
   --gold-accent: #fbbf24;
   --gold-light: #fef08a;
-  --card-red: #c62828;
-  --card-black: #111111;
-  --slot-border: rgba(251, 191, 36, 0.35);
-  --slot-bg: rgba(12, 36, 25, 0.4);
-  --card-width: 48px;
-  --card-height: 68px;
+  --card-red: #c62f27;
+  --card-black: #1b0a0a;
+  --slot-border: rgba(176, 151, 72, 0.4);
+  --slot-bg: rgba(20, 62, 44, 0.5);
+  --card-width: 52px;
+  --card-height: 78px;
 }
 
 * {
@@ -49,7 +49,7 @@ html, body {
 }
 
 /* =========================================================================
-   TOP HUD: CLASSIC GOLD SERIF SCORE, TIME, MOVES (MATCHING MOM'S GAME)
+   TOP HUD: CLASSIC GOLD SERIF SCORE, MOVES (MATCHING MOM'S GAME)
    ========================================================================= */
 .top-hud {
   display: flex;
@@ -101,7 +101,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 28px;
 }
 
 .hud-stat-col {
@@ -142,9 +142,9 @@ html, body {
 
 .slot {
   width: 100%;
-  aspect-ratio: 48 / 68;
-  border-radius: 6px;
-  border: 1.5px solid var(--slot-border);
+  aspect-ratio: 52 / 78;
+  border-radius: 3.2px;
+  border: 1.2px solid var(--slot-border);
   background: var(--slot-bg);
   position: relative;
   display: flex;
@@ -165,8 +165,9 @@ html, body {
 }
 
 .slot-foundation {
-  background: rgba(12, 36, 25, 0.65);
-  border: 1.5px solid rgba(251, 191, 36, 0.45);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .foundation-empty-glyph {
@@ -185,18 +186,20 @@ html, body {
 
 .stock-count-badge {
   position: absolute;
-  top: 3px;
-  right: 4px;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(251, 191, 36, 0.5);
+  top: 0.6px;
+  right: 0.6px;
+  width: 22px;
+  height: 19px;
+  border-radius: 3.2px;
+  background: rgba(60, 60, 60, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
-  font-family: Georgia, -apple-system, sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 1px 5px;
-  border-radius: 9px;
-  line-height: 1.2;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  font-family: 'Bodoni 72', Didot, Georgia, 'Times New Roman', serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   pointer-events: none;
   z-index: 5;
 }
@@ -229,8 +232,8 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  aspect-ratio: 48 / 68;
-  border-radius: 6px;
+  aspect-ratio: 52 / 78;
+  border-radius: 3.2px;
   border: 1.5px dashed rgba(251, 191, 36, 0.25);
   display: flex;
   align-items: center;
@@ -248,22 +251,31 @@ html, body {
 }
 
 /* =========================================================================
-   SOLITAIRE CARD STYLING (OPTION 1 MAX-FILL BANNER + OPTION 4A BACK)
+   SOLITAIRE CARD STYLING (VECTOR SVG CARDS MATCHING MOM'S GAME)
    ========================================================================= */
 .solitaire-card {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  aspect-ratio: 48 / 68;
-  border-radius: 6px;
-  border: 1.5px solid #111111;
-  background: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  aspect-ratio: 52 / 78;
+  border-radius: 3.2px;
+  border: none;
+  background: transparent;
   cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.1s ease, box-shadow 0.15s ease;
+  overflow: visible;
+  transition: transform 0.1s ease;
   will-change: transform;
+}
+
+.solitaire-card svg.card-svg,
+.slot svg.slot-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0.8px 0.6px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
 }
 
 .solitaire-card:active {
@@ -272,18 +284,18 @@ html, body {
 
 .solitaire-card.hint-active {
   animation: hintPulse 2.4s infinite ease-in-out;
-  border-color: #fbbf24 !important;
+  outline: 2px solid #fbbf24;
+  outline-offset: -1px;
+  border-radius: 3.2px;
   z-index: 25 !important;
 }
 
 @keyframes hintPulse {
   0%, 100% {
     box-shadow: 0 0 6px #fbbf24, 0 0 12px rgba(251, 191, 36, 0.55);
-    border-color: #fbbf24;
   }
   50% {
     box-shadow: 0 0 10px #fef08a, 0 0 18px rgba(254, 240, 138, 0.85);
-    border-color: #fef08a;
   }
 }
 
@@ -308,7 +320,7 @@ html, body {
 .stack-selection-halo {
   position: absolute;
   pointer-events: none;
-  border-radius: 7px;
+  border-radius: 4px;
   border: 2px solid #fbbf24;
   box-shadow: 0 0 6px #fbbf24, 0 0 14px rgba(251, 191, 36, 0.55);
   animation: hintPulse 2.4s infinite ease-in-out;
@@ -321,7 +333,7 @@ html, body {
 .solitaire-card.flying-card {
   z-index: 1000 !important;
   pointer-events: none !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(251, 191, 36, 0.5) !important;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 16px rgba(251, 191, 36, 0.5)) !important;
 }
 
 /* In-place card flip rotation */
@@ -344,123 +356,6 @@ html, body {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
   75% { transform: translateX(5px); }
-}
-
-/* Face-up Card Structure: Pure White Face matching Mom's screenshot */
-.card-face {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.card-face.card-red { color: var(--card-red); }
-.card-face.card-black { color: var(--card-black); }
-
-/* Top-Left Grouped Corner Index (Rank + Adjacent Small Suit) */
-.card-corner-index {
-  position: absolute;
-  top: 2px;
-  left: 3.5px;
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5px;
-  line-height: 1;
-  z-index: 2;
-}
-
-.card-rank {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 23px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  line-height: 0.92;
-}
-
-.card-rank.rank-10 {
-  letter-spacing: -2.5px;
-  margin-right: 1px;
-}
-
-.card-index-suit {
-  width: 12px;
-  height: 12px;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-.card-index-suit svg { width: 100%; height: 100%; }
-
-/* Card Center Area: Giant Centered Suit Emblem matching Mom's screenshot */
-.card-center {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 14px;
-}
-
-.card-main-suit {
-  width: 32px;
-  height: 32px;
-}
-.card-main-suit svg { width: 100%; height: 100%; }
-
-.card-main-suit.ace-emblem {
-  width: 38px;
-  height: 38px;
-}
-
-/* Card Back (Option 4A Double Happiness Back) */
-.card-back.double-happiness-back {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 35% 35%, #b91c1c 0%, #881337 65%, #4c0519 100%);
-  padding: 3px;
-}
-
-.back-inner-border {
-  width: 100%;
-  height: 100%;
-  border: 1px solid rgba(251, 191, 36, 0.7);
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-seal {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1.5px solid #fbbf24;
-  background: radial-gradient(circle at center, #991b1b 0%, #450a0a 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 6px rgba(251, 191, 36, 0.4);
-}
-
-.back-seal-inner {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 1px dashed rgba(254, 240, 138, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back-seal-glyph {
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 14px;
-  font-weight: 900;
-  color: #fbbf24;
-  line-height: 1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 /* =========================================================================

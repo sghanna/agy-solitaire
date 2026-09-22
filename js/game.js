@@ -171,11 +171,8 @@ class SolitaireGame {
     this.elapsedSeconds = 0;
 
     if (this.timerInterval) clearInterval(this.timerInterval);
+    this.timerInterval = null;
     this.startTime = Date.now();
-    this.timerInterval = setInterval(() => {
-      this.elapsedSeconds++;
-      this.updateTimerDisplay();
-    }, 1000);
 
     if (window.solitaireCelebration) {
       window.solitaireCelebration.stop();
@@ -1350,12 +1347,8 @@ class SolitaireGame {
         }
         fEl.appendChild(cardEl);
       } else {
-        // Gold serif A placeholder matching Mom's screenshot!
-        fEl.innerHTML = `
-          <div class="foundation-empty-glyph">
-            A
-          </div>
-        `;
+        // Centered gold serif A placeholder matching Mom's screenshot!
+        fEl.innerHTML = window.SolitaireDeck.emptyFoundationSlotSVG ? window.SolitaireDeck.emptyFoundationSlotSVG() : '<div class="foundation-empty-glyph">A</div>';
       }
     }
 
@@ -1413,7 +1406,7 @@ class SolitaireGame {
         if (lastSelectedCardEl && lastSelectedCardEl.offsetHeight > 0) {
           cardHeight = lastSelectedCardEl.offsetHeight;
         } else if (colEl.clientWidth > 0) {
-          cardHeight = Math.round(colEl.clientWidth * (68 / 48));
+          cardHeight = Math.round(colEl.clientWidth * (78 / 52));
         }
 
         const stackHeight = (selectedLastTop - selectedFirstTop) + cardHeight;
