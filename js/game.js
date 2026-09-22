@@ -44,7 +44,7 @@ class SolitaireGame {
       drawCount: 1,       // 1 (default) or 3
       showTimer: false,   // false (default) or true
       dealType: 'winning', // 'winning' (default guaranteed winnable) or 'random'
-      deal3Offset: 28     // card overlap offset in pixels (default 28px)
+      deal3Offset: 24     // card overlap offset in pixels (default 24px)
     };
 
     // DOM Elements
@@ -1651,7 +1651,7 @@ class SolitaireGame {
         const cardEl = window.SolitaireDeck.createCardElement(card);
 
         if (displayCount > 1) {
-          const offset = Number(this.settings.deal3Offset) || 28;
+          const offset = Number(this.settings.deal3Offset) || 24;
           const offsetPx = (idx - (displayCount - 1)) * offset;
           cardEl.style.left = `${offsetPx}px`;
           cardEl.style.zIndex = `${idx + 1}`;
@@ -1754,9 +1754,9 @@ class SolitaireGame {
           lastSelectedCardEl = cardEl;
         }
 
-        // Generous vertical exposure: 26px for face-up cards, 12px for face-down
+        // Generous vertical exposure: 32px for face-up cards (revealing Bodoni Q tail), 12px for face-down
         if (card.faceUp) {
-          currentTopOffset += 26;
+          currentTopOffset += 32;
         } else {
           currentTopOffset += 12;
         }

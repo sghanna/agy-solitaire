@@ -98,35 +98,65 @@ function cardSVG(rankLabel, suit) {
 }
 
 /**
- * Generates vector SVG for card back (Crimson Shippo Lattice)
+ * Generates vector SVG for card back (Option D2: Grand Imperial Golden Dragon 85% Seal)
  */
 function backSVG() {
-  const id = 'shippo_' + (svgUid++);
+  const uid = 'dragon_seal_' + (svgUid++);
+  const cx = 26;
+  const cy = 39;
+  const rOuter = 22.1;
+  const rInner = 19.5;
+  let rays = '';
+  for (let i = 0; i < 36; i++) {
+    const a = i * (2 * Math.PI / 36);
+    const x1 = (cx + (rOuter - 1.82) * Math.cos(a)).toFixed(2);
+    const y1 = (cy + (rOuter - 1.82) * Math.sin(a)).toFixed(2);
+    const x2 = (cx + rOuter * Math.cos(a)).toFixed(2);
+    const y2 = (cy + rOuter * Math.sin(a)).toFixed(2);
+    rays += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#fbbf24" stroke-width="0.5"/>`;
+  }
+
   return `<svg class="card-svg card-svg-back" viewBox="0 0 ${W} ${H}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <pattern id="${id}" width="9.8" height="9.8" patternUnits="userSpaceOnUse">
-        <rect width="9.8" height="9.8" fill="#ce3028"/>
-        <g fill="none" stroke="#ffffff" stroke-width="0.7">
-          <circle cx="4.9" cy="4.9" r="4.9"/>
-          <circle cx="0" cy="0" r="4.9"/>
-          <circle cx="9.8" cy="0" r="4.9"/>
-          <circle cx="0" cy="9.8" r="4.9"/>
-          <circle cx="9.8" cy="9.8" r="4.9"/>
-        </g>
-        <circle cx="4.9" cy="0" r="0.75" fill="#ffffff"/>
-        <circle cx="4.9" cy="9.8" r="0.75" fill="#ffffff"/>
-        <circle cx="0" cy="4.9" r="0.75" fill="#ffffff"/>
-        <circle cx="9.8" cy="4.9" r="0.75" fill="#ffffff"/>
-      </pattern>
+      <radialGradient id="bg_${uid}" cx="35%" cy="35%" r="70%">
+        <stop offset="0%" stop-color="#b91c1c"/>
+        <stop offset="65%" stop-color="#881337"/>
+        <stop offset="100%" stop-color="#4c0519"/>
+      </radialGradient>
+      <radialGradient id="seal_${uid}" cx="50%" cy="50%" r="60%">
+        <stop offset="0%" stop-color="#991b1b"/>
+        <stop offset="100%" stop-color="#450a0a"/>
+      </radialGradient>
     </defs>
-    <!-- Card White Border -->
-    <rect x="0.4" y="0.4" width="${W - 0.8}" height="${H - 0.8}" rx="3.2" fill="#ffffff" stroke="#7a7c76" stroke-width="0.6"/>
-    <!-- Red Inner Field -->
-    <rect x="2.2" y="2.2" width="${W - 4.4}" height="${H - 4.4}" rx="1.6" fill="#ce3028"/>
-    <!-- Fine White Inner Border -->
-    <rect x="3.2" y="3.2" width="${W - 6.4}" height="${H - 6.4}" rx="1.2" fill="none" stroke="#ffffff" stroke-width="0.65"/>
-    <!-- Repeating Shippo Lattice Field -->
-    <rect x="4.0" y="4.0" width="${W - 8.0}" height="${H - 8.0}" fill="url(#${id})"/>
+    <!-- Outer Card Surface with Crisp Outline -->
+    <rect x="0.4" y="0.4" width="${W - 0.8}" height="${H - 0.8}" rx="3.12" fill="#ffffff" stroke="#7a7c76" stroke-width="0.52"/>
+    <!-- Deep Crimson Gradient Field -->
+    <rect x="2.08" y="2.08" width="${W - 4.16}" height="${H - 4.16}" rx="2.34" fill="url(#bg_${uid})"/>
+    <!-- Gold Framing Borders -->
+    <rect x="3.64" y="3.64" width="${W - 7.28}" height="${H - 7.28}" rx="1.56" fill="none" stroke="rgba(251, 191, 36, 0.8)" stroke-width="0.47"/>
+    <rect x="4.94" y="4.94" width="${W - 9.88}" height="${H - 9.88}" rx="1.04" fill="none" stroke="rgba(251, 191, 36, 0.35)" stroke-width="0.26" stroke-dasharray="1.04,1.04"/>
+    <!-- Four Corner Gold Pips -->
+    <circle cx="5.98" cy="5.98" r="0.62" fill="#fbbf24"/>
+    <circle cx="${W - 5.98}" cy="5.98" r="0.62" fill="#fbbf24"/>
+    <circle cx="5.98" cy="${H - 5.98}" r="0.62" fill="#fbbf24"/>
+    <circle cx="${W - 5.98}" cy="${H - 5.98}" r="0.62" fill="#fbbf24"/>
+    <!-- Grand Imperial Seal (85% Card Width) -->
+    <circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="#fbbf24" stroke-width="0.94"/>
+    ${rays}
+    <circle cx="${cx}" cy="${cy}" r="${(rOuter - 2.08).toFixed(2)}" fill="none" stroke="rgba(254, 240, 138, 0.6)" stroke-width="0.42"/>
+    <circle cx="${cx}" cy="${cy}" r="${rInner}" fill="url(#seal_${uid})" stroke="rgba(254, 240, 138, 0.5)" stroke-width="0.42" stroke-dasharray="1.04,1.04"/>
+    <!-- Golden Imperial Dragon with Flaming Ruby Pearl -->
+    <g transform="translate(${cx}, ${cy}) scale(0.5304) translate(-34, -31)" fill="none" stroke="#fde047" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 1.2px 1.5px rgba(0,0,0,0.85));">
+      <path d="M 34,8 C 47,8 58,19 58,32 C 58,46 46,56 34,56 C 22,56 14,48 14,38 C 14,28 22,22 30,22 C 38,22 42,26 42,32 C 42,36 38,40 34,40 C 30,40 28,36 30,34" stroke-width="3.2"/>
+      <path d="M 50,16 L 54,12 M 58,26 L 63,24 M 58,38 L 63,40 M 50,50 L 54,54 M 40,56 L 42,61 M 26,56 L 24,61 M 16,46 L 11,48" stroke-width="1.8"/>
+      <path d="M 30,8 L 32,3 M 36,7 L 40,2" stroke-width="2"/>
+      <circle cx="30" cy="11" r="1.5" fill="#fde047"/>
+      <path d="M 26,12 C 22,12 19,14 20,17 C 21,19 25,18 28,16" stroke-width="2"/>
+      <path d="M 22,14 Q 14,12 10,16 M 24,17 Q 16,20 12,25" stroke-width="1.2"/>
+      <path d="M 48,46 L 54,50 M 50,44 L 56,46 M 46,48 L 50,54" stroke-width="1.8"/>
+      <circle cx="34" cy="32" r="4.5" fill="#ef4444" stroke="#fde047" stroke-width="1.2"/>
+      <path d="M 34,24 Q 32,27 34,27.5 Q 36,27 34,24" fill="#fde047"/>
+    </g>
   </svg>`;
 }
 
@@ -238,20 +268,10 @@ function renderFaceUpCard(card) {
 }
 
 /**
- * Renders HTML for face-down card (Option 4A Double Happiness Back)
+ * Renders HTML for face-down card (Option D2 Grand Imperial Golden Dragon)
  */
 function renderCardBack() {
-  return `
-    <div class="card-back double-happiness-back">
-      <div class="back-inner-border">
-        <div class="back-seal">
-          <div class="back-seal-inner">
-            <span class="back-seal-glyph">囍</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
+  return backSVG();
 }
 
 /**
