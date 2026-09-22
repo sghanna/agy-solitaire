@@ -136,10 +136,26 @@ class SolitaireGame {
     // Audio toggle button
     const audioBtn = document.getElementById('btn-audio-toggle');
     if (audioBtn) {
+      const updateAudioIcon = () => {
+        const isMuted = (window.solitaireAudio && typeof window.solitaireAudio.isMuted === 'function')
+          ? window.solitaireAudio.isMuted()
+          : (window.solitaireAudio ? Boolean(window.solitaireAudio.muted) : false);
+        if (window.getSoundIconSVG) {
+          audioBtn.innerHTML = window.getSoundIconSVG(isMuted);
+        } else {
+          audioBtn.textContent = isMuted ? '🔇' : '🔊';
+        }
+        audioBtn.title = isMuted ? 'Unmute Sound' : 'Mute Sound';
+      };
+
+      updateAudioIcon();
+
       audioBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const isMuted = window.solitaireAudio.toggleMute();
-        audioBtn.textContent = isMuted ? '🔇' : '🔊';
+        if (window.solitaireAudio) {
+          window.solitaireAudio.toggleMute();
+        }
+        updateAudioIcon();
       });
     }
 

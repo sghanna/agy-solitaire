@@ -16,6 +16,7 @@ const ASSETS_TO_CACHE = [
   './js/audio.js',
   './js/celebration.js',
   './js/game.js',
+  './sound-icon-preview.html',
   './manifest.json'
 ];
 

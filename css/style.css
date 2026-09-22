@@ -97,6 +97,19 @@ html, body {
   background: #ef4444;
 }
 
+#btn-audio-toggle {
+  width: 32px;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+#btn-audio-toggle svg {
+  display: block;
+  pointer-events: none;
+}
+
 .hud-stats-group {
   display: flex;
   align-items: center;

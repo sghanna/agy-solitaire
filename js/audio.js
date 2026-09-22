@@ -262,4 +262,85 @@ class SolitaireAudio {
   }
 }
 
+const SOUND_ICONS = {
+  1: {
+    name: 'Antique Brass Horn',
+    unmuted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#d4af37" fill-opacity="0.25"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+              </svg>`,
+    muted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="#d4af37" fill-opacity="0.25"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>`
+  },
+  2: {
+    name: 'Gramophone Flare',
+    unmuted: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M 3,10 L 7,10 L 12,6 L 12,18 L 7,14 L 3,14 Z" fill="#bca55c"/>
+                <path d="M 12,9 Q 15,9 16,7 Q 17,5 17,3" stroke="#fef08a"/>
+                <path d="M 16,10 A 4,4 0 0 1 16,14" stroke="#fef08a"/>
+                <path d="M 19,7 A 8,8 0 0 1 19,17" stroke="#fef08a"/>
+              </svg>`,
+    muted: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 3,10 L 7,10 L 12,6 L 12,18 L 7,14 L 3,14 Z" fill="#bca55c"/>
+              <line x1="2" y1="2" x2="22" y2="22" stroke="#ef4444" stroke-width="2"/>
+            </svg>`
+  },
+  3: {
+    name: 'Pure Geometric Line',
+    unmuted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>`,
+    muted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+              <line x1="23" y1="1" x2="1" y2="23"/>
+            </svg>`
+  },
+  4: {
+    name: 'Musical Note & Wave',
+    unmuted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13" fill="none"/>
+                <circle cx="6" cy="18" r="3" fill="#d4af37"/>
+                <circle cx="18" cy="16" r="3" fill="#d4af37"/>
+              </svg>`,
+    muted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13" fill="none" opacity="0.4"/>
+              <circle cx="6" cy="18" r="3" fill="#d4af37" opacity="0.4"/>
+              <circle cx="18" cy="16" r="3" fill="#d4af37" opacity="0.4"/>
+              <line x1="2" y1="2" x2="22" y2="22" stroke="#ef4444" stroke-width="2.2"/>
+            </svg>`
+  },
+  5: {
+    name: 'Acoustic Chime Bell',
+    unmuted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" fill="#d4af37" fill-opacity="0.25"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>`,
+    muted: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" fill="#d4af37" fill-opacity="0.15"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              <line x1="2" y1="2" x2="22" y2="22" stroke="#ef4444" stroke-width="2.2"/>
+            </svg>`
+  }
+};
+
+function getSoundIconSVG(isMuted, style) {
+  let chosen = style;
+  if (!chosen) {
+    try {
+      chosen = localStorage.getItem('agy-sound-icon-style') || '1';
+    } catch (e) {
+      chosen = '1';
+    }
+  }
+  const entry = SOUND_ICONS[chosen] || SOUND_ICONS['1'];
+  return isMuted ? entry.muted : entry.unmuted;
+}
+
+window.SOUND_ICONS = SOUND_ICONS;
+window.getSoundIconSVG = getSoundIconSVG;
 window.solitaireAudio = new SolitaireAudio();
