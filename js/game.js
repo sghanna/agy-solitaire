@@ -66,11 +66,10 @@ class SolitaireGame {
     this.undoBtn = document.getElementById('btn-undo');
     this.hintBtn = document.getElementById('btn-hint');
 
+    this.kingPlaceholderStyle = 'twin';
     try {
-      this.kingPlaceholderStyle = localStorage.getItem('agy-king-placeholder-style') || 'crowned';
-    } catch (e) {
-      this.kingPlaceholderStyle = 'crowned';
-    }
+      localStorage.removeItem('agy-king-placeholder-style');
+    } catch (e) {}
 
     this.setupEventListeners();
     this.startNewGame();
@@ -764,15 +763,6 @@ class SolitaireGame {
         setTimeout(() => colEl.classList.remove('slot-shake'), 260);
         if (window.solitaireAudio) window.solitaireAudio.playInvalidMove();
       }
-    } else if (col.length === 0) {
-      // Empty column tapped with no card selected: cycle King placeholder design option!
-      const styles = ['crowned', 'crest', 'twin', 'wireframe'];
-      const currentIdx = styles.indexOf(this.kingPlaceholderStyle);
-      this.kingPlaceholderStyle = styles[(currentIdx + 1) % styles.length];
-      try {
-        localStorage.setItem('agy-king-placeholder-style', this.kingPlaceholderStyle);
-      } catch (err) {}
-      this.render();
     }
   }
 
@@ -1414,9 +1404,9 @@ class SolitaireGame {
         if (this.selected && this.selected.card.rank === 13) {
           kingPlaceholderEl.classList.add('valid-king-target');
         }
-        kingPlaceholderEl.title = 'King Slot (Tap to cycle designs)';
+        kingPlaceholderEl.title = 'King Slot';
         kingPlaceholderEl.innerHTML = window.SolitaireDeck.emptyKingSlotSVG ? 
-          window.SolitaireDeck.emptyKingSlotSVG(this.kingPlaceholderStyle || 'crowned') : '';
+          window.SolitaireDeck.emptyKingSlotSVG('twin') : '';
         colEl.appendChild(kingPlaceholderEl);
         continue;
       } else {

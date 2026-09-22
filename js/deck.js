@@ -147,9 +147,9 @@ function emptyFoundationSlotSVG() {
 
 /**
  * Generates vector SVG for empty King tableau slot
- * Options: 'crowned' (K wearing crown), 'crest', 'twin', 'wireframe'
+ * Default: 'twin' (Option 3: Foundation Twin - symmetrical with top Ace foundation slots)
  */
-function emptyKingSlotSVG(style = 'crowned') {
+function emptyKingSlotSVG(style = 'twin') {
   const kGlyph = VECTORS['K'];
   
   if (style === 'twin') {

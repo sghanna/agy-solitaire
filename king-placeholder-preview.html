@@ -212,9 +212,9 @@
   </div>
 
   <!-- Option 3 -->
-  <div class="option-card" id="card-twin">
+  <div class="option-card active" id="card-twin">
     <div class="option-title">Option 3: Foundation Twin</div>
-    <div class="option-badge" style="background:#047857;">Symmetrical</div>
+    <div class="option-badge" style="background:#047857;">Active in Game &bull; Selected</div>
     <div class="slot-holder"><svg viewBox="0 0 52 78" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
   <rect x="0.8" y="0.8" width="50.4" height="76.4" rx="4" fill="#143e2c" stroke="#b09748" stroke-width="1.2"/>
   <g transform="translate(11.34, 23.0) scale(0.166667) translate(0, 186.0) scale(0.1, -0.1)">
@@ -224,7 +224,7 @@
     <div class="slot-desc">
       Exact 100% architectural twin of the top Foundation "A" slots. Same large serif typography, warm antique gold, and pine felt surface.
     </div>
-    <button class="apply-btn" onclick="selectStyle('twin')">Apply Foundation Twin</button>
+    <button class="apply-btn" style="background:#047857;" onclick="selectStyle('twin')">Active in Game</button>
   </div>
 
   <!-- Option 4 -->
@@ -282,7 +282,7 @@
 <a href="index.html" class="back-link">&#x2190; Return to Solitaire Game</a>
 
 <script>
-  const current = localStorage.getItem('agy-king-placeholder-style') || 'crowned';
+  const current = localStorage.getItem('agy-king-placeholder-style') || 'twin';
   const card = document.getElementById('card-' + current);
   if (card) card.classList.add('active');
 

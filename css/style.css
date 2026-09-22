@@ -233,7 +233,7 @@ html, body {
   width: 100%;
   aspect-ratio: 52 / 78;
   border-radius: 3.5px;
-  cursor: pointer;
+  cursor: default;
   transition: transform 0.15s ease, filter 0.2s ease;
 }
 
@@ -245,6 +245,7 @@ html, body {
 }
 
 .king-placeholder-slot.valid-king-target {
+  cursor: pointer;
   filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.85));
   animation: kingSlotPulse 2s infinite ease-in-out;
 }
