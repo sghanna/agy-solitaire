@@ -2,13 +2,14 @@
  * agy-solitaire: Service Worker (Cache-First Offline Play)
  */
 
-const CACHE_NAME = 'agy-solitaire-v6';
+const CACHE_NAME = 'agy-solitaire-v7';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './favicon.svg',
   './favicon-kq-stacked.svg',
   './apple-touch-icon.png',
+  './assets/apple-touch-icon.png',
   './assets/icon-192.png',
   './assets/icon-512.png',
   './css/style.css',
@@ -46,7 +47,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((response) => {
+    caches.match(e.request, { ignoreSearch: true }).then((response) => {
       return response || fetch(e.request);
     })
   );
