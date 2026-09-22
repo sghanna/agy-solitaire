@@ -942,14 +942,6 @@ class SolitaireGame {
       setTimeout(() => { if (p.parentNode) p.parentNode.removeChild(p); }, 1400);
     });
 
-    // 2. Floating golden +20 score popup
-    const scorePopup = document.createElement('div');
-    scorePopup.className = 'ace-score-float';
-    scorePopup.textContent = '+20';
-    scorePopup.style.left = `${centerX}px`;
-    scorePopup.style.top = `${centerY - 12}px`;
-    container.appendChild(scorePopup);
-    setTimeout(() => { if (scorePopup.parentNode) scorePopup.parentNode.removeChild(scorePopup); }, 1500);
   }
 
   executeMoveToTableau(selected, targetCol) {
