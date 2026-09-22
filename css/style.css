@@ -225,29 +225,39 @@ html, body {
   min-height: 220px;
 }
 
-/* Empty column marker */
-.tableau-col:empty::after {
-  content: "K";
+/* Empty column King placeholder slot */
+.king-placeholder-slot {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   aspect-ratio: 52 / 78;
-  border-radius: 3.2px;
-  border: 1.5px dashed rgba(251, 191, 36, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(251, 191, 36, 0.25);
-  font-size: 16px;
-  font-weight: 900;
-  transition: all 0.2s ease;
+  border-radius: 3.5px;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.2s ease;
 }
 
-.tableau-col.valid-king-target:empty::after {
-  border-color: rgba(251, 191, 36, 0.75);
-  color: #fbbf24;
-  box-shadow: 0 0 14px rgba(251, 191, 36, 0.45);
+.king-placeholder-slot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.king-placeholder-slot.valid-king-target {
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.85));
+  animation: kingSlotPulse 2s infinite ease-in-out;
+}
+
+@keyframes kingSlotPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6));
+  }
+  50% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 14px rgba(254, 240, 138, 0.95));
+  }
 }
 
 /* =========================================================================
@@ -760,6 +770,124 @@ html, body {
     opacity: 0;
     transform: translate(-50%, -50%) translate(calc(var(--tx) * 1.25), calc(var(--ty) + 24px)) rotate(var(--rot)) scale(0.85);
   }
+}
+
+/* =========================================================================
+   NEW GAME CONFIRMATION MODAL (MATCHING GAME AESTHETIC)
+   ========================================================================= */
+.confirm-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 19, 13, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 55;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.confirm-modal-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confirm-modal-card {
+  width: 88%;
+  max-width: 320px;
+  background: radial-gradient(circle at 50% 20%, #1a4d36 0%, #0d281c 70%, #06160f 100%);
+  border: 2px solid var(--gold-accent);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(251, 191, 36, 0.25);
+  padding: 24px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.confirm-modal-overlay.visible .confirm-modal-card {
+  transform: scale(1);
+}
+
+.confirm-modal-seal {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #b91c1c 0%, #7f1d1d 70%, #450a0a 100%);
+  border: 2px solid var(--gold-accent);
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.confirm-modal-glyph {
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold-accent);
+  line-height: 1;
+}
+
+.confirm-modal-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.confirm-modal-desc {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.confirm-modal-buttons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.confirm-btn {
+  flex: 1;
+  padding: 11px 0;
+  border-radius: 20px;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.15s ease;
+}
+
+.confirm-btn:active {
+  transform: scale(0.96);
+}
+
+.confirm-btn-cancel {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1.5px solid rgba(251, 191, 36, 0.45);
+  color: var(--gold-light);
+}
+
+.confirm-btn-proceed {
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+  border: 1.5px solid #f87171;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
 

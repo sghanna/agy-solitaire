@@ -66,6 +66,12 @@ class SolitaireGame {
     this.undoBtn = document.getElementById('btn-undo');
     this.hintBtn = document.getElementById('btn-hint');
 
+    try {
+      this.kingPlaceholderStyle = localStorage.getItem('agy-king-placeholder-style') || 'crowned';
+    } catch (e) {
+      this.kingPlaceholderStyle = 'crowned';
+    }
+
     this.setupEventListeners();
     this.startNewGame();
   }
@@ -80,7 +86,7 @@ class SolitaireGame {
       });
     }
 
-    // Hint button
+    // Hint button (if present)
     if (this.hintBtn) {
       this.hintBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -88,13 +94,42 @@ class SolitaireGame {
       });
     }
 
-    // New Game button
+    // New Game button & Custom Styled Confirmation Modal
     const newGameBtn = document.getElementById('btn-new-game');
+    const confirmModal = document.getElementById('new-game-modal-overlay');
+    const confirmProceedBtn = document.getElementById('btn-confirm-new-game');
+    const confirmCancelBtn = document.getElementById('btn-cancel-new-game');
+
     if (newGameBtn) {
       newGameBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (confirm('Start a new deal?')) {
+        if (confirmModal) {
+          confirmModal.classList.add('visible');
+        } else if (confirm('Start a new deal?')) {
           this.startNewGame();
+        }
+      });
+    }
+
+    if (confirmProceedBtn) {
+      confirmProceedBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirmModal) confirmModal.classList.remove('visible');
+        this.startNewGame();
+      });
+    }
+
+    if (confirmCancelBtn) {
+      confirmCancelBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirmModal) confirmModal.classList.remove('visible');
+      });
+    }
+
+    if (confirmModal) {
+      confirmModal.addEventListener('click', (e) => {
+        if (e.target === confirmModal) {
+          confirmModal.classList.remove('visible');
         }
       });
     }
@@ -729,6 +764,15 @@ class SolitaireGame {
         setTimeout(() => colEl.classList.remove('slot-shake'), 260);
         if (window.solitaireAudio) window.solitaireAudio.playInvalidMove();
       }
+    } else if (col.length === 0) {
+      // Empty column tapped with no card selected: cycle King placeholder design option!
+      const styles = ['crowned', 'crest', 'twin', 'wireframe'];
+      const currentIdx = styles.indexOf(this.kingPlaceholderStyle);
+      this.kingPlaceholderStyle = styles[(currentIdx + 1) % styles.length];
+      try {
+        localStorage.setItem('agy-king-placeholder-style', this.kingPlaceholderStyle);
+      } catch (err) {}
+      this.render();
     }
   }
 
@@ -1358,9 +1402,23 @@ class SolitaireGame {
       colEl.innerHTML = '';
       const cards = this.tableau[c];
 
-      // Mark empty column King indicator if a King is currently selected
-      if (cards.length === 0 && this.selected && this.selected.card.rank === 13) {
-        colEl.classList.add('valid-king-target');
+      // Render King placeholder slot if column is empty
+      if (cards.length === 0) {
+        if (this.selected && this.selected.card.rank === 13) {
+          colEl.classList.add('valid-king-target');
+        } else {
+          colEl.classList.remove('valid-king-target');
+        }
+        const kingPlaceholderEl = document.createElement('div');
+        kingPlaceholderEl.className = 'king-placeholder-slot';
+        if (this.selected && this.selected.card.rank === 13) {
+          kingPlaceholderEl.classList.add('valid-king-target');
+        }
+        kingPlaceholderEl.title = 'King Slot (Tap to cycle designs)';
+        kingPlaceholderEl.innerHTML = window.SolitaireDeck.emptyKingSlotSVG ? 
+          window.SolitaireDeck.emptyKingSlotSVG(this.kingPlaceholderStyle || 'crowned') : '';
+        colEl.appendChild(kingPlaceholderEl);
+        continue;
       } else {
         colEl.classList.remove('valid-king-target');
       }

@@ -146,6 +146,91 @@ function emptyFoundationSlotSVG() {
 }
 
 /**
+ * Generates vector SVG for empty King tableau slot
+ * Options: 'crowned' (K wearing crown), 'crest', 'twin', 'wireframe'
+ */
+function emptyKingSlotSVG(style = 'crowned') {
+  const kGlyph = VECTORS['K'];
+  
+  if (style === 'twin') {
+    return `<svg class="slot-svg" viewBox="0 0 ${W} ${H}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0.8" y="0.8" width="${W - 1.6}" height="${H - 1.6}" rx="4" fill="#143e2c" stroke="#b09748" stroke-width="1.2"/>
+      <g transform="translate(11.34, 23.0) scale(0.166667) translate(0, ${kGlyph.h}) scale(0.1, -0.1)">
+        <path d="${kGlyph.d}" fill="#bca55c"/>
+      </g>
+    </svg>`;
+  }
+
+  if (style === 'crest') {
+    return `<svg class="slot-svg" viewBox="0 0 ${W} ${H}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0.8" y="0.8" width="${W - 1.6}" height="${H - 1.6}" rx="3.5" fill="#143e2c" stroke="#b09748" stroke-width="1.2"/>
+      <path d="M 15,28 Q 26,29.5 37,28 L 37,30 Q 26,31.5 15,30 Z" fill="#d4af37"/>
+      <path d="M 15.5,28 C 13.5,18 19,20.5 22.5,22.5 C 24,14.5 28,14.5 29.5,22.5 C 33,20.5 38.5,18 36.5,28 Z" fill="#bca55c" stroke="#fef08a" stroke-width="0.6"/>
+      <circle cx="14" cy="18" r="1.3" fill="#fef08a"/>
+      <circle cx="26" cy="14" r="1.7" fill="#fef08a"/>
+      <circle cx="38" cy="18" r="1.3" fill="#fef08a"/>
+      <g transform="translate(11.34, 30.17) scale(0.166667) translate(0, ${kGlyph.h}) scale(0.1, -0.1)">
+        <path d="${kGlyph.d}" fill="#bca55c"/>
+      </g>
+    </svg>`;
+  }
+
+  if (style === 'wireframe') {
+    return `<svg class="slot-svg" viewBox="0 0 ${W} ${H}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1.0" y="1.0" width="${W - 2}" height="${H - 2}" rx="3.5" fill="rgba(12, 36, 25, 0.4)" stroke="rgba(251, 191, 36, 0.45)" stroke-width="1.2" stroke-dasharray="4 2.5"/>
+      <g opacity="0.65">
+        <path d="M 13.5,31.5 L 13,19 L 18.5,23.5 L 26,14.5 L 33.5,23.5 L 39,19 L 38.5,31.5 Q 26,33.5 13.5,31.5 Z" fill="#bca55c" stroke="#e6cf8b" stroke-width="0.5"/>
+        <circle cx="13" cy="18.5" r="1.3" fill="#fef08a"/>
+        <circle cx="18.5" cy="23" r="1.1" fill="#fef08a"/>
+        <circle cx="26" cy="14" r="1.5" fill="#fef08a"/>
+        <circle cx="33.5" cy="23" r="1.1" fill="#fef08a"/>
+        <circle cx="39" cy="18.5" r="1.3" fill="#fef08a"/>
+        <path d="M 26,10.5 L 26,13.5 M 24.5,12 L 27.5,12" stroke="#fef08a" stroke-width="0.8" stroke-linecap="round"/>
+        <g transform="translate(11.34, 30.17) scale(0.166667) translate(0, ${kGlyph.h}) scale(0.1, -0.1)">
+          <path d="${kGlyph.d}" fill="#fbbf24"/>
+        </g>
+      </g>
+    </svg>`;
+  }
+
+  // Default: 'crowned' (Option 1: Imperial Crowned K)
+  const id = 'kglow_' + (svgUid++);
+  return `<svg class="slot-svg" viewBox="0 0 ${W} ${H}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="${id}" cx="50%" cy="40%" r="65%">
+        <stop offset="0%" stop-color="#194833"/>
+        <stop offset="100%" stop-color="#102e21"/>
+      </radialGradient>
+    </defs>
+    <!-- Slot Surface & Gold Border -->
+    <rect x="0.8" y="0.8" width="${W - 1.6}" height="${H - 1.6}" rx="3.5" fill="url(#${id})" stroke="#b09748" stroke-width="1.2"/>
+    <rect x="2.5" y="2.5" width="${W - 5}" height="${H - 5}" rx="2.5" fill="none" stroke="rgba(251, 191, 36, 0.22)" stroke-width="0.6"/>
+    <!-- Crown Velvet Cap -->
+    <path d="M 15.5,31.5 Q 19,21 26,20.5 Q 33,21 36.5,31.5 Z" fill="#0d281c"/>
+    <!-- Crown Gold Body (5 Peaks) -->
+    <path d="M 13.5,31.5 L 13,19 L 18.5,23.5 L 26,14.5 L 33.5,23.5 L 39,19 L 38.5,31.5 Q 26,33.5 13.5,31.5 Z" fill="#bca55c" stroke="#e6cf8b" stroke-width="0.5"/>
+    <!-- Crown Headband -->
+    <path d="M 13.5,30 Q 26,32 38.5,30 L 38.5,32.5 Q 26,34.5 13.5,32.5 Z" fill="#d4af37" stroke="#b09748" stroke-width="0.4"/>
+    <!-- Jewels on Headband -->
+    <circle cx="19" cy="31.8" r="0.8" fill="#143e2c"/>
+    <circle cx="26" cy="32.2" r="1.0" fill="#c62f27"/>
+    <circle cx="33" cy="31.8" r="0.8" fill="#143e2c"/>
+    <!-- Peak Spheres / Jewels -->
+    <circle cx="13" cy="18.5" r="1.3" fill="#fef08a"/>
+    <circle cx="18.5" cy="23" r="1.1" fill="#fef08a"/>
+    <circle cx="26" cy="14" r="1.5" fill="#fef08a"/>
+    <circle cx="33.5" cy="23" r="1.1" fill="#fef08a"/>
+    <circle cx="39" cy="18.5" r="1.3" fill="#fef08a"/>
+    <!-- Royal Cross atop center peak -->
+    <path d="M 26,10.5 L 26,13.5 M 24.5,12 L 27.5,12" stroke="#fef08a" stroke-width="0.8" stroke-linecap="round"/>
+    <!-- Bodoni Serif K -->
+    <g transform="translate(11.34, 30.17) scale(0.166667) translate(0, ${kGlyph.h}) scale(0.1, -0.1)">
+      <path d="${kGlyph.d}" fill="#bca55c"/>
+    </g>
+  </svg>`;
+}
+
+/**
  * Renders HTML for a face-up card
  */
 function renderFaceUpCard(card) {
@@ -194,6 +279,7 @@ window.SolitaireDeck = {
   cardSVG,
   backSVG,
   emptyFoundationSlotSVG,
+  emptyKingSlotSVG,
   renderFaceUpCard,
   renderCardBack,
   createCardElement
