@@ -330,8 +330,8 @@
   <div class="options-grid">
 
     <!-- ================= OPTION 1 ================= -->
-    <div class="opt-card selected" id="card-opt-1">
-      <div class="opt-badge" id="badge-opt-1">Recommended</div>
+    <div class="opt-card" id="card-opt-1">
+      <div class="opt-badge" id="badge-opt-1">Brass Horn</div>
       <h2 class="opt-title">Option 1: Antique Brass Horn</h2>
       <div class="opt-subtitle">Classic Line & Ripple Silhouette</div>
 
@@ -496,8 +496,8 @@
     </div>
 
     <!-- ================= OPTION 4 ================= -->
-    <div class="opt-card" id="card-opt-4">
-      <div class="opt-badge" id="badge-opt-4">Harmonic</div>
+    <div class="opt-card selected" id="card-opt-4">
+      <div class="opt-badge" id="badge-opt-4">Active in Game &bull; Selected</div>
       <h2 class="opt-title">Option 4: Musical Note & Wave</h2>
       <div class="opt-subtitle">Acoustic Melody & Card Clicks</div>
 
@@ -713,6 +713,15 @@
       setTimeout(() => {
         toast.classList.remove('show');
       }, 2000);
+    }
+
+    const initialStyle = localStorage.getItem('agy-sound-icon-style') || '4';
+    document.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+    const activeCard = document.getElementById('card-opt-' + initialStyle);
+    if (activeCard) {
+      activeCard.classList.add('selected');
+      const badge = document.getElementById('badge-opt-' + initialStyle);
+      if (badge) badge.textContent = 'Active in Game • Selected';
     }
   </script>
 </body>

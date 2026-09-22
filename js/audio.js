@@ -332,12 +332,12 @@ function getSoundIconSVG(isMuted, style) {
   let chosen = style;
   if (!chosen) {
     try {
-      chosen = localStorage.getItem('agy-sound-icon-style') || '1';
+      chosen = localStorage.getItem('agy-sound-icon-style') || '4';
     } catch (e) {
-      chosen = '1';
+      chosen = '4';
     }
   }
-  const entry = SOUND_ICONS[chosen] || SOUND_ICONS['1'];
+  const entry = SOUND_ICONS[chosen] || SOUND_ICONS['4'];
   return isMuted ? entry.muted : entry.unmuted;
 }
 
