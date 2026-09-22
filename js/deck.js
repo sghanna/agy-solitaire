@@ -64,13 +64,14 @@ function createStandardDeck() {
 function renderFaceUpCard(card) {
   const suitSvg = SUIT_SVGS[card.suit];
   const rank = card.rank;
+  const isTen = rank === 10;
 
   return `
     <div class="card-face card-${card.color}">
-      <!-- Top Max-Fill Banner -->
-      <div class="card-banner">
-        <span class="card-rank">${card.rankLabel}</span>
-        <div class="card-banner-suit">${suitSvg}</div>
+      <!-- Top-Left Grouped Corner Index: Large Rank + Adjacent Small Suit -->
+      <div class="card-corner-index">
+        <span class="card-rank ${isTen ? 'rank-10' : ''}">${card.rankLabel}</span>
+        <div class="card-index-suit">${suitSvg}</div>
       </div>
 
       <!-- Clean, Floater-Safe Center Area: Bold suit emblem for all cards -->

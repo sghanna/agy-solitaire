@@ -49,23 +49,29 @@ html, body {
 }
 
 /* =========================================================================
-   TOP HUD: OPTION 2 TOP FLOATING BRASS PILLS
+   TOP HUD: CLASSIC GOLD SERIF SCORE, TIME, MOVES (MATCHING MOM'S GAME)
    ========================================================================= */
 .top-hud {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 2px 10px 2px;
+  padding: 4px 4px 10px 4px;
   z-index: 20;
+}
+
+.hud-controls-left, .hud-controls-right {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .hud-btn {
   background: rgba(15, 23, 42, 0.9);
   border: 1.5px solid var(--gold-accent);
   color: var(--gold-light);
-  padding: 6px 12px;
-  border-radius: 18px;
-  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 11.5px;
   font-weight: 800;
   cursor: pointer;
   display: flex;
@@ -91,27 +97,36 @@ html, body {
   background: #ef4444;
 }
 
-.hud-info {
+.hud-stats-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.hud-stat-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
 }
 
-.hud-stats {
-  font-size: 11px;
-  font-weight: 800;
-  color: #e2e8f0;
+.hud-stat-label {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fbbf24;
   letter-spacing: 0.5px;
+  line-height: 1.1;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-.hud-sub {
-  font-size: 9px;
-  font-weight: 700;
-  color: #6ee7b7;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
+.hud-stat-val {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 /* =========================================================================
@@ -149,15 +164,42 @@ html, body {
   opacity: 0.7;
 }
 
-.foundation-empty-glyph {
-  width: 22px;
-  height: 22px;
-  opacity: 0.28;
+.slot-foundation {
+  background: rgba(12, 36, 25, 0.65);
+  border: 1.5px solid rgba(251, 191, 36, 0.45);
 }
 
-.foundation-empty-glyph.red { color: #f87171; }
-.foundation-empty-glyph.black { color: #94a3b8; }
-.foundation-empty-glyph svg { width: 100%; height: 100%; }
+.foundation-empty-glyph {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: rgba(251, 191, 36, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+
+.stock-count-badge {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  color: #ffffff;
+  font-family: Georgia, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 9px;
+  line-height: 1.2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  z-index: 5;
+}
 
 /* =========================================================================
    TABLEAU: 7 COLUMNS
@@ -304,72 +346,72 @@ html, body {
   75% { transform: translateX(5px); }
 }
 
-/* Face-up Card Structure */
+/* Face-up Card Structure: Pure White Face matching Mom's screenshot */
 .card-face {
   width: 100%;
   height: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
+  background: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .card-face.card-red { color: var(--card-red); }
 .card-face.card-black { color: var(--card-black); }
 
-/* Max-Fill Top Banner (26px high, giant readable rank) */
-.card-banner {
-  width: 100%;
-  height: 26px;
+/* Top-Left Grouped Corner Index (Rank + Adjacent Small Suit) */
+.card-corner-index {
+  position: absolute;
+  top: 2px;
+  left: 3.5px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 4px;
-  border-bottom: 1.5px solid;
-}
-
-.card-red .card-banner {
-  background: #fee2e2;
-  border-color: #f87171;
-}
-
-.card-black .card-banner {
-  background: #f1f5f9;
-  border-color: #94a3b8;
+  align-items: flex-start;
+  gap: 1.5px;
+  line-height: 1;
+  z-index: 2;
 }
 
 .card-rank {
-  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 0px;
-  line-height: 1;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 0.92;
 }
 
-.card-banner-suit {
-  width: 13px;
-  height: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.card-rank.rank-10 {
+  letter-spacing: -2.5px;
+  margin-right: 1px;
 }
-.card-banner-suit svg { width: 100%; height: 100%; }
 
-/* Card Center Area */
+.card-index-suit {
+  width: 12px;
+  height: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.card-index-suit svg { width: 100%; height: 100%; }
+
+/* Card Center Area: Giant Centered Suit Emblem matching Mom's screenshot */
 .card-center {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 14px;
 }
 
 .card-main-suit {
-  width: 25px;
-  height: 25px;
+  width: 32px;
+  height: 32px;
 }
 .card-main-suit svg { width: 100%; height: 100%; }
 
 .card-main-suit.ace-emblem {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
 }
 
 /* Card Back (Option 4A Double Happiness Back) */
@@ -719,4 +761,85 @@ html, body {
   padding: 10px 24px;
   font-size: 14px;
 }
+
+/* =========================================================================
+   ACE FOUNDATION CELEBRATION (MATCHING MOM'S SCREENSHOT)
+   ========================================================================= */
+#ace-celebration-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  overflow: visible;
+}
+
+.ace-particle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 26px;
+  line-height: 1;
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  animation: aceParticleBurst 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+.ace-particle.red { color: #dc2626; }
+.ace-particle.black { color: #111111; }
+
+@keyframes aceParticleBurst {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(0.3);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1.18);
+  }
+  70% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) translate(calc(var(--tx) * 1.15), calc(var(--ty) + 8px)) rotate(var(--rot)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(calc(var(--tx) * 1.25), calc(var(--ty) + 24px)) rotate(var(--rot)) scale(0.85);
+  }
+}
+
+.ace-score-float {
+  position: absolute;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: #fbbf24;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 14px rgba(251, 191, 36, 0.7);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  animation: aceScoreRise 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  letter-spacing: 0.5px;
+}
+
+@keyframes aceScoreRise {
+  0% {
+    transform: translate(-50%, -50%) translateY(0) scale(0.7);
+    opacity: 0;
+  }
+  20% {
+    transform: translate(-50%, -50%) translateY(-14px) scale(1.2);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(-50%, -50%) translateY(-28px) scale(1.05);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(-42px) scale(0.95);
+    opacity: 0;
+  }
+}
+
 

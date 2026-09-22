@@ -108,6 +108,33 @@ class SolitaireAudio {
     osc.stop(t + 0.3);
   }
 
+  // Sparkling ascending chime for Ace landing in foundation
+  playAceCelebration() {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const t = this.ctx.currentTime;
+    const notes = [783.99, 1046.50, 1318.51, 1567.98]; // G5, C6, E6, G6
+    notes.forEach((freq, i) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const noteTime = t + i * 0.08;
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, noteTime);
+
+      gain.gain.setValueAtTime(0.24, noteTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.45);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(noteTime);
+      osc.stop(noteTime + 0.48);
+    });
+  }
+
   // Soft Stock draw sound
   playStockDraw() {
     if (this.muted) return;

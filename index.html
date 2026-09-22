@@ -26,37 +26,51 @@
     <!-- ================================================================= -->
     <!-- TOP HUD: OPTION 2 TOP FLOATING BRASS PILLS                        -->
     <!-- ================================================================= -->
+    <!-- ================================================================= -->
+    <!-- TOP HUD: CLASSIC GOLD SERIF SCORE, TIME, MOVES (MATCHING MOM'S GAME) -->
+    <!-- ================================================================= -->
     <header class="top-hud">
-      <div style="display: flex; gap: 5px;">
+      <div class="hud-controls-left">
         <button class="hud-btn" id="btn-undo" title="Undo previous move">&#x21BA; Undo</button>
         <button class="hud-btn" id="btn-hint" title="Show helpful hint">&#x2728; Hint</button>
       </div>
 
-      <div class="hud-info">
-        <div class="hud-stats">
-          <span id="hud-timer">00:00</span> &bull; <span id="hud-score">0</span> pts
+      <div class="hud-stats-group">
+        <div class="hud-stat-col">
+          <span class="hud-stat-label">Score</span>
+          <span class="hud-stat-val" id="hud-score">0</span>
         </div>
-        <div class="hud-sub">Draw 1 &bull; iPhone 16e</div>
+        <div class="hud-stat-col">
+          <span class="hud-stat-label">Time</span>
+          <span class="hud-stat-val" id="hud-timer">00:00</span>
+        </div>
+        <div class="hud-stat-col">
+          <span class="hud-stat-label">Moves</span>
+          <span class="hud-stat-val" id="hud-moves">0</span>
+        </div>
       </div>
 
-      <div style="display: flex; gap: 5px;">
+      <div class="hud-controls-right">
         <button class="hud-btn" id="btn-audio-toggle" style="padding: 6px 10px;">🔊</button>
         <button class="hud-btn new-game-btn" id="btn-new-game">New</button>
       </div>
     </header>
 
     <!-- ================================================================= -->
-    <!-- TOP ROW: STOCK, WASTE, & 4 FOUNDATIONS                            -->
+    <!-- TOP ROW: 4 FOUNDATIONS ON LEFT, WASTE & STOCK ON RIGHT            -->
     <!-- ================================================================= -->
     <section class="top-row">
-      <div class="slot slot-stock" id="slot-stock" title="Stock pile"></div>
-      <div class="slot slot-waste" id="slot-waste" title="Waste pile"></div>
-      <div></div> <!-- Blank spacer between waste and foundations -->
       <div class="slot slot-foundation" id="foundation-S" title="Spades Foundation"></div>
       <div class="slot slot-foundation" id="foundation-H" title="Hearts Foundation"></div>
       <div class="slot slot-foundation" id="foundation-C" title="Clubs Foundation"></div>
       <div class="slot slot-foundation" id="foundation-D" title="Diamonds Foundation"></div>
+      <div></div> <!-- Blank spacer between foundations and waste -->
+      <div class="slot slot-waste" id="slot-waste" title="Waste pile"></div>
+      <div class="slot slot-stock" id="slot-stock" title="Stock pile"></div>
     </section>
+
+    <!-- Container for Ace Celebration burst effects -->
+    <div id="ace-celebration-container"></div>
 
     <!-- ================================================================= -->
     <!-- TABLEAU: 7 COLUMNS (GENEROUS TOUCH TARGETS & JUMBO RANKS)         -->

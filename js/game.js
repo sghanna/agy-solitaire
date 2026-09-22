@@ -861,6 +861,11 @@ class SolitaireGame {
       this.render();
       this.updateHUD();
 
+      // Trigger Ace Celebration when an Ace reaches its foundation spot!
+      if (card.rank === 1) {
+        this.triggerAceCelebration(suit);
+      }
+
       return previousCardToFlip;
     }, (previousCardToFlip) => {
       // After moving card lands, flip the exposed face-down card in place!
@@ -879,6 +884,72 @@ class SolitaireGame {
       this.checkWinCondition();
       this.checkAutoCompletionReadiness();
     });
+  }
+
+  /**
+   * Ace Foundation Celebration (matching Mom's screenshot!)
+   * Bursts 7 suit particles around the Ace and floats a glowing +20 score badge
+   */
+  triggerAceCelebration(suit) {
+    if (window.solitaireAudio && window.solitaireAudio.playAceCelebration) {
+      window.solitaireAudio.playAceCelebration();
+    }
+
+    const foundationEl = this.foundationEls[suit];
+    if (!foundationEl) return;
+
+    const container = document.getElementById('ace-celebration-container') || document.body;
+    if (!container) return;
+    const rect = foundationEl.getBoundingClientRect();
+    const appContainer = document.getElementById('app-container');
+    const appRect = appContainer ? appContainer.getBoundingClientRect() : { left: 0, top: 0 };
+    const centerX = rect.left - appRect.left + rect.width / 2;
+    const centerY = rect.top - appRect.top + rect.height / 2;
+
+    const suitGlyphs = { S: '♠', H: '♥', C: '♣', D: '♦' };
+    const suitColors = { S: 'black', H: 'red', C: 'black', D: 'red' };
+    const glyph = suitGlyphs[suit] || '♦';
+    const colorClass = suitColors[suit] || 'red';
+
+    // 1. Burst 7 floating suit particles in an arc around the Ace card
+    const burstOffsets = [
+      { tx: '-32px', ty: '-24px', rot: '-28deg' },
+      { tx: '32px', ty: '-26px', rot: '32deg' },
+      { tx: '-40px', ty: '12px', rot: '-16deg' },
+      { tx: '40px', ty: '10px', rot: '22deg' },
+      { tx: '0px', ty: '-42px', rot: '12deg' },
+      { tx: '-20px', ty: '-48px', rot: '-38deg' },
+      { tx: '22px', ty: '-46px', rot: '42deg' }
+    ];
+
+    burstOffsets.forEach((b, idx) => {
+      const p = document.createElement('div');
+      p.className = `ace-particle ${colorClass}`;
+      p.textContent = glyph;
+      p.style.left = `${centerX}px`;
+      p.style.top = `${centerY}px`;
+      if (p.style && p.style.setProperty) {
+        p.style.setProperty('--tx', b.tx);
+        p.style.setProperty('--ty', b.ty);
+        p.style.setProperty('--rot', b.rot);
+      } else if (p.style) {
+        p.style['--tx'] = b.tx;
+        p.style['--ty'] = b.ty;
+        p.style['--rot'] = b.rot;
+      }
+      p.style.animationDelay = `${idx * 0.03}s`;
+      container.appendChild(p);
+      setTimeout(() => { if (p.parentNode) p.parentNode.removeChild(p); }, 1400);
+    });
+
+    // 2. Floating golden +20 score popup
+    const scorePopup = document.createElement('div');
+    scorePopup.className = 'ace-score-float';
+    scorePopup.textContent = '+20';
+    scorePopup.style.left = `${centerX}px`;
+    scorePopup.style.top = `${centerY - 12}px`;
+    container.appendChild(scorePopup);
+    setTimeout(() => { if (scorePopup.parentNode) scorePopup.parentNode.removeChild(scorePopup); }, 1500);
   }
 
   executeMoveToTableau(selected, targetCol) {
@@ -1234,6 +1305,11 @@ class SolitaireGame {
     if (this.stock.length > 0) {
       const topStock = this.stock[this.stock.length - 1];
       const cardEl = window.SolitaireDeck.createCardElement(topStock);
+      // Stock remaining card count badge (matching Mom's screenshot!)
+      const badge = document.createElement('span');
+      badge.className = 'stock-count-badge';
+      badge.textContent = this.stock.length;
+      cardEl.appendChild(badge);
       this.stockEl.appendChild(cardEl);
       this.stockEl.classList.remove('empty-stock');
     } else {
@@ -1282,9 +1358,10 @@ class SolitaireGame {
         }
         fEl.appendChild(cardEl);
       } else {
+        // Gold serif A placeholder matching Mom's screenshot!
         fEl.innerHTML = `
-          <div class="foundation-empty-glyph ${window.SolitaireDeck.SUITS[suit].color}">
-            ${window.SolitaireDeck.SUIT_SVGS[suit]}
+          <div class="foundation-empty-glyph">
+            A
           </div>
         `;
       }
