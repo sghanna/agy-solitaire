@@ -160,7 +160,7 @@ class SolitaireCelebration {
         ctx.fillRect(c.x + 1, c.y + 1, c.width - 2, 18);
 
         // Rank
-        ctx.font = '900 13px -apple-system, sans-serif';
+        ctx.font = '800 13.5px Lexend, -apple-system, sans-serif';
         ctx.fillStyle = c.isRed ? '#c62828' : '#111111';
         ctx.fillText(c.rank, c.x + 4, c.y + 14);
 
