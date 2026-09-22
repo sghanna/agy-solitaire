@@ -49,7 +49,7 @@ html, body {
 }
 
 /* =========================================================================
-   TOP HUD: CLASSIC GOLD SERIF SCORE, MOVES (MATCHING MOM'S GAME)
+   TOP HUD: OPTION 3 SENIOR HIGH-CONTRAST BAR (40px HEIGHT, CENTER MENU)
    ========================================================================= */
 .top-hud {
   display: flex;
@@ -58,105 +58,82 @@ html, body {
   padding: 4px 6px 10px 6px;
   z-index: 20;
   width: 100%;
+  box-sizing: border-box;
 }
 
-.hud-controls-left, .hud-controls-right {
+.hud-controls-left {
   display: flex;
-  gap: 6px;
   align-items: center;
   flex-shrink: 0;
 }
 
-.hud-btn {
-  background: rgba(15, 23, 42, 0.9);
-  border: 1.5px solid var(--gold-accent);
-  color: var(--gold-light);
-  padding: 5px 10px;
-  border-radius: 16px;
-  font-size: 11.5px;
-  font-weight: 800;
-  cursor: pointer;
+.hud-controls-center {
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hud-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.hud-btn {
+  background: rgba(15, 23, 42, 0.95);
+  border: 2px solid var(--gold-accent);
+  color: #ffffff;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   transition: all 0.15s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  box-sizing: border-box;
 }
 
 .hud-btn:active {
   transform: scale(0.95);
   background: var(--gold-accent);
-  color: #451a03;
+  color: #0f172a;
 }
 
 .hud-btn.new-game-btn {
-  background: #991b1b;
-  border-color: #f87171;
+  background: #b91c1c;
+  border-color: #fca5a5;
   color: #ffffff;
+  padding: 0 13px;
 }
 
 .hud-btn.new-game-btn:active {
   background: #ef4444;
 }
 
-#btn-settings-toggle,
-#btn-audio-toggle {
-  width: 32px;
-  height: 28px;
-  padding: 0;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
+.hud-btn.menu-btn {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: #fbbf24;
+  color: #fef08a;
+  padding: 0 14px;
 }
 
-#btn-settings-toggle svg,
-#btn-audio-toggle svg {
-  display: block;
-  pointer-events: none;
+.hud-btn.help-btn {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: #fbbf24;
+  color: #fef08a;
+  padding: 0 11px;
 }
 
-#btn-settings-toggle svg {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#btn-settings-toggle:active svg {
-  transform: rotate(45deg);
-}
-
-.hud-stats-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  flex: 1;
-}
-
-.hud-stat-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-}
-
-.hud-stat-label {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 11.5px;
-  font-weight: 800;
-  color: #fbbf24;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  line-height: 1.1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
-
-.hud-stat-val {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 11.5px;
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+.hud-btn.undo-btn {
+  padding: 0 12px;
 }
 
 /* =========================================================================
@@ -1012,7 +989,7 @@ html, body {
 }
 
 /* =========================================================================
-   BOTTOM TIMER HUD (TOGGLEABLE, OFF BY DEFAULT)
+   BOTTOM STATUS BAR: SCORE, MOVES & OPTIONAL TIMER (TOGGLEABLE IN MENU)
    ========================================================================= */
 .bottom-hud {
   position: absolute;
@@ -1026,18 +1003,94 @@ html, body {
   pointer-events: none;
 }
 
-.bottom-timer-pill {
-  background: rgba(15, 23, 42, 0.88);
-  border: 1.2px solid var(--gold-accent);
-  color: var(--gold-light);
-  padding: 4px 14px;
-  border-radius: 14px;
+.bottom-status-capsule {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1.5px solid #fbbf24;
+  border-radius: 20px;
+  padding: 6px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.hud-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-stat-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 11.5px;
   font-weight: 800;
-  letter-spacing: 0.6px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-  pointer-events: auto;
+  color: #fbbf24;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  line-height: 1.1;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.hud-stat-val {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.hud-stat-divider {
+  color: rgba(251, 191, 36, 0.5);
+  font-size: 14px;
+  user-select: none;
+}
+
+/* =========================================================================
+   HOW TO PLAY / HELP MODAL STYLING
+   ========================================================================= */
+.help-modal-card {
+  max-width: 350px !important;
+  max-height: 85vh !important;
+  overflow-y: auto !important;
+  padding: 20px 18px 18px 18px !important;
+}
+
+.help-modal-subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: -4px;
+  margin-bottom: 12px;
+}
+
+.help-scroll-body {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+  text-align: left;
+}
+
+.help-card-box {
+  background: rgba(8, 28, 19, 0.7);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.help-card-heading {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #fbbf24;
+  margin-bottom: 3px;
+  letter-spacing: 0.3px;
+}
+
+.help-card-desc {
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.4;
 }
 
 

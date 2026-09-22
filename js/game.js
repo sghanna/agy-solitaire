@@ -300,6 +300,34 @@ class SolitaireGame {
       });
     }
 
+    // Help button & Help Modal
+    const helpBtn = document.getElementById('btn-help-toggle');
+    const helpModal = document.getElementById('help-modal-overlay');
+    const closeHelpBtn = document.getElementById('btn-close-help');
+
+    if (helpBtn && helpModal) {
+      helpBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.clearSelection();
+        helpModal.classList.add('visible');
+      });
+    }
+
+    if (closeHelpBtn && helpModal) {
+      closeHelpBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        helpModal.classList.remove('visible');
+      });
+    }
+
+    if (helpModal) {
+      helpModal.addEventListener('click', (e) => {
+        if (e.target === helpModal) {
+          helpModal.classList.remove('visible');
+        }
+      });
+    }
+
     // Unified Board Interaction Delegation
     document.addEventListener('click', (e) => this.handleBoardClick(e));
 
@@ -338,8 +366,12 @@ class SolitaireGame {
 
     const bottomHud = document.getElementById('bottom-hud');
     if (bottomHud) {
-      bottomHud.style.display = showTimer ? 'flex' : 'none';
+      bottomHud.style.display = 'flex';
     }
+    const timerItem = document.getElementById('hud-timer-item');
+    const timerDivider = document.getElementById('hud-timer-divider');
+    if (timerItem) timerItem.style.display = showTimer ? 'flex' : 'none';
+    if (timerDivider) timerDivider.style.display = showTimer ? 'inline-block' : 'none';
 
     const isMuted = (window.solitaireAudio && typeof window.solitaireAudio.isMuted === 'function')
       ? window.solitaireAudio.isMuted()
@@ -1800,7 +1832,7 @@ class SolitaireGame {
     const formatted = this.formatTime(this.elapsedSeconds);
     const bottomTimer = document.getElementById('bottom-timer');
     if (bottomTimer) {
-      bottomTimer.textContent = `Time: ${formatted}`;
+      bottomTimer.textContent = formatted;
     }
     if (this.timerEl) {
       this.timerEl.textContent = formatted;
