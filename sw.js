@@ -2,10 +2,11 @@
  * agy-solitaire: Service Worker (Cache-First Offline Play)
  */
 
-const CACHE_NAME = 'agy-solitaire-v4';
+const CACHE_NAME = 'agy-solitaire-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './favicon.svg',
   './css/style.css',
   './js/deck.js',
   './js/audio.js',
