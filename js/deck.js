@@ -153,10 +153,20 @@ function renderFaceUpCard(card) {
 }
 
 /**
- * Renders HTML for a face-down card
+ * Renders HTML for face-down card (Option 4A Double Happiness Back)
  */
 function renderCardBack() {
-  return backSVG();
+  return `
+    <div class="card-back double-happiness-back">
+      <div class="back-inner-border">
+        <div class="back-seal">
+          <div class="back-seal-inner">
+            <span class="back-seal-glyph">囍</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 /**
