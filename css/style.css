@@ -1085,24 +1085,56 @@ html, body {
 }
 
 .help-card-box {
-  background: rgba(8, 28, 19, 0.7);
+  background: rgba(8, 28, 19, 0.75);
   border: 1px solid rgba(251, 191, 36, 0.28);
   border-radius: 12px;
   padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.help-card-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.help-icon-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #183f2e 0%, #0a2016 100%);
+  border: 1.3px solid #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45), inset 0 1px 2px rgba(254, 240, 138, 0.35);
 }
 
 .help-card-heading {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 800;
   color: #fbbf24;
-  margin-bottom: 3px;
   letter-spacing: 0.3px;
 }
 
 .help-card-desc {
   font-size: 12px;
   color: #cbd5e1;
-  line-height: 1.4;
+  line-height: 1.45;
+  padding-left: 41px;
+}
+
+.help-suit-gold {
+  color: #fbbf24;
+  font-weight: 800;
+}
+
+.help-suit-red {
+  color: #ef4444;
+  font-weight: 800;
 }
 
 
