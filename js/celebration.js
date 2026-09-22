@@ -284,10 +284,10 @@ class SolitaireCelebration {
     };
     render();
 
-    // Show Win 2 compact banner modal after 8 seconds of lanterns and fireworks
+    // Show Win 2 compact banner modal after 3 seconds of lanterns and fireworks
     this.modalTimeout = setTimeout(() => {
       this.showWin2Banner(stats, onPlayAgain);
-    }, 8000);
+    }, 3000);
   }
 
   /**
