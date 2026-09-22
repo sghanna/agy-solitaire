@@ -28,8 +28,8 @@
       <stop offset="100%" stop-color="#450a0a"/>
     </radialGradient>
 
-        <clipPath id="squircleClip">
-      <rect x="16" y="16" width="480" height="480" rx="94"/>
+        <clipPath id="insetSquircleClip">
+      <rect x="19.5" y="19.5" width="473" height="473" rx="90.5"/>
     </clipPath>
   </defs>
 
@@ -37,7 +37,7 @@
   <rect width="512" height="512" fill="url(#bgGrad)"/>
   
   <!-- Cards Container Clipped to Squircle Boundary -->
-  <g clip-path="url(#squircleClip)">
+  <g clip-path="url(#insetSquircleClip)">
     <!-- 1. King of Clubs (Top Card in Column - 70% visible) -->
     <g id="card-king" transform="translate(113.00, 34.00) scale(5.5)" filter="url(#shadowK)">
       <rect x="0.5" y="0.5" width="51" height="77" rx="3.8" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>

@@ -7,7 +7,30 @@
 class SolitaireAudio {
   constructor() {
     this.ctx = null;
-    this.muted = localStorage.getItem('agy_solitaire_muted') === 'true';
+    this.masterGain = null;
+    this.unlocked = false;
+
+    // Load saved mute setting (defaults to false / unmuted)
+    try {
+      this.muted = localStorage.getItem('agy_solitaire_muted') === 'true';
+    } catch (e) {
+      this.muted = false;
+    }
+
+    // Auto-unlock Web Audio on first user interaction anywhere on the screen
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+      const unlock = () => {
+        this.init();
+        if (this.ctx && this.ctx.state === 'running' && typeof window.removeEventListener === 'function') {
+          ['pointerdown', 'touchstart', 'mousedown', 'keydown'].forEach(evt => {
+            window.removeEventListener(evt, unlock, true);
+          });
+        }
+      };
+      ['pointerdown', 'touchstart', 'mousedown', 'keydown'].forEach(evt => {
+        window.addEventListener(evt, unlock, { capture: true, passive: true });
+      });
+    }
   }
 
   init() {
@@ -15,16 +38,67 @@ class SolitaireAudio {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
+        try {
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.setValueAtTime(this.muted ? 0.0 : 1.0, this.ctx.currentTime);
+          this.masterGain.connect(this.ctx.destination);
+        } catch (e) {}
       }
     }
+
     if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {});
     }
+
+    // iOS / Safari hardware unlock with 1-sample silent buffer
+    if (this.ctx && !this.unlocked) {
+      try {
+        const buffer = this.ctx.createBuffer(1, 1, 22050);
+        const source = this.ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.ctx.destination);
+        source.start(0);
+        this.unlocked = true;
+      } catch (e) {}
+    }
+  }
+
+  getDestination() {
+    return this.masterGain || (this.ctx ? this.ctx.destination : null);
+  }
+
+  getOutputTime() {
+    if (!this.ctx) return 0;
+    return Math.max(this.ctx.currentTime, 0.005) + 0.003;
   }
 
   toggleMute() {
     this.muted = !this.muted;
-    localStorage.setItem('agy_solitaire_muted', this.muted);
+    try {
+      localStorage.setItem('agy_solitaire_muted', this.muted);
+    } catch (e) {}
+
+    if (this.masterGain && this.ctx) {
+      this.masterGain.gain.setValueAtTime(this.muted ? 0.0 : 1.0, this.ctx.currentTime);
+    }
+
+    // When unmuting, provide immediate pleasant audible confirmation
+    if (!this.muted) {
+      this.init();
+      this.playCardPlace();
+    }
+    return this.muted;
+  }
+
+  setMuted(muted) {
+    this.muted = Boolean(muted);
+    try {
+      localStorage.setItem('agy_solitaire_muted', this.muted);
+    } catch (e) {}
+
+    if (this.masterGain && this.ctx) {
+      this.masterGain.gain.setValueAtTime(this.muted ? 0.0 : 1.0, this.ctx.currentTime);
+    }
     return this.muted;
   }
 
@@ -32,28 +106,45 @@ class SolitaireAudio {
     return this.muted;
   }
 
-  // Soft felt card snap / placement
+  // Soft felt card snap / placement (Dual-layer for rich mobile & laptop speaker presence)
   playCardPlace() {
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
 
-    const t = this.ctx.currentTime;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const dest = this.getDestination();
+    if (!dest) return;
+    const t = this.getOutputTime();
 
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(180, t);
-    osc.frequency.exponentialRampToValueAtTime(70, t + 0.06);
+    // Layer 1: Crisp tactile snap (cuts through phone speakers)
+    const osc1 = this.ctx.createOscillator();
+    const gain1 = this.ctx.createGain();
+    osc1.type = 'triangle';
+    osc1.frequency.setValueAtTime(440, t);
+    osc1.frequency.exponentialRampToValueAtTime(180, t + 0.045);
 
-    gain.gain.setValueAtTime(0.22, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+    gain1.gain.setValueAtTime(0.35, t);
+    gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
 
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
+    osc1.connect(gain1);
+    gain1.connect(dest);
+    osc1.start(t);
+    osc1.stop(t + 0.06);
 
-    osc.start(t);
-    osc.stop(t + 0.07);
+    // Layer 2: Warm body thud
+    const osc2 = this.ctx.createOscillator();
+    const gain2 = this.ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(240, t);
+    osc2.frequency.exponentialRampToValueAtTime(110, t + 0.07);
+
+    gain2.gain.setValueAtTime(0.28, t);
+    gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+
+    osc2.connect(gain2);
+    gain2.connect(dest);
+    osc2.start(t);
+    osc2.stop(t + 0.08);
   }
 
   // Pleasant card flip
@@ -62,22 +153,25 @@ class SolitaireAudio {
     this.init();
     if (!this.ctx) return;
 
-    const t = this.ctx.currentTime;
+    const dest = this.getDestination();
+    if (!dest) return;
+    const t = this.getOutputTime();
+
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(320, t);
-    osc.frequency.exponentialRampToValueAtTime(580, t + 0.07);
+    osc.frequency.setValueAtTime(360, t);
+    osc.frequency.exponentialRampToValueAtTime(680, t + 0.08);
 
-    gain.gain.setValueAtTime(0.18, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+    gain.gain.setValueAtTime(0.32, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
 
     osc.connect(gain);
-    gain.connect(this.ctx.destination);
+    gain.connect(dest);
 
     osc.start(t);
-    osc.stop(t + 0.08);
+    osc.stop(t + 0.09);
   }
 
   // Cheerful foundation chime (rising pitch based on card rank 1-13)
@@ -86,26 +180,29 @@ class SolitaireAudio {
     this.init();
     if (!this.ctx) return;
 
-    const baseFreq = 392; // G4
+    const dest = this.getDestination();
+    if (!dest) return;
+
+    const baseFreq = 440; // A4
     const scaleSteps = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21];
     const semitones = scaleSteps[(rank - 1) % scaleSteps.length];
     const freq = baseFreq * Math.pow(2, semitones / 12);
 
-    const t = this.ctx.currentTime;
+    const t = this.getOutputTime();
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
     osc.type = 'triangle';
     osc.frequency.setValueAtTime(freq, t);
 
-    gain.gain.setValueAtTime(0.24, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+    gain.gain.setValueAtTime(0.35, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
 
     osc.connect(gain);
-    gain.connect(this.ctx.destination);
+    gain.connect(dest);
 
     osc.start(t);
-    osc.stop(t + 0.3);
+    osc.stop(t + 0.35);
   }
 
   // Sparkling ascending chime for Ace landing in foundation
@@ -114,7 +211,10 @@ class SolitaireAudio {
     this.init();
     if (!this.ctx) return;
 
-    const t = this.ctx.currentTime;
+    const dest = this.getDestination();
+    if (!dest) return;
+
+    const t = this.getOutputTime();
     const notes = [783.99, 1046.50, 1318.51, 1567.98]; // G5, C6, E6, G6
     notes.forEach((freq, i) => {
       const osc = this.ctx.createOscillator();
@@ -124,39 +224,42 @@ class SolitaireAudio {
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, noteTime);
 
-      gain.gain.setValueAtTime(0.24, noteTime);
+      gain.gain.setValueAtTime(0.32, noteTime);
       gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.45);
 
       osc.connect(gain);
-      gain.connect(this.ctx.destination);
+      gain.connect(dest);
 
       osc.start(noteTime);
       osc.stop(noteTime + 0.48);
     });
   }
 
-  // Soft Stock draw sound
+  // Crisp Stock draw sound (card slide)
   playStockDraw() {
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
 
-    const t = this.ctx.currentTime;
+    const dest = this.getDestination();
+    if (!dest) return;
+    const t = this.getOutputTime();
+
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(240, t);
-    osc.frequency.exponentialRampToValueAtTime(360, t + 0.05);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(320, t);
+    osc.frequency.exponentialRampToValueAtTime(540, t + 0.06);
 
-    gain.gain.setValueAtTime(0.14, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+    gain.gain.setValueAtTime(0.28, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
 
     osc.connect(gain);
-    gain.connect(this.ctx.destination);
+    gain.connect(dest);
 
     osc.start(t);
-    osc.stop(t + 0.06);
+    osc.stop(t + 0.07);
   }
 
   // Subtle reverse swoosh for Undo
@@ -165,22 +268,25 @@ class SolitaireAudio {
     this.init();
     if (!this.ctx) return;
 
-    const t = this.ctx.currentTime;
+    const dest = this.getDestination();
+    if (!dest) return;
+    const t = this.getOutputTime();
+
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(420, t);
-    osc.frequency.exponentialRampToValueAtTime(210, t + 0.09);
+    osc.frequency.setValueAtTime(520, t);
+    osc.frequency.exponentialRampToValueAtTime(240, t + 0.1);
 
-    gain.gain.setValueAtTime(0.16, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    gain.gain.setValueAtTime(0.30, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
 
     osc.connect(gain);
-    gain.connect(this.ctx.destination);
+    gain.connect(dest);
 
     osc.start(t);
-    osc.stop(t + 0.1);
+    osc.stop(t + 0.11);
   }
 
   // Crisp card select tick
@@ -189,46 +295,54 @@ class SolitaireAudio {
     this.init();
     if (!this.ctx) return;
 
-    const t = this.ctx.currentTime;
+    const dest = this.getDestination();
+    if (!dest) return;
+    const t = this.getOutputTime();
+
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(480, t);
-    osc.frequency.exponentialRampToValueAtTime(720, t + 0.04);
+    osc.frequency.setValueAtTime(580, t);
+    osc.frequency.exponentialRampToValueAtTime(880, t + 0.04);
 
-    gain.gain.setValueAtTime(0.12, t);
+    gain.gain.setValueAtTime(0.28, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
 
     osc.connect(gain);
-    gain.connect(this.ctx.destination);
+    gain.connect(dest);
 
     osc.start(t);
     osc.stop(t + 0.05);
   }
 
-  // Gentle soft thud for invalid destination
+  // Gentle double wood-knock for invalid destination
   playInvalidMove() {
     if (this.muted) return;
     this.init();
     if (!this.ctx) return;
 
-    const t = this.ctx.currentTime;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const dest = this.getDestination();
+    if (!dest) return;
+    const t = this.getOutputTime();
 
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(130, t);
-    osc.frequency.exponentialRampToValueAtTime(80, t + 0.08);
+    [240, 190].forEach((freq, i) => {
+      const noteTime = t + i * 0.06;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
 
-    gain.gain.setValueAtTime(0.12, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, noteTime);
 
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
+      gain.gain.setValueAtTime(0.28, noteTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.05);
 
-    osc.start(t);
-    osc.stop(t + 0.09);
+      osc.connect(gain);
+      gain.connect(dest);
+
+      osc.start(noteTime);
+      osc.stop(noteTime + 0.06);
+    });
   }
 
   // Grand celebratory arpeggio for game victory
@@ -237,9 +351,12 @@ class SolitaireAudio {
     this.init();
     if (!this.ctx) return;
 
+    const dest = this.getDestination();
+    if (!dest) return;
+
     // Major pentatonic victory fanfare: C5, E5, G5, C6, E6, G6
     const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
-    const startTime = this.ctx.currentTime;
+    const startTime = this.getOutputTime();
 
     notes.forEach((freq, i) => {
       const t = startTime + (i * 0.12);
@@ -250,11 +367,11 @@ class SolitaireAudio {
       osc.frequency.setValueAtTime(freq, t);
 
       const duration = i === notes.length - 1 ? 0.8 : 0.22;
-      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.setValueAtTime(0.35, t);
       gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
 
       osc.connect(gain);
-      gain.connect(this.ctx.destination);
+      gain.connect(dest);
 
       osc.start(t);
       osc.stop(t + duration + 0.05);

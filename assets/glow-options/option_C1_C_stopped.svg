@@ -57,8 +57,8 @@
     </g>
     <!-- 2. Queen of Hearts (Overlapping Cascade) -->
     <g id="card-queen" transform="translate(113.00, 174.00) scale(5.5)" filter="url(#shadowQ)">
-      <rect x="0.5" y="0.5" width="51" height="77.00" rx="3.80" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
-      <rect x="1.4" y="1.4" width="49.2" height="75.20" rx="3.00" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>
+      <rect x="0.5" y="0.5" width="51" height="58.05" rx="3.80" fill="url(#cardGrad)" stroke="#787b74" stroke-width="0.8"/>
+      <rect x="1.4" y="1.4" width="49.2" height="56.25" rx="3.00" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.6"/>
       <!-- Rank Q -->
       <g transform="translate(1.33, 1.67) scale(0.166667) translate(0, 198.0) scale(0.1, -0.1)">
         <path d="M730 1805 c-237 -47 -433 -212 -519 -435 -73 -188 -63 -377 28 -558 84 -166 227 -289 409 -351 75 -26 77 -27 107 -84 47 -90 78 -122 172 -177 83 -49 93 -53 183 -61 121 -11 241 -11 258 -1 9 6 10 19 4 48 l-8 39 -76 16 c-120 24 -218 98 -234 176 -6 31 -5 31 79 71 263 123 417 357 417 633 0 163 -50 305 -154 435 -159 200 -421 298 -666 249z m244 -146 c67 -25 133 -86 166 -154 25 -50 25 -53 28 -373 l3 -322 -31 -65 c-117 -246 -453 -244 -568 3 l-27 57 -3 298 c-3 331 1 367 58 446 34 46 103 99 153 118 53 19 159 16 221 -8z" fill="#c62f27"/>

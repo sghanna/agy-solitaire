@@ -99,6 +99,7 @@ html, body {
   background: #ef4444;
 }
 
+#btn-settings-toggle,
 #btn-audio-toggle {
   width: 32px;
   height: 28px;
@@ -109,9 +110,18 @@ html, body {
   flex-shrink: 0;
 }
 
+#btn-settings-toggle svg,
 #btn-audio-toggle svg {
   display: block;
   pointer-events: none;
+}
+
+#btn-settings-toggle svg {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#btn-settings-toggle:active svg {
+  transform: rotate(45deg);
 }
 
 .hud-stats-group {
@@ -126,14 +136,15 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1px;
 }
 
 .hud-stat-label {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 11.5px;
+  font-weight: 800;
   color: #fbbf24;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   line-height: 1.1;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
@@ -141,11 +152,11 @@ html, body {
 
 .hud-stat-val {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 17px;
+  font-size: 11.5px;
   font-weight: 800;
   color: #ffffff;
   line-height: 1.1;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 /* =========================================================================
@@ -911,6 +922,124 @@ html, body {
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
+
+/* =========================================================================
+   WASTE PILE OVERLAP (DEAL 3 FAN DISPLAY)
+   ========================================================================= */
+.slot-waste {
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* =========================================================================
+   SETTINGS MODAL STYLING
+   ========================================================================= */
+.settings-modal-card {
+  max-width: 335px !important;
+  padding: 20px 18px 18px 18px !important;
+}
+
+.settings-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 14px;
+}
+
+.settings-row {
+  background: rgba(8, 28, 19, 0.7);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.settings-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+.settings-hint {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+
+.settings-toggle-group {
+  display: flex;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  border-radius: 8px;
+  padding: 2.5px;
+  gap: 3px;
+}
+
+.settings-option-btn {
+  flex: 1;
+  padding: 6px 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.settings-option-btn.active {
+  background: var(--gold-accent);
+  color: #451a03;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+.settings-option-btn:active {
+  transform: scale(0.97);
+}
+
+/* =========================================================================
+   BOTTOM TIMER HUD (TOGGLEABLE, OFF BY DEFAULT)
+   ========================================================================= */
+.bottom-hud {
+  position: absolute;
+  bottom: max(6px, env(safe-area-inset-bottom));
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.bottom-timer-pill {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1.2px solid var(--gold-accent);
+  color: var(--gold-light);
+  padding: 4px 14px;
+  border-radius: 14px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
 
 
 

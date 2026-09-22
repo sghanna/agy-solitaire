@@ -34,6 +34,14 @@ class SolitaireGame {
     // Animation lock to prevent race conditions during card flight
     this.isAnimating = false;
 
+    // Game Settings (persisted to localStorage)
+    this.settings = {
+      moveMode: 'manual', // 'manual' = "Choose Move" (default two-tap), 'auto' = "Single Tap"
+      drawCount: 1,       // 1 (default) or 3
+      showTimer: false,   // false (default) or true
+      deal3Offset: 28     // card overlap offset in pixels (default 28px)
+    };
+
     // DOM Elements
     this.boardEl = null;
     this.stockEl = null;
@@ -71,6 +79,31 @@ class SolitaireGame {
       localStorage.removeItem('agy-king-placeholder-style');
     } catch (e) {}
 
+    // Load persisted settings
+    try {
+      const savedSettings = localStorage.getItem('agy-solitaire-settings');
+      if (savedSettings) {
+        const parsed = JSON.parse(savedSettings);
+        if (parsed && typeof parsed === 'object') {
+          this.settings = Object.assign(this.settings, parsed);
+        }
+      }
+    } catch (e) {}
+
+    // Check URL parameters for fast review and testing
+    try {
+      if (typeof window !== 'undefined' && window.location && window.location.search) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('offset')) {
+          this.settings.deal3Offset = Number(urlParams.get('offset'));
+        }
+        if (urlParams.has('draw3')) {
+          this.settings.drawCount = 3;
+        }
+      }
+    } catch (e) {}
+
+    this.applySettingsUI();
     this.setupEventListeners();
     this.startNewGame();
   }
@@ -155,7 +188,7 @@ class SolitaireGame {
         if (window.solitaireAudio) {
           window.solitaireAudio.toggleMute();
         }
-        updateAudioIcon();
+        this.applySettingsUI();
       });
     }
 
@@ -197,6 +230,65 @@ class SolitaireGame {
       }
     });
 
+    // Settings button & Settings Modal
+    const settingsBtn = document.getElementById('btn-settings-toggle');
+    const settingsModal = document.getElementById('settings-modal-overlay');
+    const closeSettingsBtn = document.getElementById('btn-close-settings');
+
+    if (settingsBtn && settingsModal) {
+      settingsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.clearSelection();
+        this.applySettingsUI();
+        settingsModal.classList.add('visible');
+      });
+    }
+
+    if (closeSettingsBtn && settingsModal) {
+      closeSettingsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        settingsModal.classList.remove('visible');
+      });
+    }
+
+    if (settingsModal) {
+      settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) {
+          settingsModal.classList.remove('visible');
+        }
+      });
+
+      const optButtons = settingsModal.querySelectorAll('[data-setting]');
+      optButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const setting = btn.dataset.setting;
+          let val = btn.dataset.val;
+          if (val === 'true') val = true;
+          else if (val === 'false') val = false;
+          else if (setting === 'drawCount') val = parseInt(val, 10);
+
+          if (setting === 'soundMuted') {
+            if (window.solitaireAudio) {
+              window.solitaireAudio.setMuted(val);
+              if (!val) window.solitaireAudio.playCardPlace();
+            }
+          } else {
+            this.settings[setting] = val;
+            try {
+              localStorage.setItem('agy-solitaire-settings', JSON.stringify(this.settings));
+            } catch (err) {}
+          }
+
+          this.applySettingsUI();
+          if (setting === 'drawCount') {
+            this.render();
+          }
+          if (setting !== 'soundMuted' && window.solitaireAudio) window.solitaireAudio.playCardPlace();
+        });
+      });
+    }
+
     // Unified Board Interaction Delegation
     document.addEventListener('click', (e) => this.handleBoardClick(e));
 
@@ -206,6 +298,62 @@ class SolitaireGame {
         window.solitaireCelebration.resizeCanvas();
       }
     });
+  }
+
+  applySettingsUI() {
+    const isAuto = (this.settings.moveMode === 'auto');
+    const btnMoveManual = document.getElementById('btn-opt-move-manual');
+    const btnMoveAuto = document.getElementById('btn-opt-move-auto');
+    if (btnMoveManual) btnMoveManual.classList.toggle('active', !isAuto);
+    if (btnMoveAuto) btnMoveAuto.classList.toggle('active', isAuto);
+
+    const isDeal3 = (Number(this.settings.drawCount) === 3);
+    const btnDraw1 = document.getElementById('btn-opt-draw-1');
+    const btnDraw3 = document.getElementById('btn-opt-draw-3');
+    if (btnDraw1) btnDraw1.classList.toggle('active', !isDeal3);
+    if (btnDraw3) btnDraw3.classList.toggle('active', isDeal3);
+
+    const showTimer = Boolean(this.settings.showTimer);
+    const btnTimerOff = document.getElementById('btn-opt-timer-off');
+    const btnTimerOn = document.getElementById('btn-opt-timer-on');
+    if (btnTimerOff) btnTimerOff.classList.toggle('active', !showTimer);
+    if (btnTimerOn) btnTimerOn.classList.toggle('active', showTimer);
+
+    const bottomHud = document.getElementById('bottom-hud');
+    if (bottomHud) {
+      bottomHud.style.display = showTimer ? 'flex' : 'none';
+    }
+
+    const isMuted = (window.solitaireAudio && typeof window.solitaireAudio.isMuted === 'function')
+      ? window.solitaireAudio.isMuted()
+      : false;
+    const btnSoundOff = document.getElementById('btn-opt-sound-off');
+    const btnSoundOn = document.getElementById('btn-opt-sound-on');
+    if (btnSoundOff) btnSoundOff.classList.toggle('active', isMuted);
+    if (btnSoundOn) btnSoundOn.classList.toggle('active', !isMuted);
+
+    const audioBtn = document.getElementById('btn-audio-toggle');
+    if (audioBtn) {
+      if (window.getSoundIconSVG) {
+        audioBtn.innerHTML = window.getSoundIconSVG(isMuted);
+      } else {
+        audioBtn.textContent = isMuted ? '🔇' : '🔊';
+      }
+      audioBtn.title = isMuted ? 'Unmute Sound' : 'Mute Sound';
+    }
+  }
+
+  startTimer() {
+    if (this.timerInterval) clearInterval(this.timerInterval);
+    this.timerInterval = setInterval(() => {
+      if (!this.isWon && !this.autoCompleting) {
+        this.elapsedSeconds++;
+        this.updateTimerDisplay();
+      }
+    }, 1000);
+    if (this.timerInterval && typeof this.timerInterval.unref === 'function') {
+      this.timerInterval.unref();
+    }
   }
 
   startNewGame() {
@@ -223,6 +371,8 @@ class SolitaireGame {
     if (this.timerInterval) clearInterval(this.timerInterval);
     this.timerInterval = null;
     this.startTime = Date.now();
+    this.startTimer();
+    this.updateTimerDisplay();
 
     if (window.solitaireCelebration) {
       window.solitaireCelebration.stop();
@@ -442,8 +592,8 @@ class SolitaireGame {
   handleBoardClick(e) {
     if (this.isWon || this.autoCompleting || this.isAnimating) return;
 
-    // Ignore clicks on HUD header
-    if (e.target.closest('.top-hud') || e.target.closest('#auto-finish-banner')) return;
+    // Ignore clicks on HUD header, modals, or bottom timer
+    if (e.target.closest('.top-hud') || e.target.closest('#auto-finish-banner') || e.target.closest('.confirm-modal-overlay') || e.target.closest('#bottom-hud')) return;
 
     // 1. Stock Pile Click
     const stockEl = e.target.closest('#slot-stock');
@@ -490,20 +640,25 @@ class SolitaireGame {
     this.lastTapCardId = null;
 
     if (this.stock.length > 0) {
-      // Draw 1 card from Stock to Waste with fluid flight animation
-      const card = this.stock[this.stock.length - 1];
+      // Draw 1 or 3 cards based on settings.drawCount
+      const drawNum = Math.min(this.stock.length, this.settings.drawCount || 1);
+      const drawnCards = [];
 
       // Measure starting position on top of stock
       const stockCardEl = this.stockEl.querySelector('.solitaire-card');
       const startRect = stockCardEl ? stockCardEl.getBoundingClientRect() : this.stockEl.getBoundingClientRect();
 
-      card.faceUp = true;
-      this.stock.pop();
-      this.waste.push(card);
+      for (let i = 0; i < drawNum; i++) {
+        const card = this.stock.pop();
+        card.faceUp = true;
+        this.waste.push(card);
+        drawnCards.push(card);
+      }
 
       this.recordMove({
         type: 'draw',
-        card: card
+        cards: drawnCards,
+        card: drawnCards[drawnCards.length - 1]
       });
 
       if (window.solitaireAudio) window.solitaireAudio.playStockDraw();
@@ -511,8 +666,8 @@ class SolitaireGame {
       this.render();
       this.updateHUD();
 
-      // Fluid flight from Stock into Waste
-      const wasteCardEl = this.wasteEl.querySelector('.solitaire-card');
+      // Fluid flight from Stock into Waste for the top arriving card
+      const wasteCardEl = this.wasteEl.querySelector('.solitaire-card:last-of-type') || this.wasteEl.querySelector('.solitaire-card');
       if (wasteCardEl && startRect) {
         const endRect = wasteCardEl.getBoundingClientRect();
         const dx = startRect.left - endRect.left;
@@ -560,7 +715,24 @@ class SolitaireGame {
     if (this.waste.length === 0) return;
     const topWasteCard = this.waste[this.waste.length - 1];
 
-    // Double-tap detection on Waste card
+    // Single-tap auto-move mode
+    if (this.settings.moveMode === 'auto') {
+      this.clearSelection();
+      const moved = this.autoMoveCardToBestLocation(topWasteCard, {
+        pile: 'waste',
+        cardIndex: this.waste.length - 1
+      });
+      if (!moved) {
+        this.setSelection({
+          pile: 'waste',
+          card: topWasteCard,
+          cardIndex: this.waste.length - 1
+        });
+      }
+      return;
+    }
+
+    // Double-tap detection on Waste card in manual mode
     const now = Date.now();
     const isDoubleTap = (this.lastTapCardId === topWasteCard.id && (now - this.lastTapTime) < this.doubleTapThreshold);
 
@@ -689,7 +861,55 @@ class SolitaireGame {
         return;
       }
 
-      // A2: Face-up card: check Double-Tap first!
+      // A2: Face-up card
+      // Single-tap auto-move mode
+      if (this.settings.moveMode === 'auto') {
+        if (!this.selected) {
+          const moved = this.autoMoveCardToBestLocation(card, {
+            pile: 'tableau',
+            colIndex: colIndex,
+            cardIndex: cardIndex
+          });
+          if (!moved) {
+            this.setSelection({
+              pile: 'tableau',
+              colIndex: colIndex,
+              cardIndex: cardIndex,
+              card: card
+            });
+          }
+          return;
+        } else {
+          // If a card is already selected, check if destination column can receive selected stack
+          if (this.canMoveToTableauColumn(this.selected.card, colIndex)) {
+            const selectedMove = { ...this.selected };
+            this.clearSelection();
+            this.lastTapTime = 0;
+            this.lastTapCardId = null;
+            this.executeMoveToTableau(selectedMove, colIndex);
+            return;
+          } else {
+            // Tapped another column card that cannot receive the move: auto-move this tapped card
+            this.clearSelection();
+            const moved = this.autoMoveCardToBestLocation(card, {
+              pile: 'tableau',
+              colIndex: colIndex,
+              cardIndex: cardIndex
+            });
+            if (!moved) {
+              this.setSelection({
+                pile: 'tableau',
+                colIndex: colIndex,
+                cardIndex: cardIndex,
+                card: card
+              });
+            }
+            return;
+          }
+        }
+      }
+
+      // Manual Move Mode: check Double-Tap first!
       const now = Date.now();
       const isDoubleTap = (this.lastTapCardId === card.id && (now - this.lastTapTime) < this.doubleTapThreshold);
 
@@ -1070,9 +1290,14 @@ class SolitaireGame {
     const action = this.undoStack.pop();
 
     if (action.type === 'draw') {
-      const card = this.waste.pop();
-      card.faceUp = false;
-      this.stock.push(card);
+      const cards = action.cards || (action.card ? [action.card] : []);
+      for (let i = cards.length - 1; i >= 0; i--) {
+        const card = this.waste.pop();
+        if (card) {
+          card.faceUp = false;
+          this.stock.push(card);
+        }
+      }
       if (window.solitaireAudio) window.solitaireAudio.playUndo();
       this.render();
       this.updateHUD();
@@ -1359,20 +1584,42 @@ class SolitaireGame {
     // Render Waste
     this.wasteEl.innerHTML = '';
     if (this.waste.length > 0) {
-      const topWaste = this.waste[this.waste.length - 1];
-      const cardEl = window.SolitaireDeck.createCardElement(topWaste);
-      if (this.selected && this.selected.pile === 'waste' && this.selected.card.id === topWaste.id) {
-        cardEl.classList.add('selected-stack-card');
-        const halo = document.createElement('div');
-        halo.className = 'stack-selection-halo';
-        halo.id = 'active-selection-halo';
-        halo.style.top = '-5px';
-        halo.style.left = '-1px';
-        halo.style.width = 'calc(100% + 2px)';
-        halo.style.height = 'calc(100% + 2px)';
-        this.wasteEl.appendChild(halo);
-      }
-      this.wasteEl.appendChild(cardEl);
+      const isDeal3 = (Number(this.settings.drawCount) === 3);
+      const displayCount = isDeal3 ? Math.min(3, this.waste.length) : 1;
+      const visibleCards = this.waste.slice(-displayCount);
+
+      visibleCards.forEach((card, idx) => {
+        const isTopCard = (idx === displayCount - 1);
+        const cardEl = window.SolitaireDeck.createCardElement(card);
+
+        if (isDeal3 && displayCount > 1) {
+          const offset = Number(this.settings.deal3Offset) || 28;
+          const offsetPx = (idx - (displayCount - 1)) * offset;
+          cardEl.style.left = `${offsetPx}px`;
+          cardEl.style.zIndex = `${idx + 1}`;
+          if (!isTopCard) {
+            cardEl.style.pointerEvents = 'none';
+          }
+        } else {
+          cardEl.style.left = '0px';
+          cardEl.style.zIndex = '1';
+        }
+
+        if (isTopCard && this.selected && this.selected.pile === 'waste' && this.selected.card.id === card.id) {
+          cardEl.classList.add('selected-stack-card');
+          const halo = document.createElement('div');
+          halo.className = 'stack-selection-halo';
+          halo.id = 'active-selection-halo';
+          halo.style.top = '-5px';
+          halo.style.left = '-1px';
+          halo.style.width = 'calc(100% + 2px)';
+          halo.style.height = 'calc(100% + 2px)';
+          halo.style.zIndex = `${displayCount + 2}`;
+          this.wasteEl.appendChild(halo);
+        }
+
+        this.wasteEl.appendChild(cardEl);
+      });
     }
 
     // Render 4 Foundations
@@ -1492,8 +1739,13 @@ class SolitaireGame {
   }
 
   updateTimerDisplay() {
+    const formatted = this.formatTime(this.elapsedSeconds);
+    const bottomTimer = document.getElementById('bottom-timer');
+    if (bottomTimer) {
+      bottomTimer.textContent = `Time: ${formatted}`;
+    }
     if (this.timerEl) {
-      this.timerEl.textContent = this.formatTime(this.elapsedSeconds);
+      this.timerEl.textContent = formatted;
     }
   }
 

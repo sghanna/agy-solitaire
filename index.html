@@ -50,6 +50,12 @@
       </div>
 
       <div class="hud-controls-right">
+        <button class="hud-btn" id="btn-settings-toggle" title="Game Settings" aria-label="Game Settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" fill="rgba(251, 191, 36, 0.35)"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
         <button class="hud-btn" id="btn-undo" title="Undo previous move">&#x21BA; Undo</button>
         <button class="hud-btn audio-toggle-btn" id="btn-audio-toggle" title="Toggle Sound" aria-label="Toggle Sound"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13" fill="none"/><circle cx="6" cy="18" r="3" fill="#d4af37"/><circle cx="18" cy="16" r="3" fill="#d4af37"/></svg></button>
       </div>
@@ -146,6 +152,82 @@
         </div>
       </div>
     </div>
+
+    <!-- ================================================================= -->
+    <!-- SETTINGS MODAL (STYLED TO MATCH THE GAME)                         -->
+    <!-- ================================================================= -->
+    <div id="settings-modal-overlay" class="confirm-modal-overlay">
+      <div class="confirm-modal-card settings-modal-card">
+        <div class="confirm-modal-seal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" fill="rgba(251, 191, 36, 0.4)"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+        <div class="confirm-modal-title">Settings</div>
+        
+        <div class="settings-rows">
+          <!-- Setting 1: Move Control -->
+          <div class="settings-row">
+            <div class="settings-label-group">
+              <div class="settings-label">Move Control</div>
+              <div class="settings-hint">Tap card destination or auto-move</div>
+            </div>
+            <div class="settings-toggle-group">
+              <button class="settings-option-btn active" id="btn-opt-move-manual" data-setting="moveMode" data-val="manual">Choose Move</button>
+              <button class="settings-option-btn" id="btn-opt-move-auto" data-setting="moveMode" data-val="auto">Single Tap</button>
+            </div>
+          </div>
+
+          <!-- Setting 2: Draw Cards -->
+          <div class="settings-row">
+            <div class="settings-label-group">
+              <div class="settings-label">Draw Mode</div>
+              <div class="settings-hint">Cards dealt from stock to waste</div>
+            </div>
+            <div class="settings-toggle-group">
+              <button class="settings-option-btn active" id="btn-opt-draw-1" data-setting="drawCount" data-val="1">Deal 1</button>
+              <button class="settings-option-btn" id="btn-opt-draw-3" data-setting="drawCount" data-val="3">Deal 3</button>
+            </div>
+          </div>
+
+          <!-- Setting 3: Show Timer -->
+          <div class="settings-row">
+            <div class="settings-label-group">
+              <div class="settings-label">Show Timer</div>
+              <div class="settings-hint">Display timer at bottom of screen</div>
+            </div>
+            <div class="settings-toggle-group">
+              <button class="settings-option-btn active" id="btn-opt-timer-off" data-setting="showTimer" data-val="false">Off</button>
+              <button class="settings-option-btn" id="btn-opt-timer-on" data-setting="showTimer" data-val="true">On</button>
+            </div>
+          </div>
+
+          <!-- Setting 4: Sound Effects -->
+          <div class="settings-row">
+            <div class="settings-label-group">
+              <div class="settings-label">Sound Effects</div>
+              <div class="settings-hint">Tactile audio feedback on card moves</div>
+            </div>
+            <div class="settings-toggle-group">
+              <button class="settings-option-btn" id="btn-opt-sound-off" data-setting="soundMuted" data-val="true">Off</button>
+              <button class="settings-option-btn active" id="btn-opt-sound-on" data-setting="soundMuted" data-val="false">On</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="confirm-modal-buttons" style="margin-top: 18px;">
+          <button class="confirm-btn confirm-btn-proceed" id="btn-close-settings" style="width: 100%;">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- BOTTOM BAR: OPTIONAL GAME TIMER (OFF BY DEFAULT)                  -->
+    <!-- ================================================================= -->
+    <footer id="bottom-hud" class="bottom-hud" style="display: none;">
+      <div class="bottom-timer-pill" id="bottom-timer">Time: 00:00</div>
+    </footer>
   </div>
 
   <!-- Scripts -->
