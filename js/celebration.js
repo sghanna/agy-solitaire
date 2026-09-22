@@ -190,7 +190,7 @@ class SolitaireCelebration {
     // 1. Spawn 9 Auspicious Sky Lanterns (久, gau2, eternity / long life)
     if (this.lanternContainer) {
       this.lanternContainer.innerHTML = '';
-      const chars = ['囍', '福', '禄', '寿', '囍', '财', '吉', '春', '和'];
+      const chars = ['龍', '福', '禄', '寿', '吉', '财', '旺', '春', '和'];
       const leftPositions = [20, 80, 140, 200, 270, 320, 50, 170, 240];
       const durations = [17, 20, 22, 18, 19, 23, 18, 21, 19];
       const delays = [0, 3, 6, 9, 2, 7, 11, 14, 16];
@@ -308,7 +308,7 @@ class SolitaireCelebration {
     const scoreEl = modal.querySelector('#modal-stats-score');
     if (scoreEl) scoreEl.textContent = scoreStr;
     const subLabel = modal.querySelector('#modal-sub-label');
-    if (subLabel) subLabel.textContent = 'DOUBLE HAPPINESS';
+    if (subLabel) subLabel.textContent = 'IMPERIAL GOLDEN DRAGON';
 
     const btn = modal.querySelector('#modal-play-again-btn');
     if (btn) {

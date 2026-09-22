@@ -696,6 +696,18 @@ html, body {
   transform: translate(-50%, -50%) scale(1);
 }
 
+.win2-seal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.modal-dragon-svg {
+  display: block;
+  pointer-events: none;
+}
+
 .win2-title {
   font-size: 26px;
   font-weight: 900;
