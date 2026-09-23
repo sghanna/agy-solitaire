@@ -193,7 +193,8 @@ class SolitaireCelebration {
       const chars = ['龍', '福', '禄', '寿', '吉', '财', '旺', '春', '和'];
       const leftPositions = [20, 80, 140, 200, 270, 320, 50, 170, 240];
       const durations = [17, 20, 22, 18, 19, 23, 18, 21, 19];
-      const delays = [0, 3, 6, 9, 2, 7, 11, 14, 16];
+      // Release 9 lanterns across 5.2 seconds (cadence ~0.65s)
+      const delays = [0, 0.65, 1.3, 1.95, 2.6, 3.25, 3.9, 4.55, 5.2];
       const animations = ['floatUpGentle', 'floatUpSwayRight', 'floatUpSwayLeft'];
       const sizes = ['medium', 'large', 'small', 'medium', 'large', 'small', 'medium', 'small', 'medium'];
 
@@ -284,18 +285,22 @@ class SolitaireCelebration {
     };
     render();
 
-    // Show Win 2 compact banner modal after 3 seconds of lanterns and fireworks
+    // Show Win 2 compact banner modal 3 seconds after all 9 lanterns have appeared (5.2s + 3.0s = 8.2s)
     this.modalTimeout = setTimeout(() => {
       this.showWin2Banner(stats, onPlayAgain);
-    }, 3000);
+    }, 8200);
   }
 
   /**
-   * Win 1 Modal: Fullscreen Double Happiness (囍) Modal Overlay
+   * Win 1 Modal: Fullscreen Imperial Golden Dragon Modal Overlay
    */
   showWin1Modal(stats, onPlayAgain) {
     const modal = document.getElementById('victory-modal-overlay');
     if (!modal) return;
+
+    if (window.solitaireI18n) {
+      window.solitaireI18n.applyLanguage(window.solitaireI18n.currentLang);
+    }
 
     const timeStr = stats.time || '00:00';
     const movesStr = stats.moves || 0;
@@ -308,7 +313,9 @@ class SolitaireCelebration {
     const scoreEl = modal.querySelector('#modal-stats-score');
     if (scoreEl) scoreEl.textContent = scoreStr;
     const subLabel = modal.querySelector('#modal-sub-label');
-    if (subLabel) subLabel.textContent = 'IMPERIAL GOLDEN DRAGON';
+    if (subLabel && window.solitaireI18n) {
+      subLabel.textContent = window.solitaireI18n.t('win1_sub');
+    }
 
     const btn = modal.querySelector('#modal-play-again-btn');
     if (btn) {
@@ -327,6 +334,10 @@ class SolitaireCelebration {
   showWin2Banner(stats, onPlayAgain) {
     const banner = document.getElementById('victory-banner-overlay');
     if (!banner) return;
+
+    if (window.solitaireI18n) {
+      window.solitaireI18n.applyLanguage(window.solitaireI18n.currentLang);
+    }
 
     const timeStr = stats.time || '00:00';
     const movesStr = stats.moves || 0;

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI & Multi-Language Review | agy-solitaire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: #030a06;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+    .review-section {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .review-header {
+      border-bottom: 1.5px solid rgba(251, 191, 36, 0.3);
+      padding-bottom: 6px;
+    }
+    .review-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fbbf24;
+      letter-spacing: 0.5px;
+    }
+    .review-desc {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .phone-mockup {
+      width: 100%;
+      max-width: 430px;
+      height: 720px;
+      position: relative;
+      border: 2px solid rgba(251, 191, 36, 0.4);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
+      background: radial-gradient(circle at 50% 30%, #163827 0%, #0c2419 70%, #05130d 100%);
+    }
+    .modal-frame {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid rgba(251, 191, 36, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      background: radial-gradient(circle at 50% 30%, #163827 0%, #0c2419 70%, #05130d 100%);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Section 1: Main Board with Bumped Fonts, Centered Menu, Bottom ? Button -->
+  <div class="review-section">
+    <div class="review-header">
+      <div class="review-title">1. Enhanced Layout &amp; Font Sizing (English)</div>
+      <div class="review-desc">15px/900w top buttons (New left, Menu center, Undo right), bottom-left ? circular button (42px), larger status capsule (Score 13.5px / 16px val).</div>
+    </div>
+    <div class="phone-mockup" id="mock-en">
+      <iframe src="index.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+  </div>
+
+  <!-- Section 2: Spanish Mode (Español) -->
+  <div class="review-section">
+    <div class="review-header">
+      <div class="review-title">2. Spanish Mode (Español)</div>
+      <div class="review-desc">Buttons translated to "Nuevo", "Menú", "Deshacer", telemetry to "PUNTOS", "MOVIMIENTOS".</div>
+    </div>
+    <div class="phone-mockup" id="mock-es">
+      <iframe id="iframe-es" src="index.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+  </div>
+
+  <!-- Section 3: Vietnamese Mode (Tiếng Việt) -->
+  <div class="review-section">
+    <div class="review-header">
+      <div class="review-title">3. Vietnamese Mode (Tiếng Việt)</div>
+      <div class="review-desc">Buttons translated to "Ván mới", "Menu", "Hoàn tác", telemetry to "ĐIỂM", "NƯỚC ĐI".</div>
+    </div>
+    <div class="phone-mockup" id="mock-vi">
+      <iframe id="iframe-vi" src="index.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+  </div>
+
+  <!-- Section 4: Auto-Win Banner (Larger Font, Brief Phrase) -->
+  <div class="review-section">
+    <div class="review-header">
+      <div class="review-title">4. Brief Auto-Win Banner (Larger 18px / 16px Fonts)</div>
+      <div class="review-desc">Phrase shortened from "🎉 Solitaire Solved!" to "🎉 Solved!" (18px bold), button "Auto-Win →" (16px bold).</div>
+    </div>
+    <div class="modal-frame" style="padding: 24px 16px;">
+      <aside id="auto-finish-banner" style="display: flex; position: static; width: 100%; margin: 0;">
+        <div class="banner-text">🎉 Solved!</div>
+        <button class="banner-btn">Auto-Win &rarr;</button>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Section 5: New Game Confirmation Modal (Bumped Up Font) -->
+  <div class="review-section">
+    <div class="review-header">
+      <div class="review-title">5. New Game Modal (Large Senior Fonts)</div>
+      <div class="review-desc">Title bumped to 24px Georgia serif, description to 16px bold, action buttons to 16px font with 13px padding.</div>
+    </div>
+    <div class="modal-frame">
+      <div class="confirm-modal-card" style="margin: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
+        <div class="confirm-modal-seal">
+          <svg class="modal-dragon-svg" width="46" height="46" viewBox="0 0 68 68" fill="none">
+            <circle cx="34" cy="34" r="30" fill="none" stroke="#fbbf24" stroke-width="1.3"/>
+            <circle cx="34" cy="34" r="27.2" fill="none" stroke="rgba(254, 240, 138, 0.7)" stroke-width="0.7"/>
+            <circle cx="34" cy="34" r="25" fill="none" stroke="rgba(254, 240, 138, 0.6)" stroke-width="0.7" stroke-dasharray="1.5,1.5"/>
+            <g transform="translate(34, 34) scale(0.68) translate(-34, -31)" fill="none" stroke="#fde047" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 34,8 C 47,8 58,19 58,32 C 58,46 46,56 34,56 C 22,56 14,48 14,38 C 14,28 22,22 30,22 C 38,22 42,26 42,32 C 42,36 38,40 34,40 C 30,40 28,36 30,34" stroke-width="3.2"/>
+              <circle cx="34" cy="32" r="4.5" fill="#ef4444" stroke="#fde047" stroke-width="1.2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="confirm-modal-title">Start a New Deal?</div>
+        <div class="confirm-modal-desc">
+          Your current deal and moves will be reset.
+        </div>
+        <div class="confirm-modal-buttons">
+          <button class="confirm-btn confirm-btn-cancel">Cancel</button>
+          <button class="confirm-btn confirm-btn-proceed">Start New Deal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Settings Modal with 3-Language Selector -->
+  <div class="review-section">
+    <div class="review-header">
+      <div class="review-title">6. Settings Modal (Language Selector: EN / ES / VI)</div>
+      <div class="review-desc">Selectable language bar with persistent storage and device auto-alignment.</div>
+    </div>
+    <div class="modal-frame">
+      <div class="confirm-modal-card settings-modal-card" style="margin: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
+        <div class="confirm-modal-title">Settings</div>
+        <div class="settings-rows">
+          <div class="settings-row">
+            <div class="settings-label-group">
+              <div class="settings-label">Language</div>
+              <div class="settings-hint">Display language</div>
+            </div>
+            <div class="settings-toggle-group settings-toggle-3">
+              <button class="settings-option-btn active">English</button>
+              <button class="settings-option-btn">Español</button>
+              <button class="settings-option-btn">Tiếng Việt</button>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-label-group">
+              <div class="settings-label">Move Control</div>
+              <div class="settings-hint">Tap card destination or auto-move</div>
+            </div>
+            <div class="settings-toggle-group">
+              <button class="settings-option-btn active">Choose Move</button>
+              <button class="settings-option-btn">Single Tap</button>
+            </div>
+          </div>
+        </div>
+        <div class="confirm-modal-buttons" style="margin-top: 14px;">
+          <button class="confirm-btn confirm-btn-proceed" style="width: 100%;">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: Compact V2 Victory Screen Modal -->
+  <div class="review-section">
+    <div class="review-header">
+      <div class="review-title">7. Compact V2 Victory Screen Modal</div>
+      <div class="review-desc">Scaled down to 270px width (78%), 38px dragon seal, 19px title, docked lower (top: 60%) so the 9 lanterns and fireworks shine for 8.2 seconds without blockage.</div>
+    </div>
+    <div class="modal-frame">
+      <div id="victory-banner-overlay" class="combo-banner visible" style="position: static; transform: none; width: 100%; margin: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
+        <div class="win2-seal">
+          <svg class="modal-dragon-svg" width="38" height="38" viewBox="0 0 68 68" fill="none">
+            <circle cx="34" cy="34" r="30" fill="none" stroke="#fbbf24" stroke-width="1.3"/>
+            <circle cx="34" cy="34" r="27.2" fill="none" stroke="rgba(254, 240, 138, 0.7)" stroke-width="0.7"/>
+            <circle cx="34" cy="34" r="25" fill="none" stroke="rgba(254, 240, 138, 0.6)" stroke-width="0.7" stroke-dasharray="1.5,1.5"/>
+            <g transform="translate(34, 34) scale(0.68) translate(-34, -31)" fill="none" stroke="#fde047" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 34,8 C 47,8 58,19 58,32 C 58,46 46,56 34,56 C 22,56 14,48 14,38 C 14,28 22,22 30,22 C 38,22 42,26 42,32 C 42,36 38,40 34,40 C 30,40 28,36 30,34" stroke-width="3.2"/>
+              <circle cx="34" cy="32" r="4.5" fill="#ef4444" stroke="#fde047" stroke-width="1.2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="win2-title">GRAND JUBILEE!</div>
+        <div class="win2-sub">Imperial Golden Dragon &bull; 9 Auspicious Lanterns</div>
+        <div class="win2-stats">
+          <span>MOVES: <strong>48</strong></span>
+          <span>&bull;</span>
+          <span>SCORE: <strong>560</strong></span>
+        </div>
+        <button class="opt2-btn win2-btn">Next Deal &#x27F6;</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configure iframe languages once loaded
+    window.addEventListener('load', () => {
+      const iframeEs = document.getElementById('iframe-es');
+      if (iframeEs && iframeEs.contentWindow) {
+        iframeEs.contentWindow.solitaireI18n?.setLanguage('es');
+      }
+      const iframeVi = document.getElementById('iframe-vi');
+      if (iframeVi && iframeVi.contentWindow) {
+        iframeVi.contentWindow.solitaireI18n?.setLanguage('vi');
+      }
+    });
+  </script>
+</body>
+</html>

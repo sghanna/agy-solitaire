@@ -40,6 +40,7 @@ class SolitaireGame {
 
     // Game Settings (persisted to localStorage)
     this.settings = {
+      lang: (window.solitaireI18n ? window.solitaireI18n.currentLang : 'en'),
       moveMode: 'manual', // 'manual' = "Choose Move" (default two-tap), 'auto' = "Single Tap"
       drawCount: 1,       // 1 (default) or 3
       showTimer: false,   // false (default) or true
@@ -284,6 +285,14 @@ class SolitaireGame {
               window.solitaireAudio.setMuted(val);
               if (!val) window.solitaireAudio.playCardPlace();
             }
+          } else if (setting === 'lang') {
+            this.settings.lang = val;
+            if (window.solitaireI18n) {
+              window.solitaireI18n.setLanguage(val);
+            }
+            try {
+              localStorage.setItem('agy-solitaire-settings', JSON.stringify(this.settings));
+            } catch (err) {}
           } else {
             this.settings[setting] = val;
             try {
@@ -340,6 +349,13 @@ class SolitaireGame {
   }
 
   applySettingsUI() {
+    // Language toggle buttons
+    const activeLang = this.settings.lang || (window.solitaireI18n ? window.solitaireI18n.currentLang : 'en');
+    ['en', 'es', 'vi'].forEach(l => {
+      const b = document.getElementById(`btn-lang-${l}`);
+      if (b) b.classList.toggle('active', activeLang === l);
+    });
+
     const isAuto = (this.settings.moveMode === 'auto');
     const btnMoveManual = document.getElementById('btn-opt-move-manual');
     const btnMoveAuto = document.getElementById('btn-opt-move-auto');

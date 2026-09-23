@@ -37,38 +37,30 @@
     <!-- ================================================================= -->
     <header class="top-hud">
       <div class="hud-controls-left">
-        <button class="hud-btn new-game-btn" id="btn-new-game" title="Start a New Game" aria-label="Start a New Game">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+        <button class="hud-btn new-game-btn" id="btn-new-game" title="Start a New Game" aria-label="Start a New Game" data-i18n-title="new_game_title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
             <line x1="12" y1="5" x2="12" y2="19"/>
             <line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
-          <span>New</span>
+          <span data-i18n="btn_new">New</span>
         </button>
       </div>
 
       <div class="hud-controls-center">
-        <button class="hud-btn help-btn" id="btn-help-toggle" title="How to Play" aria-label="How to Play">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-            <line x1="12" y1="17" x2="12.01" y2="17"/>
-          </svg>
-          <span>Help</span>
-        </button>
-        <button class="hud-btn menu-btn" id="btn-settings-toggle" title="Game Menu & Settings" aria-label="Game Menu & Settings">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+        <button class="hud-btn menu-btn" id="btn-settings-toggle" title="Game Menu & Settings" aria-label="Game Menu & Settings" data-i18n-title="settings_title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
             <line x1="3" y1="6" x2="21" y2="6"/>
             <line x1="3" y1="12" x2="21" y2="12"/>
             <line x1="3" y1="18" x2="21" y2="18"/>
           </svg>
-          <span>Menu</span>
+          <span data-i18n="btn_menu">Menu</span>
         </button>
       </div>
 
       <div class="hud-controls-right">
-        <button class="hud-btn undo-btn" id="btn-undo" title="Undo previous move" aria-label="Undo previous move">
-          <span style="font-size: 15px; line-height: 1;">&#x21BA;</span>
-          <span>Undo</span>
+        <button class="hud-btn undo-btn" id="btn-undo" title="Undo previous move" aria-label="Undo previous move" data-i18n-title="btn_undo">
+          <span style="font-size: 17px; line-height: 1;">&#x21BA;</span>
+          <span data-i18n="btn_undo">Undo</span>
         </button>
       </div>
     </header>
@@ -106,8 +98,8 @@
     <!-- AUTO-FINISH BANNER (APPEARS WHEN ALL CARDS REVEALED)             -->
     <!-- ================================================================= -->
     <aside id="auto-finish-banner">
-      <div class="banner-text">🎉 Solitaire Solved!</div>
-      <button class="banner-btn" id="btn-auto-finish">Auto-Finish &rarr;</button>
+      <div class="banner-text" data-i18n="auto_win_title">🎉 Solved!</div>
+      <button class="banner-btn" id="btn-auto-finish" data-i18n="auto_win_btn">Auto-Win &rarr;</button>
     </aside>
 
     <!-- ================================================================= -->
@@ -139,16 +131,16 @@
           </g>
         </svg>
       </div>
-      <div class="opt2-title">VICTORY!</div>
-      <div class="opt2-sub" id="modal-sub-label">IMPERIAL GOLDEN DRAGON</div>
+      <div class="opt2-title" data-i18n="win1_title">VICTORY!</div>
+      <div class="opt2-sub" id="modal-sub-label" data-i18n="win1_sub">IMPERIAL GOLDEN DRAGON</div>
       
       <div class="opt2-stats">
-        <span>MOVES: <strong id="modal-stats-moves">0</strong></span>
+        <span><span data-i18n="stat_moves_lbl">MOVES:</span> <strong id="modal-stats-moves">0</strong></span>
         <span>&bull;</span>
-        <span>SCORE: <strong id="modal-stats-score">0</strong></span>
+        <span><span data-i18n="stat_score_lbl">SCORE:</span> <strong id="modal-stats-score">0</strong></span>
       </div>
 
-      <button class="opt2-btn" id="modal-play-again-btn">PLAY NEXT DEAL &#x27F6;</button>
+      <button class="opt2-btn" id="modal-play-again-btn" data-i18n="win1_btn">PLAY NEXT DEAL &#x27F6;</button>
     </div>
 
     <!-- ================================================================= -->
@@ -156,7 +148,7 @@
     <!-- ================================================================= -->
     <div id="victory-banner-overlay" class="combo-banner">
       <div class="win2-seal">
-        <svg class="modal-dragon-svg" width="46" height="46" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="modal-dragon-svg" width="38" height="38" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="34" cy="34" r="30" fill="none" stroke="#fbbf24" stroke-width="1.3"/>
           <circle cx="34" cy="34" r="27.2" fill="none" stroke="rgba(254, 240, 138, 0.7)" stroke-width="0.7"/>
           <circle cx="34" cy="34" r="25" fill="none" stroke="rgba(254, 240, 138, 0.6)" stroke-width="0.7" stroke-dasharray="1.5,1.5"/>
@@ -173,14 +165,14 @@
           </g>
         </svg>
       </div>
-      <div class="win2-title">GRAND JUBILEE!</div>
-      <div class="win2-sub">Imperial Golden Dragon &bull; 9 Auspicious Lanterns</div>
+      <div class="win2-title" data-i18n="win2_title">GRAND JUBILEE!</div>
+      <div class="win2-sub" data-i18n="win2_sub">Imperial Golden Dragon &bull; 9 Auspicious Lanterns</div>
       <div class="win2-stats">
-        <span>MOVES: <strong id="banner-stats-moves">0</strong></span>
+        <span><span data-i18n="stat_moves_lbl">MOVES:</span> <strong id="banner-stats-moves">0</strong></span>
         <span>&bull;</span>
-        <span>SCORE: <strong id="banner-stats-score">0</strong></span>
+        <span><span data-i18n="stat_score_lbl">SCORE:</span> <strong id="banner-stats-score">0</strong></span>
       </div>
-      <button class="opt2-btn win2-btn" id="banner-play-again-btn">Next Deal &#x27F6;</button>
+      <button class="opt2-btn win2-btn" id="banner-play-again-btn" data-i18n="win2_btn">Next Deal &#x27F6;</button>
     </div>
 
     <!-- ================================================================= -->
@@ -206,13 +198,13 @@
             </g>
           </svg>
         </div>
-        <div class="confirm-modal-title">Start a New Deal?</div>
-        <div class="confirm-modal-desc">
+        <div class="confirm-modal-title" data-i18n="new_game_title">Start a New Deal?</div>
+        <div class="confirm-modal-desc" data-i18n="new_game_desc">
           Your current deal and moves will be reset.
         </div>
         <div class="confirm-modal-buttons">
-          <button class="confirm-btn confirm-btn-cancel" id="btn-cancel-new-game">Cancel</button>
-          <button class="confirm-btn confirm-btn-proceed" id="btn-confirm-new-game">Start New Deal</button>
+          <button class="confirm-btn confirm-btn-cancel" id="btn-cancel-new-game" data-i18n="new_game_cancel">Cancel</button>
+          <button class="confirm-btn confirm-btn-proceed" id="btn-confirm-new-game" data-i18n="new_game_confirm">Start New Deal</button>
         </div>
       </div>
     </div>
@@ -228,72 +220,85 @@
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
         </div>
-        <div class="confirm-modal-title">Settings</div>
+        <div class="confirm-modal-title" data-i18n="settings_title">Settings</div>
         
         <div class="settings-rows">
+          <!-- Setting 0: Language -->
+          <div class="settings-row">
+            <div class="settings-label-group">
+              <div class="settings-label" data-i18n="settings_lang_label">Language</div>
+              <div class="settings-hint" data-i18n="settings_lang_hint">Display language</div>
+            </div>
+            <div class="settings-toggle-group settings-toggle-3">
+              <button class="settings-option-btn active" id="btn-lang-en" data-setting="lang" data-val="en">English</button>
+              <button class="settings-option-btn" id="btn-lang-es" data-setting="lang" data-val="es">Español</button>
+              <button class="settings-option-btn" id="btn-lang-vi" data-setting="lang" data-val="vi">Tiếng Việt</button>
+            </div>
+          </div>
+
           <!-- Setting 1: Move Control -->
           <div class="settings-row">
             <div class="settings-label-group">
-              <div class="settings-label">Move Control</div>
-              <div class="settings-hint">Tap card destination or auto-move</div>
+              <div class="settings-label" data-i18n="settings_move_label">Move Control</div>
+              <div class="settings-hint" data-i18n="settings_move_hint">Tap card destination or auto-move</div>
             </div>
             <div class="settings-toggle-group">
-              <button class="settings-option-btn active" id="btn-opt-move-manual" data-setting="moveMode" data-val="manual">Choose Move</button>
-              <button class="settings-option-btn" id="btn-opt-move-auto" data-setting="moveMode" data-val="auto">Single Tap</button>
+              <button class="settings-option-btn active" id="btn-opt-move-manual" data-setting="moveMode" data-val="manual" data-i18n="settings_move_manual">Choose Move</button>
+              <button class="settings-option-btn" id="btn-opt-move-auto" data-setting="moveMode" data-val="auto" data-i18n="settings_move_auto">Single Tap</button>
             </div>
           </div>
 
           <!-- Setting 2: Draw Cards -->
           <div class="settings-row">
             <div class="settings-label-group">
-              <div class="settings-label">Draw Mode</div>
-              <div class="settings-hint">Cards dealt from stock to waste</div>
+              <div class="settings-label" data-i18n="settings_draw_label">Draw Mode</div>
+              <div class="settings-hint" data-i18n="settings_draw_hint">Cards dealt from stock to waste</div>
             </div>
             <div class="settings-toggle-group">
-              <button class="settings-option-btn active" id="btn-opt-draw-1" data-setting="drawCount" data-val="1">Deal 1</button>
-              <button class="settings-option-btn" id="btn-opt-draw-3" data-setting="drawCount" data-val="3">Deal 3</button>
+              <button class="settings-option-btn active" id="btn-opt-draw-1" data-setting="drawCount" data-val="1" data-i18n="settings_draw_1">Deal 1</button>
+              <button class="settings-option-btn" id="btn-opt-draw-3" data-setting="drawCount" data-val="3" data-i18n="settings_draw_3">Deal 3</button>
             </div>
           </div>
 
           <!-- Setting 3: Deal Type -->
           <div class="settings-row">
             <div class="settings-label-group">
-              <div class="settings-label">Deal Type</div>
-              <div class="settings-hint">Guaranteed winnable or random deal</div>
+              <div class="settings-label" data-i18n="settings_deal_label">Deal Type</div>
+              <div class="settings-hint" data-i18n="settings_deal_hint">Guaranteed winnable or random deal</div>
             </div>
             <div class="settings-toggle-group">
-              <button class="settings-option-btn active" id="btn-opt-deal-winning" data-setting="dealType" data-val="winning">Winnable</button>
-              <button class="settings-option-btn" id="btn-opt-deal-random" data-setting="dealType" data-val="random">Random</button>
+              <button class="settings-option-btn active" id="btn-opt-deal-winning" data-setting="dealType" data-val="winning" data-i18n="settings_deal_winning">Winnable</button>
+              <button class="settings-option-btn" id="btn-opt-deal-random" data-setting="dealType" data-val="random" data-i18n="settings_deal_random">Random</button>
             </div>
           </div>
 
-          <!-- Setting 3: Show Timer -->
+          <!-- Setting 4: Show Timer -->
           <div class="settings-row">
             <div class="settings-label-group">
-              <div class="settings-label">Show Timer</div>
-              <div class="settings-hint">Display timer at bottom of screen</div>
+              <div class="settings-label" data-i18n="settings_timer_label">Show Timer</div>
+              <div class="settings-hint" data-i18n="settings_timer_hint">Display timer at bottom of screen</div>
             </div>
             <div class="settings-toggle-group">
-              <button class="settings-option-btn active" id="btn-opt-timer-off" data-setting="showTimer" data-val="false">Off</button>
-              <button class="settings-option-btn" id="btn-opt-timer-on" data-setting="showTimer" data-val="true">On</button>
+              <button class="settings-option-btn active" id="btn-opt-timer-off" data-setting="showTimer" data-val="false" data-i18n="settings_off">Off</button>
+              <button class="settings-option-btn" id="btn-opt-timer-on" data-setting="showTimer" data-val="true" data-i18n="settings_on">On</button>
             </div>
           </div>
 
-          <!-- Setting 4: Sound Effects -->
+          <!-- Setting 5: Sound Effects -->
           <div class="settings-row">
             <div class="settings-label-group">
-              <div class="settings-label">Sound Effects</div>
-              <div class="settings-hint">Tactile audio feedback on card moves</div>
+              <div class="settings-label" data-i18n="settings_sound_label">Sound Effects</div>
+              <div class="settings-hint" data-i18n="settings_sound_hint">Tactile audio feedback on card moves</div>
             </div>
             <div class="settings-toggle-group">
-              <button class="settings-option-btn" id="btn-opt-sound-off" data-setting="soundMuted" data-val="true">Off</button>
-              <button class="settings-option-btn active" id="btn-opt-sound-on" data-setting="soundMuted" data-val="false">On</button>
+              <button class="settings-option-btn" id="btn-opt-sound-off" data-setting="soundMuted" data-val="true" data-i18n="settings_off">Off</button>
+              <button class="settings-option-btn active" id="btn-opt-sound-on" data-setting="soundMuted" data-val="false" data-i18n="settings_on">On</button>
             </div>
           </div>
         </div>
 
         <div class="confirm-modal-buttons" style="margin-top: 18px;">
-          <button class="confirm-btn confirm-btn-proceed" id="btn-close-settings" style="width: 100%;">Done</button>
+          <button class="confirm-btn confirm-btn-proceed" id="btn-close-settings" style="width: 100%;" data-i18n="settings_done">Done</button>
         </div>
       </div>
     </div>
@@ -310,8 +315,8 @@
             <line x1="12" y1="17" x2="12.01" y2="17"/>
           </svg>
         </div>
-        <div class="confirm-modal-title">How to Play</div>
-        <div class="help-modal-subtitle">Klondike Solitaire Quick Guide</div>
+        <div class="confirm-modal-title" data-i18n="help_title">How to Play</div>
+        <div class="help-modal-subtitle" data-i18n="help_subtitle">Klondike Solitaire Quick Guide</div>
         
         <div class="help-scroll-body">
           <div class="help-card-box">
@@ -328,9 +333,9 @@
                   <path d="M 20,16 L 21.2,18.5 L 20,20 L 18.8,18.5 Z" fill="#ef4444"/>
                 </svg>
               </div>
-              <div class="help-card-heading">Goal of the Game</div>
+              <div class="help-card-heading" data-i18n="help_goal_heading">Goal of the Game</div>
             </div>
-            <div class="help-card-desc">Build all 4 foundation piles at the top from <strong>Ace up to King</strong>, sorted by suit (<span class="help-suit-gold">♠</span> <span class="help-suit-red">♥</span> <span class="help-suit-gold">♣</span> <span class="help-suit-red">♦</span>).</div>
+            <div class="help-card-desc" data-i18n="help_goal_desc">Build all 4 foundation piles at the top from <strong>Ace up to King</strong>, sorted by suit (<span class="help-suit-gold">♠</span> <span class="help-suit-red">♥</span> <span class="help-suit-gold">♣</span> <span class="help-suit-red">♦</span>).</div>
           </div>
 
           <div class="help-card-box">
@@ -354,9 +359,9 @@
                   <path d="M 29,27 L 31,29.5 L 34,27.5" fill="none" stroke="#fde047" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <div class="help-card-heading">Moving Cards (Tableau)</div>
+              <div class="help-card-heading" data-i18n="help_move_heading">Moving Cards (Tableau)</div>
             </div>
-            <div class="help-card-desc">
+            <div class="help-card-desc" data-i18n="help_move_desc">
               • Stack cards downward in <strong>alternating colors</strong> (e.g. Red 8 on Black 9).<br>
               • Empty column spaces can only be filled by a <strong>King</strong> (or a stack starting with a King).<br>
               • You can move single cards or full sequences of face-up cards.
@@ -389,9 +394,9 @@
                   <path d="M 26,34.5 L 28.5,33 L 28.5,35.5" fill="none" stroke="rgba(251,191,36,0.7)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <div class="help-card-heading">Stock & Waste</div>
+              <div class="help-card-heading" data-i18n="help_stock_heading">Stock & Waste</div>
             </div>
-            <div class="help-card-desc">Tap the top-right <strong>Stock</strong> pile to draw cards into the <strong>Waste</strong> pile. When the stock is empty, tap it again to recycle.</div>
+            <div class="help-card-desc" data-i18n="help_stock_desc">Tap the top-right <strong>Stock</strong> pile to draw cards into the <strong>Waste</strong> pile. When the stock is empty, tap it again to recycle.</div>
           </div>
 
           <div class="help-card-box">
@@ -423,9 +428,9 @@
                   </defs>
                 </svg>
               </div>
-              <div class="help-card-heading">Helpful Tips for Mom</div>
+              <div class="help-card-heading" data-i18n="help_tips_heading">Helpful Tips for Mom</div>
             </div>
-            <div class="help-card-desc">
+            <div class="help-card-desc" data-i18n="help_tips_desc">
               • <strong>Aces fly automatically</strong> to the foundation when tapped!<br>
               • Tap <strong>Undo</strong> anytime if you want to rethink a move.<br>
               • Try to uncover face-down cards as early as you can.
@@ -434,28 +439,32 @@
         </div>
 
         <div class="confirm-modal-buttons" style="margin-top: 14px;">
-          <button class="confirm-btn confirm-btn-proceed" id="btn-close-help" style="width: 100%;">Got It, Let's Play!</button>
+          <button class="confirm-btn confirm-btn-proceed" id="btn-close-help" style="width: 100%;" data-i18n="help_close_btn">Got It, Let's Play!</button>
         </div>
       </div>
     </div>
 
     <!-- ================================================================= -->
-    <!-- BOTTOM BAR: SCORE, MOVES & OPTIONAL TIMER (TOGGLEABLE IN MENU)    -->
+    <!-- BOTTOM BAR: HELP (LEFT CIRCLE) & SCORE/MOVES/TIMER CAPSULE         -->
     <!-- ================================================================= -->
     <footer id="bottom-hud" class="bottom-hud">
+      <button class="bottom-circle-btn help-circle-btn" id="btn-help-toggle" title="How to Play" aria-label="How to Play" data-i18n-title="btn_help_title">
+        <span class="help-circle-q">?</span>
+      </button>
+
       <div class="bottom-status-capsule">
         <div class="hud-stat-item">
-          <span class="hud-stat-label">Score</span>
+          <span class="hud-stat-label" data-i18n="stat_score">Score</span>
           <span class="hud-stat-val" id="hud-score">0</span>
         </div>
         <div class="hud-stat-divider">&bull;</div>
         <div class="hud-stat-item">
-          <span class="hud-stat-label">Moves</span>
+          <span class="hud-stat-label" data-i18n="stat_moves">Moves</span>
           <span class="hud-stat-val" id="hud-moves">0</span>
         </div>
         <div class="hud-stat-divider" id="hud-timer-divider" style="display: none;">&bull;</div>
         <div class="hud-stat-item" id="hud-timer-item" style="display: none;">
-          <span class="hud-stat-label">Time</span>
+          <span class="hud-stat-label" data-i18n="stat_time">Time</span>
           <span class="hud-stat-val" id="bottom-timer">00:00</span>
         </div>
       </div>
@@ -463,12 +472,16 @@
   </div>
 
   <!-- Scripts -->
+  <script src="js/i18n.js"></script>
   <script src="js/deck.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/celebration.js"></script>
   <script src="js/game.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
+      if (window.solitaireI18n) {
+        window.solitaireI18n.init();
+      }
       const container = document.getElementById('app-container');
       window.solitaireCelebration.init(container);
       window.solitaireGame.init();
