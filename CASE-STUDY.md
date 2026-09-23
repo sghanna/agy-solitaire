@@ -75,6 +75,26 @@ AI coding models default to "textbook" design patterns that frequently fail real
 - **The Problem**: Classic Klondike Solitaire deals have roughly a 18–20% rate of mathematically unwinnable configurations. Presenting an unwinnable hand on game one is demoralizing and risks product abandonment.
 - **The Design Override**: Integrated an algorithmic solver check to guarantee that **Deal #1 is 100% winnable**, building immediate confidence. Added a toggle in Settings allowing players to switch between "Guaranteed Winnable" and "Random" deals.
 
+### G. Attention-Grabbing Motion & Hardware-Accelerated Auto-Win Banner (Low-Vision Peripheral Field Capture)
+- **The Problem**: For a monocular player with vitreal floaters, static notifications anchored at the extreme perimeter of the screen (e.g. an "Auto-Finish" button popping up at the bottom) go completely unnoticed during active play.
+- **The Human Insight**: When testing with Mom, I noticed she didn't see the auto-win button because her focal vision was locked onto the tableau. Low-vision players detect broad motion across their field of view far more reliably than static color changes at the edge.
+- **The Design Override**:
+  - Replaced generic celebratory emojis (`🎉`) with an authentic Hong Kong salon starburst emblem (crimson ruby jewel center, imperial starburst filigree, and four gold accent orbs).
+  - Designed an unhurried, slow **3.4-second vertical transit** where the banner physically descends from the very top of the screen all the way down across the tableau before softly settling at the bottom with a 10px gravitational bounce and radiant pulse.
+  - Made the **entire banner a unified touch hitbox**, eliminating precision targeting stress.
+- **The Technical Achievement**: Early CSS keyframe prototypes animating `box-shadow` (40px blur) and `border-color` suffered severe CPU main-thread thrashing (choppy ~20fps) and subpixel vector snapping. In a collaborative CLI session with Claude and Codex, we re-architected the motion using the **Web Animations API (`translate3d`)** paired with a **zero-repaint GPU compositor pseudo-element (`::after` opacity-only pulse)**, achieving a flawless 60fps/120fps glide across the tableau with instant on-demand replay.
+
+### H. Narrow-Screen Ergonomics & Touch Clearance (The iPhone 13 mini Borderless Telemetry Rule)
+- **The Problem**: On narrower mobile displays (such as the 375px viewport of an iPhone 13 mini), enclosing bottom HUD stats (Score, Moves, Timer) in a solid bordered pill container crowded out the bottom-left circular `[?]` Help button. The edge of the pill nearly touched the circle, creating severe visual clutter and accidental miss-taps.
+- **The Design Override**: Stripped the pill boundary, solid background, and heavy box-shadow entirely. Score and Moves now float cleanly and borderless directly on the imperial pine felt, backed by high-contrast layered drop shadows (`0 1px 3px / 0 2px 8px`). This reclaimed **35px+ of horizontal space**, expanding the physical clearance buffer between the Help button and the Score label to over **65px**.
+
+### I. Zero-Pollution Trilingual Internationalization (Strict English Default & Storage Isolation)
+- **The Problem**: To support my mother and our wider family, the game supports English, Spanish (*Español*), and Vietnamese (*Tiếng Việt*). However, multi-language preview iframes on our review page were inadvertently calling `setLanguage('vi')` and cross-contaminating the shared domain `localStorage`, accidentally locking players into Vietnamese on fresh game loads.
+- **The Design Override**:
+  - Established a **strict English default policy**: The game always initializes in English unless the player deliberately chooses Spanish or Vietnamese in the in-game Settings menu.
+  - Eliminated unreliable device language sniffing in favor of explicit user agency.
+  - Isolated player preferences under a dedicated key (`agy_solitaire_user_lang`) and switched review iframes to stateless URL parameters (`?lang=`), ensuring demo environments never corrupt the user's saved experience.
+
 ---
 
 ## 4. Multi-AI Orchestration & Delivery Workflow
@@ -99,15 +119,17 @@ flowchart TD
 ```
 
 1. **Architecture & Specification**: Wrote explicit engineering briefs defining column dimensions, touch target math, and state machines.
-2. **Head-to-Head Multi-AI Bake-Offs**: When choosing the core card face, I ran a 3-way competition between Claude, Codex, and Antigravity, judging entries side-by-side at 100% phone scale. Antigravity won by combining traced SVG glyphs with superior felt color contrast.
-3. **The "Never Trust CSS Arithmetic" Rule**: Automated layout math often lies on high-DPI mobile viewports. I instituted a hard policy: every sizing change must be rendered to PNG via WebKit/Chrome headless at the exact 390pt viewport width and visually verified before shipping.
+2. **Head-to-Head Multi-AI Bake-Offs**: When choosing the core card face or diagnosing complex animation frame hitches, I ran multi-AI consultations across Claude, Codex, and Antigravity, synthesizing architectural solutions directly from the CLI.
+3. **The "Never Trust CSS Arithmetic" Rule**: Automated layout math often lies on high-DPI mobile viewports. I instituted a hard policy: every sizing change must be rendered to PNG via WebKit/Chrome headless at the exact 390pt (and 375pt) viewport width and visually verified before shipping.
 
 ---
 
 ## 5. Technical Highlights & Performance
 
 - **Zero-Dependency Architecture**: Built in vanilla HTML5, CSS3, and modern ES6 JavaScript. Zero external frameworks, zero trackers, zero ad SDKs.
-- **Offline PWA**: Service Worker cache-first architecture (`CACHE_NAME = 'agy-solitaire-v15'`) allows immediate home-screen installation and full offline play with zero network latency.
+- **Hardware-Accelerated Web Animations API (`WAAPI`)**: 3.4-second gravitational drop animation executed via native `element.animate()` using `translate3d` and GPU compositor layers, eliminating CSS layout recalculations and guaranteeing 60fps/120fps smoothness.
+- **Zero-Repaint GPU Compositor Glow Layer**: Transferred pulsing gold aura effects to an isolated `::after` pseudo-element with `will-change: opacity`, offloading 100% of glow animation to the GPU compositor.
+- **Offline PWA**: Service Worker cache-first architecture (`CACHE_NAME = 'agy-solitaire-v22'`) allows immediate home-screen installation and full offline play with zero network latency.
 - **Procedural Tactile Web Audio**: Custom Web Audio API synthesizer generating organic card rustles, snap clicks, and celebration tones with automated audio context unlocking on first touch.
 - **Automated Regression Suite**: 3 dedicated headless test suites (`test_solitaire.js`, `test_settings_features.js`, `test_ace_and_single_deal.js`) covering card moves, undo history, winnable deal generation, and HUD persistence.
 

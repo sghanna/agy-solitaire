@@ -1170,14 +1170,14 @@ html, body {
 }
 
 .bottom-status-capsule {
-  background: rgba(15, 23, 42, 0.95);
-  border: 1.8px solid #fbbf24;
-  border-radius: 9999px;
-  padding: 7px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 4px 6px;
   display: inline-flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  gap: 12px;
+  box-shadow: none;
   pointer-events: none;
 }
 
@@ -1195,7 +1195,7 @@ html, body {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   line-height: 1.1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.85);
 }
 
 .hud-stat-val {
@@ -1204,13 +1204,14 @@ html, body {
   font-weight: 900;
   color: #ffffff;
   line-height: 1.1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.85);
 }
 
 .hud-stat-divider {
-  color: rgba(251, 191, 36, 0.6);
+  color: rgba(251, 191, 36, 0.65);
   font-size: 16px;
   user-select: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 /* =========================================================================

@@ -99,7 +99,7 @@
       <div class="review-desc">15px/900w top buttons (New left, Menu center, Undo right), bottom-left ? circular button (42px), larger status capsule (Score 13.5px / 16px val).</div>
     </div>
     <div class="phone-mockup" id="mock-en">
-      <iframe src="index.html" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe id="iframe-en" src="index.html?lang=en" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
   </div>
 
@@ -110,7 +110,7 @@
       <div class="review-desc">Buttons translated to "Nuevo", "Menú", "Deshacer", telemetry to "PUNTOS", "MOVIMIENTOS".</div>
     </div>
     <div class="phone-mockup" id="mock-es">
-      <iframe id="iframe-es" src="index.html" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe id="iframe-es" src="index.html?lang=es" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
   </div>
 
@@ -121,7 +121,7 @@
       <div class="review-desc">Buttons translated to "Ván mới", "Menu", "Hoàn tác", telemetry to "ĐIỂM", "NƯỚC ĐI".</div>
     </div>
     <div class="phone-mockup" id="mock-vi">
-      <iframe id="iframe-vi" src="index.html" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe id="iframe-vi" src="index.html?lang=vi" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
   </div>
 
@@ -346,15 +346,6 @@
 
   <script>
     window.addEventListener('load', () => {
-      const iframeEs = document.getElementById('iframe-es');
-      if (iframeEs && iframeEs.contentWindow) {
-        iframeEs.contentWindow.solitaireI18n?.setLanguage('es');
-      }
-      const iframeVi = document.getElementById('iframe-vi');
-      if (iframeVi && iframeVi.contentWindow) {
-        iframeVi.contentWindow.solitaireI18n?.setLanguage('vi');
-      }
-
       const params = new URLSearchParams(window.location.search);
       const onlyId = params.get('only');
       if (onlyId) {

@@ -96,6 +96,11 @@ class SolitaireGame {
       }
     } catch (e) {}
 
+    // Always synchronize settings.lang with the active i18n language (defaults strictly to English)
+    if (window.solitaireI18n) {
+      this.settings.lang = window.solitaireI18n.currentLang;
+    }
+
     // Check URL parameters for fast review and testing
     try {
       if (typeof window !== 'undefined' && window.location && window.location.search) {

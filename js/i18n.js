@@ -226,7 +226,7 @@ class SolitaireI18n {
   }
 
   detectLanguage() {
-    // 0. URL param override for testing and direct links (?lang=es, ?lang=vi)
+    // 0. URL param override for testing and direct links (?lang=es, ?lang=vi, ?lang=en)
     try {
       const params = new URLSearchParams(window.location.search);
       const urlLang = params.get('lang');
@@ -235,31 +235,29 @@ class SolitaireI18n {
       }
     } catch (e) {}
 
-    // 1. Explicit user selection stored in localStorage
+    // 1. Explicit user selection made in the game settings menu
     try {
-      const saved = localStorage.getItem('agy_solitaire_lang');
-      if (saved && this.translations[saved]) return saved;
+      // Clear legacy/polluted key from review page if present
+      localStorage.removeItem('agy_solitaire_lang');
+      const userSelected = localStorage.getItem('agy_solitaire_user_lang');
+      if (userSelected && this.translations[userSelected]) {
+        return userSelected;
+      }
     } catch (e) {}
 
-    // 2. Auto-align with device/browser language
-    const navLanguages = navigator.languages || [navigator.language || navigator.userLanguage || 'en'];
-    for (const l of navLanguages) {
-      if (!l) continue;
-      const lower = l.toLowerCase();
-      if (lower.startsWith('es')) return 'es';
-      if (lower.startsWith('vi')) return 'vi';
-      if (lower.startsWith('en')) return 'en';
-    }
-
+    // 2. Default to English (per user specification: default to English unless chosen in menu)
     return 'en';
   }
 
-  setLanguage(lang) {
+  setLanguage(lang, persist = true) {
     if (!this.translations[lang]) return;
     this.currentLang = lang;
-    try {
-      localStorage.setItem('agy_solitaire_lang', lang);
-    } catch (e) {}
+    const isUrlOverride = Boolean(window.location.search && window.location.search.includes('lang='));
+    if (persist && !isUrlOverride) {
+      try {
+        localStorage.setItem('agy_solitaire_user_lang', lang);
+      } catch (e) {}
+    }
     this.applyLanguage(lang);
   }
 
