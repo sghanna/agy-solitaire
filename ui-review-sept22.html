@@ -125,15 +125,33 @@
     </div>
   </div>
 
-  <!-- Section 4: Auto-Win Banner (Larger Font, Brief Phrase) -->
+  <!-- Section 4: Solved Auto-Win Banner (Hong Kong Starburst & Drop-Down Animation) -->
   <div class="review-section" id="section-4">
     <div class="review-header">
-      <div class="review-title">4. Brief Auto-Win Banner (Larger 18px / 16px Fonts)</div>
-      <div class="review-desc">Phrase shortened from "🎉 Solitaire Solved!" to "🎉 Solved!" (18px bold), button "Auto-Win →" (16px bold).</div>
+      <div class="review-title">4. Solved Auto-Win Banner (Hong Kong Starburst &amp; Drop-Down Animation)</div>
+      <div class="review-desc">Replaced generic emoji with vintage Hong Kong starburst emblem (crimson ruby &amp; gold filigree), and animated drop-down from top of screen to bottom with radiant pulse to catch Mom's attention.</div>
     </div>
     <div class="modal-frame" style="padding: 24px 16px;">
-      <aside id="auto-finish-banner" style="display: flex; position: static; width: 100%; margin: 0;">
-        <div class="banner-text">🎉 Solved!</div>
+      <aside id="auto-finish-banner" class="visible dropping" style="position: static; width: 100%; margin: 0;">
+        <div class="banner-left">
+          <div class="banner-icon-badge">
+            <svg class="auto-win-icon" width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Auspicious 8-Point Starburst Filigree -->
+              <path d="M20 2 L22.8 13.5 L34 8 L27 18 L38 20 L27 22 L34 32 L22.8 26.5 L20 38 L17.2 26.5 L6 32 L13 22 L2 20 L13 18 L6 8 L17.2 13.5 Z" fill="rgba(251, 191, 36, 0.35)" stroke="#fbbf24" stroke-width="1.2" stroke-linejoin="round"/>
+              <!-- Inner Imperial Medallion Circle -->
+              <circle cx="20" cy="20" r="10.5" fill="#7f1d1d" stroke="#fde047" stroke-width="1.6"/>
+              <!-- Glowing Ruby Jewel Center -->
+              <circle cx="20" cy="20" r="5.5" fill="#ef4444" stroke="#fbbf24" stroke-width="1.2"/>
+              <circle cx="18" cy="18" r="1.5" fill="#ffffff" opacity="0.85"/>
+              <!-- Corner Gold Accent Orbs -->
+              <circle cx="20" cy="5.5" r="1.2" fill="#fde047"/>
+              <circle cx="20" cy="34.5" r="1.2" fill="#fde047"/>
+              <circle cx="5.5" cy="20" r="1.2" fill="#fde047"/>
+              <circle cx="34.5" cy="20" r="1.2" fill="#fde047"/>
+            </svg>
+          </div>
+          <span class="banner-text">Solved!</span>
+        </div>
         <button class="banner-btn">Auto-Win &rarr;</button>
       </aside>
     </div>
@@ -307,7 +325,6 @@
   </div>
 
   <script>
-    // Configure iframe languages once loaded
     window.addEventListener('load', () => {
       const iframeEs = document.getElementById('iframe-es');
       if (iframeEs && iframeEs.contentWindow) {
@@ -316,6 +333,23 @@
       const iframeVi = document.getElementById('iframe-vi');
       if (iframeVi && iframeVi.contentWindow) {
         iframeVi.contentWindow.solitaireI18n?.setLanguage('vi');
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const onlyId = params.get('only');
+      if (onlyId) {
+        document.querySelectorAll('.review-section, .nav-pills, h1, p').forEach(el => {
+          if (!el.closest('#' + onlyId) && el.id !== onlyId) {
+            el.style.display = 'none';
+          }
+        });
+      }
+      const focusId = params.get('focus') || window.location.hash.replace('#', '');
+      if (focusId) {
+        const el = document.getElementById(focusId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'instant', block: 'start' });
+        }
       }
     });
   </script>

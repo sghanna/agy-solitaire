@@ -428,49 +428,123 @@ html, body {
 
 /* =========================================================================
    AUTO-FINISH BANNER (WHEN GAME IS GUARANTEED SOLVED)
+   DROPS DOWN FROM TOP OF SCREEN TO BOTTOM TO CATCH MOM'S ATTENTION
    ========================================================================= */
 #auto-finish-banner {
   position: absolute;
-  bottom: 24px;
-  left: 16px;
-  right: 16px;
-  background: linear-gradient(180deg, #d97706 0%, #b45309 100%);
-  border: 2px solid #fef08a;
-  border-radius: 20px;
-  padding: 12px 18px;
+  bottom: max(60px, calc(env(safe-area-inset-bottom) + 52px));
+  left: 14px;
+  right: 14px;
+  background: linear-gradient(135deg, #b45309 0%, #78350f 50%, #451a03 100%);
+  border: 2px solid #fbbf24;
+  border-radius: 22px;
+  padding: 10px 14px 10px 14px;
   display: none;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
-  z-index: 30;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(251, 191, 36, 0.45);
+  z-index: 35;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#auto-finish-banner.visible {
+  display: flex !important;
+}
+
+#auto-finish-banner.dropping {
+  animation: autoWinDropDown 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+             autoWinPulseGlow 2.4s ease-in-out 0.85s infinite;
+}
+
+@keyframes autoWinDropDown {
+  0% {
+    transform: translateY(-900px) scale(0.9);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(12px) scale(1.02);
+  }
+  88% {
+    transform: translateY(-6px) scale(0.99);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes autoWinPulseGlow {
+  0%, 100% {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 18px rgba(251, 191, 36, 0.45);
+    border-color: #fbbf24;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.95), 0 0 32px rgba(251, 191, 36, 0.85);
+    border-color: #fef08a;
+    transform: scale(1.02);
+  }
+}
+
+#auto-finish-banner .banner-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#auto-finish-banner .banner-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #1e3a29 0%, #0d281c 100%);
+  border: 1.5px solid #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(254, 240, 138, 0.4);
+}
+
+#auto-finish-banner .auto-win-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: block;
 }
 
 #auto-finish-banner .banner-text {
-  font-size: 18px;
-  font-weight: 900;
-  color: #ffffff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fef08a;
   letter-spacing: 0.5px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 #auto-finish-banner .banner-btn {
-  background: #ffffff;
-  color: #92400e;
-  font-size: 16px;
+  background: linear-gradient(180deg, #fef08a 0%, #fbbf24 100%);
+  color: #451a03;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16.5px;
   font-weight: 900;
-  padding: 9px 18px;
+  padding: 10px 20px;
   border-radius: 16px;
-  border: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
   cursor: pointer;
-  letter-spacing: 0.3px;
-  transition: transform 0.15s ease, background 0.15s ease;
+  letter-spacing: 0.4px;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  flex-shrink: 0;
 }
 
 #auto-finish-banner .banner-btn:active {
-  transform: scale(0.95);
-  background: #fef08a;
+  transform: scale(0.94);
+  filter: brightness(0.95);
 }
 
 /* =========================================================================

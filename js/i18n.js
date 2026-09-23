@@ -21,7 +21,7 @@ class SolitaireI18n {
         stat_time: 'Time',
 
         // Auto-Win Banner
-        auto_win_title: '🎉 Solved!',
+        auto_win_title: 'Solved!',
         auto_win_btn: 'Auto-Win →',
 
         // New Game Modal
@@ -91,7 +91,7 @@ class SolitaireI18n {
         stat_time: 'Tiempo',
 
         // Auto-Win Banner
-        auto_win_title: '🎉 ¡Resuelto!',
+        auto_win_title: '¡Resuelto!',
         auto_win_btn: 'Auto-Ganar →',
 
         // New Game Modal
@@ -161,7 +161,7 @@ class SolitaireI18n {
         stat_time: 'Thời gian',
 
         // Auto-Win Banner
-        auto_win_title: '🎉 Đã giải xong!',
+        auto_win_title: 'Đã giải xong!',
         auto_win_btn: 'Tự động thắng →',
 
         // New Game Modal

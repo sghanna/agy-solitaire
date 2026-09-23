@@ -132,6 +132,25 @@ class SolitaireGame {
             }
           }, 200);
         }
+        if (urlParams.has('showAutoWin')) {
+          const mode = urlParams.get('showAutoWin');
+          setTimeout(() => {
+            const bar = document.getElementById('auto-finish-banner');
+            if (bar) {
+              bar.style.display = 'flex';
+              if (mode === 'settled') {
+                bar.classList.add('visible');
+                bar.style.animation = 'none';
+                bar.style.transform = 'none';
+                bar.style.opacity = '1';
+              } else {
+                bar.classList.remove('dropping');
+                void bar.offsetWidth;
+                bar.classList.add('visible', 'dropping');
+              }
+            }
+          }, mode === 'settled' ? 0 : 300);
+        }
       }
     } catch (e) {}
 
@@ -241,10 +260,10 @@ class SolitaireGame {
       });
     }
 
-    // Auto-finish button
-    const autoFinishBtn = document.getElementById('btn-auto-finish');
-    if (autoFinishBtn) {
-      autoFinishBtn.addEventListener('click', (e) => {
+    // Auto-finish banner & button (entire banner is clickable for senior accessibility)
+    const autoFinishBanner = document.getElementById('auto-finish-banner');
+    if (autoFinishBanner) {
+      autoFinishBanner.addEventListener('click', (e) => {
         e.stopPropagation();
         this.autoComplete();
       });
@@ -483,7 +502,18 @@ class SolitaireGame {
     }
 
     const autoFinishBar = document.getElementById('auto-finish-banner');
-    if (autoFinishBar) autoFinishBar.style.display = 'none';
+    if (autoFinishBar) {
+      if (window.location.search.includes('showAutoWin=settled')) {
+        autoFinishBar.style.display = 'flex';
+        autoFinishBar.classList.add('visible');
+        autoFinishBar.style.animation = 'none';
+        autoFinishBar.style.transform = 'none';
+        autoFinishBar.style.opacity = '1';
+      } else {
+        autoFinishBar.style.display = 'none';
+        autoFinishBar.classList.remove('visible', 'dropping');
+      }
+    }
 
     // 1. Deal selection: the first hand is ALWAYS guaranteed winnable.
     // Subsequent hands follow settings.dealType ('winning' vs 'random').
@@ -1642,7 +1672,15 @@ class SolitaireGame {
 
       const autoFinishBar = document.getElementById('auto-finish-banner');
       if (allFaceUp && autoFinishBar && !this.isWon) {
-        autoFinishBar.style.display = 'flex';
+        if (!autoFinishBar.classList.contains('visible')) {
+          autoFinishBar.style.display = 'flex';
+          autoFinishBar.classList.remove('dropping');
+          void autoFinishBar.offsetWidth; // Trigger reflow for drop animation
+          autoFinishBar.classList.add('visible', 'dropping');
+          if (window.solitaireAudio && typeof window.solitaireAudio.playAceCelebration === 'function') {
+            window.solitaireAudio.playAceCelebration();
+          }
+        }
       }
     }
   }
@@ -1651,6 +1689,12 @@ class SolitaireGame {
     if (this.autoCompleting || this.isWon) return;
     this.autoCompleting = true;
     this.clearSelection();
+
+    const autoFinishBar = document.getElementById('auto-finish-banner');
+    if (autoFinishBar) {
+      autoFinishBar.style.display = 'none';
+      autoFinishBar.classList.remove('visible', 'dropping');
+    }
 
     const step = () => {
       let moved = false;
@@ -1691,6 +1735,12 @@ class SolitaireGame {
     if (totalInFoundations === 52 && !this.isWon) {
       this.isWon = true;
       if (this.timerInterval) clearInterval(this.timerInterval);
+
+      const autoFinishBar = document.getElementById('auto-finish-banner');
+      if (autoFinishBar) {
+        autoFinishBar.style.display = 'none';
+        autoFinishBar.classList.remove('visible', 'dropping');
+      }
 
       const stats = {
         time: this.formatTime(this.elapsedSeconds),
