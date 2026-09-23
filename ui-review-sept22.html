@@ -129,24 +129,30 @@
   <div class="review-section" id="section-4">
     <div class="review-header">
       <div class="review-title">4. Solved Auto-Win Banner (Hong Kong Starburst &amp; Drop-Down Animation)</div>
-      <div class="review-desc">True iPhone 16e view with the settled banner floating above bottom HUD, plus interactive drop animation replay button and high-contrast vector spotlight.</div>
+      <div class="review-desc">True iPhone 16e view with the banner dropping down across the screen from top to bottom, plus interactive replay and auto-loop controls.</div>
     </div>
     
-    <!-- Live Phone Mockup with Solitaire Board and Settled Banner -->
+    <!-- Live Phone Mockup with Solitaire Board and Drop Banner -->
     <div class="phone-mockup" id="mock-autowin">
-      <iframe id="iframe-autowin" src="index.html?showAutoWin=settled" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe id="iframe-autowin" src="index.html?showAutoWin=drop" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
 
-    <!-- Interactive Animation Trigger -->
-    <div style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 6px;">
-      <button onclick="triggerAutoWinDrop()" style="background: linear-gradient(180deg, #b45309 0%, #78350f 100%); color: #fef08a; border: 1.5px solid #fbbf24; border-radius: 9999px; padding: 8px 18px; font-size: 13.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
-        <span>Replay Drop Animation</span> <span>&circlearrowright;</span>
+    <!-- Interactive Animation Trigger & Controls -->
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-top: 6px;">
+      <button id="btn-replay-autowin" onclick="triggerAutoWinDrop()" style="background: linear-gradient(180deg, #b45309 0%, #78350f 100%); color: #fef08a; border: 1.5px solid #fbbf24; border-radius: 9999px; padding: 8px 18px; font-size: 13.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
+        <span>▶ Replay Drop Animation</span> <span>&circlearrowright;</span>
+      </button>
+      <button id="btn-autowin-loop" onclick="toggleAutoWinLoop()" style="background: rgba(15, 23, 42, 0.85); color: #cbd5e1; border: 1px solid rgba(251, 191, 36, 0.4); border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer;">
+        <span>🔁 Auto-Loop (Off)</span>
       </button>
     </div>
+    <div id="autowin-status-badge" style="text-align: center; font-size: 12px; font-weight: 700; color: #86efac; min-height: 18px;">
+      ✨ Ready to drop &amp; pulse
+    </div>
 
-    <!-- Fail-Safe Static Component Spotlight Card -->
-    <div class="modal-frame" style="padding: 16px 14px; margin-top: 4px;">
-      <aside class="review-banner-static" style="position: static !important; display: flex !important; width: 100%; max-width: 390px; margin: 0; background: linear-gradient(135deg, #1c1917 0%, #292524 40%, #1c1917 100%); border: 2.2px solid #fbbf24; border-radius: 22px; padding: 10px 14px; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(251, 191, 36, 0.45); transform: none !important; opacity: 1 !important; animation: none !important;">
+    <!-- Spotlight Component Stage (In-Page Animated Demo) -->
+    <div class="modal-frame" style="position: relative; overflow: hidden; height: 140px; padding: 16px 14px; margin-top: 4px; display: flex; align-items: center; justify-content: center;">
+      <aside id="standalone-autowin-banner" class="glowing" style="width: 100%; max-width: 390px; margin: 0; background: linear-gradient(135deg, #1c1917 0%, #292524 40%, #1c1917 100%); border: 2.2px solid #fbbf24; border-radius: 22px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(251, 191, 36, 0.45); cursor: pointer;" onclick="triggerAutoWinDrop()">
         <div class="banner-left" style="display: flex; align-items: center; gap: 10px;">
           <div class="banner-icon-badge" style="width: 34px; height: 34px; border-radius: 50%; background: #064e3b; border: 1.5px solid #fbbf24; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(251, 191, 36, 0.4); flex-shrink: 0;">
             <svg class="auto-win-icon" width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -363,19 +369,124 @@
         const el = document.getElementById(focusId);
         if (el) {
           el.scrollIntoView({ behavior: 'instant', block: 'start' });
+          if (focusId === 'section-4') {
+            setTimeout(triggerAutoWinDrop, 450);
+          }
         }
+      }
+
+      // IntersectionObserver: Auto-drop whenever Section 4 scrolls into view
+      const sec4 = document.getElementById('section-4');
+      if (sec4 && 'IntersectionObserver' in window) {
+        let hasDroppedOnScroll = false;
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !hasDroppedOnScroll) {
+              hasDroppedOnScroll = true;
+              setTimeout(triggerAutoWinDrop, 350);
+            } else if (!entry.isIntersecting) {
+              hasDroppedOnScroll = false; // Reset so scrolling away and back re-drops
+            }
+          });
+        }, { threshold: 0.25 });
+        observer.observe(sec4);
       }
     });
 
+    let loopInterval = null;
+
+    // Hardware-accelerated, buttery-smooth Web Animations API drop animation
+    function dropAutoWinBanner(el, fromY = '-160px') {
+      if (!el) return;
+      el.style.display = 'flex';
+      el.classList.add('visible');
+      el.classList.remove('glowing');
+
+      // Cancel any existing animation cleanly
+      if (el._dropAnim) {
+        try { el._dropAnim.cancel(); } catch (e) {}
+      }
+
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion || !el.animate) {
+        el.style.transform = 'none';
+        el.style.opacity = '1';
+        el.classList.add('glowing');
+        return;
+      }
+
+      el._dropAnim = el.animate([
+        { transform: `translate3d(0, ${fromY}, 0)`, opacity: 0, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+        { opacity: 1, offset: 0.12 },
+        { transform: 'translate3d(0, 10px, 0)', offset: 0.80, easing: 'ease-in-out' },
+        { transform: 'translate3d(0, -4px, 0)', offset: 0.91, easing: 'ease-in-out' },
+        { transform: 'translate3d(0, 0, 0)', opacity: 1 }
+      ], {
+        duration: 3400,
+        fill: 'forwards'
+      });
+
+      el._dropAnim.onfinish = () => {
+        el.classList.add('glowing');
+      };
+    }
+
     function triggerAutoWinDrop() {
+      // 1. Inside iframe (Solitaire game board)
       const frame = document.getElementById('iframe-autowin');
       if (frame && frame.contentWindow) {
-        const bar = frame.contentWindow.document.getElementById('auto-finish-banner');
-        if (bar) {
-          bar.style.display = 'flex';
-          bar.classList.remove('dropping');
-          void bar.offsetWidth; // force reflow
-          bar.classList.add('visible', 'dropping');
+        let directlyCalled = false;
+        try {
+          if (typeof frame.contentWindow.playAutoWinDrop === 'function') {
+            frame.contentWindow.playAutoWinDrop();
+            directlyCalled = true;
+          }
+        } catch (e) {}
+
+        if (!directlyCalled) {
+          try {
+            frame.contentWindow.postMessage({ action: 'playAutoWinDrop' }, '*');
+          } catch (e) {}
+        }
+      }
+
+      // 2. In standalone spotlight demo
+      const standalone = document.getElementById('standalone-autowin-banner');
+      if (standalone) {
+        dropAutoWinBanner(standalone, '-160px');
+      }
+
+      // 3. Status text feedback
+      const badge = document.getElementById('autowin-status-badge');
+      if (badge) {
+        badge.textContent = '⬇ Dropping gently across screen (3.4s)...';
+        badge.style.color = '#fde047';
+        setTimeout(() => {
+          badge.textContent = '✨ Settled & Pulsing Radiant Gold';
+          badge.style.color = '#86efac';
+        }, 3400);
+      }
+    }
+
+    function toggleAutoWinLoop() {
+      const loopBtn = document.getElementById('btn-autowin-loop');
+      if (loopInterval) {
+        clearInterval(loopInterval);
+        loopInterval = null;
+        if (loopBtn) {
+          loopBtn.innerHTML = '<span>🔁 Auto-Loop (Off)</span>';
+          loopBtn.style.background = 'rgba(15, 23, 42, 0.85)';
+          loopBtn.style.borderColor = 'rgba(251, 191, 36, 0.4)';
+          loopBtn.style.color = '#cbd5e1';
+        }
+      } else {
+        triggerAutoWinDrop();
+        loopInterval = setInterval(triggerAutoWinDrop, 6500);
+        if (loopBtn) {
+          loopBtn.innerHTML = '<span>⏸ Pause Loop</span>';
+          loopBtn.style.background = 'linear-gradient(180deg, #15803d 0%, #166534 100%)';
+          loopBtn.style.borderColor = '#4ade80';
+          loopBtn.style.color = '#ffffff';
         }
       }
     }

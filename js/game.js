@@ -132,24 +132,88 @@ class SolitaireGame {
             }
           }, 200);
         }
+        // Hardware-accelerated, buttery-smooth Web Animations API drop animation
+        function dropAutoWinBanner(el, fromY = null) {
+          if (!el) return;
+          el.style.display = 'flex';
+          el.classList.add('visible');
+          el.classList.remove('glowing');
+
+          // Cancel any existing animation cleanly
+          if (el._dropAnim) {
+            try { el._dropAnim.cancel(); } catch (e) {}
+          }
+
+          const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (reduceMotion || !el.animate) {
+            el.style.transform = 'none';
+            el.style.opacity = '1';
+            el.classList.add('glowing');
+            return;
+          }
+
+          const startY = fromY !== null ? fromY : `-${(window.innerHeight || 800) + 50}px`;
+
+          el._dropAnim = el.animate([
+            { transform: `translate3d(0, ${startY}, 0)`, opacity: 0, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+            { opacity: 1, offset: 0.12 },
+            { transform: 'translate3d(0, 10px, 0)', offset: 0.80, easing: 'ease-in-out' },
+            { transform: 'translate3d(0, -4px, 0)', offset: 0.91, easing: 'ease-in-out' },
+            { transform: 'translate3d(0, 0, 0)', opacity: 1 }
+          ], {
+            duration: 3400,
+            fill: 'forwards'
+          });
+
+          el._dropAnim.onfinish = () => {
+            el.classList.add('glowing');
+          };
+        }
+
+        window.dropAutoWinBanner = dropAutoWinBanner;
+
+        window.playAutoWinDrop = function() {
+          const bar = document.getElementById('auto-finish-banner');
+          if (!bar) return;
+          bar.style.removeProperty('animation');
+          bar.style.removeProperty('transform');
+          bar.style.removeProperty('opacity');
+          dropAutoWinBanner(bar);
+          try {
+            if (window.solitaireAudio && window.solitaireAudio.playAceCelebration) {
+              window.solitaireAudio.playAceCelebration();
+            }
+          } catch (e) {}
+        };
+
+        window.addEventListener('message', (e) => {
+          if (e.data && e.data.action === 'playAutoWinDrop') {
+            if (window.playAutoWinDrop) {
+              window.playAutoWinDrop();
+            }
+          }
+        });
+
         if (urlParams.has('showAutoWin')) {
           const mode = urlParams.get('showAutoWin');
-          setTimeout(() => {
-            const bar = document.getElementById('auto-finish-banner');
-            if (bar) {
-              bar.style.display = 'flex';
-              if (mode === 'settled') {
-                bar.classList.add('visible');
+          if (mode === 'settled') {
+            setTimeout(() => {
+              const bar = document.getElementById('auto-finish-banner');
+              if (bar) {
+                bar.style.display = 'flex';
+                bar.classList.add('visible', 'glowing');
                 bar.style.animation = 'none';
                 bar.style.transform = 'none';
                 bar.style.opacity = '1';
-              } else {
-                bar.classList.remove('dropping');
-                void bar.offsetWidth;
-                bar.classList.add('visible', 'dropping');
               }
-            }
-          }, mode === 'settled' ? 0 : 300);
+            }, 100);
+          } else {
+            setTimeout(() => {
+              if (window.playAutoWinDrop) {
+                window.playAutoWinDrop();
+              }
+            }, 350);
+          }
         }
       }
     } catch (e) {}
@@ -505,13 +569,16 @@ class SolitaireGame {
     if (autoFinishBar) {
       if (window.location.search.includes('showAutoWin=settled')) {
         autoFinishBar.style.display = 'flex';
-        autoFinishBar.classList.add('visible');
+        autoFinishBar.classList.add('visible', 'glowing');
         autoFinishBar.style.animation = 'none';
         autoFinishBar.style.transform = 'none';
         autoFinishBar.style.opacity = '1';
-      } else {
+      } else if (!window.location.search.includes('showAutoWin')) {
+        if (autoFinishBar._dropAnim) {
+          try { autoFinishBar._dropAnim.cancel(); } catch (e) {}
+        }
         autoFinishBar.style.display = 'none';
-        autoFinishBar.classList.remove('visible', 'dropping');
+        autoFinishBar.classList.remove('visible', 'glowing');
       }
     }
 
@@ -1673,12 +1740,11 @@ class SolitaireGame {
       const autoFinishBar = document.getElementById('auto-finish-banner');
       if (allFaceUp && autoFinishBar && !this.isWon) {
         if (!autoFinishBar.classList.contains('visible')) {
-          autoFinishBar.style.display = 'flex';
-          autoFinishBar.classList.remove('dropping');
-          void autoFinishBar.offsetWidth; // Trigger reflow for drop animation
-          autoFinishBar.classList.add('visible', 'dropping');
-          if (window.solitaireAudio && typeof window.solitaireAudio.playAceCelebration === 'function') {
-            window.solitaireAudio.playAceCelebration();
+          if (typeof window.playAutoWinDrop === 'function') {
+            window.playAutoWinDrop();
+          } else {
+            autoFinishBar.style.display = 'flex';
+            autoFinishBar.classList.add('visible', 'glowing');
           }
         }
       }
@@ -1692,8 +1758,11 @@ class SolitaireGame {
 
     const autoFinishBar = document.getElementById('auto-finish-banner');
     if (autoFinishBar) {
+      if (autoFinishBar._dropAnim) {
+        try { autoFinishBar._dropAnim.cancel(); } catch (e) {}
+      }
       autoFinishBar.style.display = 'none';
-      autoFinishBar.classList.remove('visible', 'dropping');
+      autoFinishBar.classList.remove('visible', 'glowing');
     }
 
     const step = () => {
@@ -1738,8 +1807,11 @@ class SolitaireGame {
 
       const autoFinishBar = document.getElementById('auto-finish-banner');
       if (autoFinishBar) {
+        if (autoFinishBar._dropAnim) {
+          try { autoFinishBar._dropAnim.cancel(); } catch (e) {}
+        }
         autoFinishBar.style.display = 'none';
-        autoFinishBar.classList.remove('visible', 'dropping');
+        autoFinishBar.classList.remove('visible', 'glowing');
       }
 
       const stats = {
