@@ -925,11 +925,33 @@ html, body {
 }
 
 /* =========================================================================
-   SETTINGS MODAL STYLING
+   SETTINGS MODAL STYLING (VIEWPORT-AWARE SCROLLABLE BODY)
    ========================================================================= */
+.modal-title-inline {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  margin-bottom: 6px !important;
+  font-size: 22px !important;
+  flex-shrink: 0 !important;
+}
+
+.title-inline-gear {
+  width: 19px !important;
+  height: 19px !important;
+  flex-shrink: 0 !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+}
+
 .settings-modal-card {
-  max-width: 335px !important;
-  padding: 20px 18px 18px 18px !important;
+  max-width: 340px !important;
+  max-height: min(88dvh, var(--modal-max-height, 88vh)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding: 18px 16px 16px 16px !important;
+  box-sizing: border-box !important;
 }
 
 .settings-rows {
@@ -937,7 +959,20 @@ html, body {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  margin-top: 14px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+}
+
+.settings-modal-card .confirm-modal-buttons {
+  flex-shrink: 0;
+  margin-top: 12px !important;
+  width: 100%;
 }
 
 .settings-row {
@@ -1108,20 +1143,29 @@ html, body {
 }
 
 /* =========================================================================
-   HOW TO PLAY / HELP MODAL STYLING
+   HOW TO PLAY / HELP MODAL STYLING (VIEWPORT-AWARE SCROLLABLE BODY)
    ========================================================================= */
 .help-modal-card {
   max-width: 350px !important;
-  max-height: 85vh !important;
-  overflow-y: auto !important;
-  padding: 20px 18px 18px 18px !important;
+  max-height: min(88dvh, var(--modal-max-height, 88vh)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding: 18px 16px 16px 16px !important;
+  box-sizing: border-box !important;
+}
+
+.help-modal-card .confirm-modal-seal,
+.help-modal-card .confirm-modal-title,
+.help-modal-card .help-modal-subtitle {
+  flex-shrink: 0;
 }
 
 .help-modal-subtitle {
   font-size: 12px;
   color: #94a3b8;
   margin-top: -4px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .help-scroll-body {
@@ -1130,6 +1174,18 @@ html, body {
   gap: 9px;
   width: 100%;
   text-align: left;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+}
+
+.help-modal-card .confirm-modal-buttons {
+  flex-shrink: 0;
+  margin-top: 12px !important;
+  width: 100%;
 }
 
 .help-card-box {
@@ -1185,6 +1241,33 @@ html, body {
   font-weight: 800;
 }
 
+/* =========================================================================
+   CUSTOM COMPACT SCROLLBARS FOR MODAL CONTAINERS
+   ========================================================================= */
+.settings-rows::-webkit-scrollbar,
+.help-scroll-body::-webkit-scrollbar {
+  width: 5px;
+}
 
+.settings-rows::-webkit-scrollbar-track,
+.help-scroll-body::-webkit-scrollbar-track {
+  background: rgba(5, 19, 13, 0.4);
+  border-radius: 4px;
+}
 
+.settings-rows::-webkit-scrollbar-thumb,
+.help-scroll-body::-webkit-scrollbar-thumb {
+  background: rgba(251, 191, 36, 0.4);
+  border-radius: 4px;
+}
 
+.settings-rows::-webkit-scrollbar-thumb:hover,
+.help-scroll-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 191, 36, 0.7);
+}
+
+.settings-rows,
+.help-scroll-body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(251, 191, 36, 0.4) rgba(5, 19, 13, 0.4);
+}

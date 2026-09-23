@@ -2,7 +2,7 @@
  * agy-solitaire: Service Worker (Cache-First Offline Play)
  */
 
-const CACHE_NAME = 'agy-solitaire-v16';
+const CACHE_NAME = 'agy-solitaire-v17';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

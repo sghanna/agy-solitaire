@@ -112,6 +112,26 @@ class SolitaireGame {
         if (urlParams.has('winnable')) {
           this.settings.dealType = 'winning';
         }
+        if (urlParams.has('openModal')) {
+          setTimeout(() => {
+            const m = urlParams.get('openModal');
+            if (m === 'settings') {
+              const b = document.getElementById('btn-settings-toggle');
+              if (b) b.click();
+              if (urlParams.has('scrollBottom')) {
+                const s = document.querySelector('.settings-rows');
+                if (s) s.scrollTop = s.scrollHeight;
+              }
+            } else if (m === 'help') {
+              const b = document.getElementById('btn-help-toggle');
+              if (b) b.click();
+              if (urlParams.has('scrollBottom')) {
+                const s = document.querySelector('.help-scroll-body');
+                if (s) s.scrollTop = s.scrollHeight;
+              }
+            }
+          }, 200);
+        }
       }
     } catch (e) {}
 
@@ -120,7 +140,24 @@ class SolitaireGame {
     this.startNewGame();
   }
 
+  updateViewportHeight() {
+    const vh = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+    const maxModalH = Math.max(280, Math.floor(vh * 0.88));
+    document.documentElement.style.setProperty('--browser-height', `${vh}px`);
+    document.documentElement.style.setProperty('--modal-max-height', `${maxModalH}px`);
+  }
+
   setupEventListeners() {
+    // Auto-detect browser/screen height for responsive scrolling modals
+    this.updateViewportHeight();
+    window.addEventListener('resize', () => this.updateViewportHeight());
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => this.updateViewportHeight(), 100);
+    });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', () => this.updateViewportHeight());
+    }
+
     // Undo button
     if (this.undoBtn) {
       this.undoBtn.addEventListener('click', (e) => {
@@ -250,6 +287,7 @@ class SolitaireGame {
     if (settingsBtn && settingsModal) {
       settingsBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        this.updateViewportHeight();
         this.clearSelection();
         this.applySettingsUI();
         settingsModal.classList.add('visible');
@@ -317,6 +355,7 @@ class SolitaireGame {
     if (helpBtn && helpModal) {
       helpBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        this.updateViewportHeight();
         this.clearSelection();
         helpModal.classList.add('visible');
       });
