@@ -129,12 +129,26 @@
   <div class="review-section" id="section-4">
     <div class="review-header">
       <div class="review-title">4. Solved Auto-Win Banner (Hong Kong Starburst &amp; Drop-Down Animation)</div>
-      <div class="review-desc">Replaced generic emoji with vintage Hong Kong starburst emblem (crimson ruby &amp; gold filigree), and animated drop-down from top of screen to bottom with radiant pulse to catch Mom's attention.</div>
+      <div class="review-desc">True iPhone 16e view with the settled banner floating above bottom HUD, plus interactive drop animation replay button and high-contrast vector spotlight.</div>
     </div>
-    <div class="modal-frame" style="padding: 24px 16px;">
-      <aside id="auto-finish-banner" class="visible dropping" style="position: static; width: 100%; margin: 0;">
-        <div class="banner-left">
-          <div class="banner-icon-badge">
+    
+    <!-- Live Phone Mockup with Solitaire Board and Settled Banner -->
+    <div class="phone-mockup" id="mock-autowin">
+      <iframe id="iframe-autowin" src="index.html?showAutoWin=settled" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+
+    <!-- Interactive Animation Trigger -->
+    <div style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 6px;">
+      <button onclick="triggerAutoWinDrop()" style="background: linear-gradient(180deg, #b45309 0%, #78350f 100%); color: #fef08a; border: 1.5px solid #fbbf24; border-radius: 9999px; padding: 8px 18px; font-size: 13.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
+        <span>Replay Drop Animation</span> <span>&circlearrowright;</span>
+      </button>
+    </div>
+
+    <!-- Fail-Safe Static Component Spotlight Card -->
+    <div class="modal-frame" style="padding: 16px 14px; margin-top: 4px;">
+      <aside class="review-banner-static" style="position: static !important; display: flex !important; width: 100%; max-width: 390px; margin: 0; background: linear-gradient(135deg, #1c1917 0%, #292524 40%, #1c1917 100%); border: 2.2px solid #fbbf24; border-radius: 22px; padding: 10px 14px; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(251, 191, 36, 0.45); transform: none !important; opacity: 1 !important; animation: none !important;">
+        <div class="banner-left" style="display: flex; align-items: center; gap: 10px;">
+          <div class="banner-icon-badge" style="width: 34px; height: 34px; border-radius: 50%; background: #064e3b; border: 1.5px solid #fbbf24; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(251, 191, 36, 0.4); flex-shrink: 0;">
             <svg class="auto-win-icon" width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <!-- Auspicious 8-Point Starburst Filigree -->
               <path d="M20 2 L22.8 13.5 L34 8 L27 18 L38 20 L27 22 L34 32 L22.8 26.5 L20 38 L17.2 26.5 L6 32 L13 22 L2 20 L13 18 L6 8 L17.2 13.5 Z" fill="rgba(251, 191, 36, 0.35)" stroke="#fbbf24" stroke-width="1.2" stroke-linejoin="round"/>
@@ -150,9 +164,9 @@
               <circle cx="34.5" cy="20" r="1.2" fill="#fde047"/>
             </svg>
           </div>
-          <span class="banner-text">Solved!</span>
+          <span class="banner-text" style="font-family: 'Lexend', -apple-system, sans-serif; font-size: 19px; font-weight: 900; color: #fef08a; letter-spacing: 0.3px; text-shadow: 0 1.5px 3px rgba(0,0,0,0.85);">Solved!</span>
         </div>
-        <button class="banner-btn">Auto-Win &rarr;</button>
+        <button class="banner-btn" style="background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%); color: #0f172a; border: none; border-radius: 9999px; padding: 7px 15px; font-family: 'Lexend', -apple-system, sans-serif; font-size: 15px; font-weight: 900; letter-spacing: 0.2px; box-shadow: 0 3px 8px rgba(0,0,0,0.5);">Auto-Win &rarr;</button>
       </aside>
     </div>
   </div>
@@ -352,6 +366,19 @@
         }
       }
     });
+
+    function triggerAutoWinDrop() {
+      const frame = document.getElementById('iframe-autowin');
+      if (frame && frame.contentWindow) {
+        const bar = frame.contentWindow.document.getElementById('auto-finish-banner');
+        if (bar) {
+          bar.style.display = 'flex';
+          bar.classList.remove('dropping');
+          void bar.offsetWidth; // force reflow
+          bar.classList.add('visible', 'dropping');
+        }
+      }
+    }
   </script>
 </body>
 </html>
