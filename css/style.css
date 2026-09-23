@@ -937,7 +937,8 @@ html, body {
   flex-shrink: 0 !important;
 }
 
-.title-inline-gear {
+.title-inline-gear,
+.title-inline-icon {
   width: 19px !important;
   height: 19px !important;
   flex-shrink: 0 !important;
